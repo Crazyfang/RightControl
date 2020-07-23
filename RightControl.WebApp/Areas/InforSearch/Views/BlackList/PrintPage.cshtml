@@ -1,0 +1,36 @@
+﻿@model RightControl.Model.InforSearch.BlackList
+@{
+    ViewBag.Title = "PrintPage";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+@section styles
+{
+    <script src="~/Areas/Admin/Scripts/Print.js/src/js/print.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Areas/Admin/Scripts/Print.js/src/print.min.css">
+}
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line">
+        <tbody>
+            <tr>
+                <td>@Html.DisplayNameFor(x => x.BankName)：</td>
+                <td>@Model.BankName</td>
+                <td>@Html.DisplayNameFor(x => x.CreateOn)：</td>
+                <td>@Model.CreateOn</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(x => x.EditorName)：</td>
+                <td>@Model.EditorName</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(x => x.RefuseReason)：</td>
+                <td colspan="3">@Model.RefuseReason</td>
+            </tr>
+    </table>
+</div>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        var $ = layui.$
+            , form = layui.form;
+        printJS({ printable: 'PrintArea', type: 'html', header: 'PrintJS - Form Element Selection' });
+    });
+</script>

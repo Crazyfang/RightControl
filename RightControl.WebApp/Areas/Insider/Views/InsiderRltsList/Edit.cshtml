@@ -1,0 +1,201 @@
+﻿@model RightControl.Model.Insider.YG_InsiderRltsList
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutForm.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/layui/css/eleTree.css">
+    <style>
+        .nav {
+            position: fixed;
+            right: 25px;
+            top: calc(50% - 90px);
+            border: 1px solid #d2d2d2;
+            background-color: #fff;
+            z-index: 100000;
+        }
+
+        .nav-title {
+            background-color: #F8F8F8;
+            padding: 0 80px 0 20px;
+            margin: 0px;
+            height: 42px;
+            line-height: 42px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .nav ul {
+            padding: 10px 0px 10px 35px;
+        }
+
+            .nav ul li {
+                padding: 5px 0px;
+                list-style-type: decimal;
+            }
+
+            .nav ul a {
+                color: #333;
+                font-size: 14px;
+                text-decoration: none;
+            }
+
+        .eleTree {
+            width: 350px;
+            height: auto;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            display: inline-block;
+        }
+
+        .inp {
+            width: 100%;
+            line-height: 30px;
+        }
+
+        .slideTest {
+            margin: 0 10px;
+        }
+
+        .met {
+            display: none;
+            width: 100%;
+        }
+
+        .blue {
+            color: #01AAED;
+        }
+
+        a:hover {
+            color: #01AAED;
+        }
+
+        .ele {
+            height: 150px;
+            width: 100%;
+            display: none;
+            position: absolute;
+            top: 100%;
+            background-color: #fff;
+            z-index: 100;
+        }
+    </style>
+}
+
+<div class="layui-col-md12 top10">
+    <form class="layui-form" id="form" action="/Insider/InsiderRltsList/Edit" method="post">
+        <input name="Id" value="@Model.Id" type="hidden">
+        @Html.HiddenFor(x => x.CreateOn)
+        <div class="layui-form-item">
+            @Html.HiddenFor(item => item.CreateOn)
+            <label class="layui-form-label">岗位</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="DepartmentId" class="layui-input">
+                <input type="text" name="Department" required lay-verify="required" readonly autocomplete="off" class="layui-input">
+                <div class="eleTree ele" lay-filter="departmentdata"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内部人姓名</label>
+            <div class="layui-input-inline">
+                <input name="InsiderNm" value="@Model.InsiderNm" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名</label>
+            <div class="layui-input-inline">
+                <input name="RltsNm" value="@Model.RltsNm" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">身份证号码</label>
+            <div class="layui-input-inline">
+                <input name="IdentityCd" value="@Model.IdentityCd" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">与内部人关系</label>
+            <div class="layui-input-inline">
+                <input name="Relationship" value="@Model.Relationship" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所控制企业名称</label>
+            <div class="layui-input-inline">
+                <input name="CompanyNm" value="@Model.CompanyNm" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">统一社会信用代码证号</label>
+            <div class="layui-input-inline">
+                <input name="SocialCreditCode" value="@Model.SocialCreditCode" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">控制人</label>
+            <div class="layui-input-inline">
+                <input name="Controller" value="@Model.Controller" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">与内部人关系</label>
+            <div class="layui-input-inline">
+                <input name="ControllerRlts" value="@Model.ControllerRlts" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submitForm">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['jquery', 'eleTree', 'form'], function () {
+            var form = layui.form;
+            var $ = layui.$;
+            submitForm(form, "编辑成功"); //监听提交
+
+            var $ = layui.jquery;
+            var eleTree = layui.eleTree;
+            form.render('select');
+
+            var el;
+            $.ajax({
+                url: '/Permissions/Department/GetAllDepartment',
+                type: 'post',
+                dataType:'json',
+                success: function (data) {
+                    el = eleTree.render({
+                        elem: '.ele',
+                        data: data,
+                        defaultExpandAll: true,
+                        expandOnClickNode: false,
+                        highlightCurrent: true
+                    });
+                    $("[name='Department']").val('@Model.Department');
+                }
+            });
+            $("[name='Department']").on("click",
+                function(e) {
+                    e.stopPropagation();
+                    if (!el) {
+
+                    }
+                    $(".ele").toggle();
+                });
+            eleTree.on("nodeClick(departmentdata)",
+                function(d) {
+                    $("[name='Department']").val(d.data.currentData.label);
+                    $("[name='DepartmentId']").val(d.data.currentData.id);
+                    $(".ele").hide();
+                });
+            $(document).on("click",
+                function() {
+                    $(".ele").hide();
+                });
+        });
+</script>
+

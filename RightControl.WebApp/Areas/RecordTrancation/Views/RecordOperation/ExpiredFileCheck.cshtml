@@ -1,0 +1,265 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">客户号：</label>
+                <div class="layui-input-inline">
+                    <input name="RecordUserCode" id="RecordUserCode" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">客户姓名：</label>
+                <div class="layui-input-inline">
+                    <input name="RecordUserName" id="RecordUserName" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">客户经理：</label>
+                <div class="layui-input-inline">
+                    <input name="RecordManager" id="RecordManager" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                @Html.SearchBtnHtml()
+                @Html.ResetBtnHtml()
+            </div>
+            <div class="layui-form-item" style="margin-top: 20px;">
+                @Html.TopToolBarHtml(ViewData["ActionFormRightTop"])
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+<script>
+    function showStatu(status) {
+        if (status === 1) {
+            return '<span class="layui-badge">待移交</span>';
+        } else if (status === 2) {
+            return '<span class="layui-badge layui-bg-green">在库</span>';
+        } else {
+            return '<span class="layui-badge layui-bg-blue">借阅中</span>';
+        }
+    };
+
+    layui.use(['table', 'common', 'form'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common;
+        //表格
+
+        //var typelist = [{ "Id": 1, "SelectTypeNameString": "企业" }];
+
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/RecordTrancation/RecordOperation/RecordListLimited' //数据接口
+            , page: true //开启分页
+            , cellMinWidth: 120
+            , cols: [[ //表头
+                { checkbox: true, fixed: true },
+                { field: 'RecordID', title: '档案编号', fixed: 'left', width:160 }
+                , { field: 'RecordUserName', title: '客户姓名', sort:true }
+                , { field: 'RecordUserCode', title: '客户号', width: 210 }
+                , { field: 'RecordStatus', title: '档案状态', templet:'<div>{{showStatu(d.RecordStatus)}}</div>' }
+                , { field: 'CreditDueDate', title: '授信到期日' }
+                , { field: 'RecordManagerDepartment', title: '归管支行' }
+                , { field: 'DepartmentName', title: '归管支行名称' }
+                , { field: 'RecordManager', title: '客户经理' }
+                , { field: 'RealName', title: '客户经理名称' }
+                , { field: 'RecordStorageLoc', title: '档案存储位置' }
+                , { field: 'RecordType', title: '档案类型', templet:'<div>{{showType(d.RecordType)}}</div>' }
+                , { field: 'CreateOn', title: '创建时间' }
+                , { field: 'HandOverTime', title: '移交时间'}
+                , { field: '', title: '操作', toolbar: "#bar", fixed:'right', width:250 }
+            ]]
+        });
+        var $ = layui.$, active = {
+                             reload: function () {
+                                 //执行重载
+                                 table.reload('defaultReload', {
+                                     page: {
+                                         curr: 1 //重新从第 1 页开始
+                                     }
+                                     , where: urlToJson($("#formSearch").serialize())
+                                 });
+                             }
+                         };
+
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //add
+        $('#btnAdd').on('click', function () {
+            common.openTop({
+                title: '档案添加', w: '1000px', h: '500px', content: '/RecordTrancation/RecordOperation/RecordAdd'
+            });
+        });
+        //借阅
+        $('#btnBorrow').on('click', function() {
+            var checkStatus = table.checkStatus('defaultReload');
+            if (checkStatus.data.length) {
+                var recordIdArray = new Array();
+                for (var i in checkStatus.data) {
+                    recordIdArray.push(checkStatus.data[i].RecordID);
+                }
+                var data = recordIdArray.join(',');
+                //var data = 'AAAA82801000004';
+                $.ajax({
+                    url: "/RecordTrancation/RecordBorrow/ApplyBorrow",
+                    data: { "recordIdString": data, "borrowOnly": true },
+                    type:'post',
+                    success: function (obj) {
+                        console.log(obj);
+                        if (obj.state === 'success') {
+                            layer.msg(obj.message);
+
+                            //表格状态刷新
+                            active['reload'].call(this);
+                        } else {
+                            layer.msg(obj.message);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            } else {
+                layer.msg('请先勾选需要借阅的档案!');
+            }
+        });
+
+        //批量借阅(本行)
+        $('#btnBatchBorrow').on('click', function() {
+            $.ajax({
+                url: "/RecordTrancation/RecordBorrow/ApplyBatchBorrow",
+                success: function(data) {
+                    if (data.state === 'success') {
+                        layer.msg(data.message);
+
+                        //表格状态刷新
+                        active['reload'].call(this);
+                    } else {
+                        layer.msg(data.message);
+                    }
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        });
+
+        $('#btnCopy').on('click', function () {
+            var checkStatus = table.checkStatus('defaultReload');
+            if (checkStatus.data.length) {
+                var recordIdArray = new Array();
+                for (var i in checkStatus.data) {
+                    recordIdArray.push(checkStatus.data[i].RecordID);
+                }
+                var data = recordIdArray.join(',');
+                $.ajax({
+                    url: "/RecordTrancation/RecordBorrow/ApplyCopy",
+                    type: 'post',
+                    data: {'recordIdStr':data},
+                    success: function(data) {
+                        if (data.state === 'success') {
+                            layer.msg(data.message);
+
+                            //表格状态刷新
+                            active['reload'].call(this);
+                        } else {
+                            layer.msg(data.message);
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        });
+
+        //监听工具条
+        table.on('tool(defaultruv)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '档案详情'
+                    , area: ['700px', '500px']
+                    //,shade: 0
+                    , maxmin: true
+                    , offset: 'auto'
+                    , content: '/RecordTrancation/RecordOperation/RecordDetail?recordId=' + data.RecordID
+                    , btn: ['打印清单', '取消']
+                    , yes: function (index, layero) {
+                        window.open('/RecordTrancation/RecordBorrow/PrintPage?recordId=' + data.RecordID, '_blank');
+                    }
+                    , btn2: function () {
+                        layer.closeAll();
+                    }
+                });
+                //common.openTop({
+                //    detail: true,
+                //    title: '档案详情', w: '700px', h: '500px', content: '/RecordTrancation/RecordOperation/RecordDetail?recordId=' + data.RecordID, detail: true, btn:['打印界面', '取消'], clickOK: function (index) {
+                //        //common.close(index);
+                //        window.open('/RecordTrancation/RecordBorrow/PrintPage?recordId=' + data.recordId, '_blank');
+                //    }
+                //});
+            } else if (obj.event === 'del') {
+                layer.confirm('确定要删除吗？', function (index) {
+                    $.ajax({
+                        url: "/RecordTrancation/RecordOperation/RecordDelete",
+                        type: "POST",
+                        data: { "recordId": data.RecordID },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.state === "success") {
+                                obj.del();//删除这一行
+                                layer.close(index); //关闭弹框
+                                common.msgSuccess("删除成功");
+                            } else {
+                                common.msgError("删除失败");
+                            }
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                $.ajax({
+                    url: '/RecordTrancation/RecordOperation/CheckEditLimit',
+                    data: { 'recordId': data.RecordID },
+                    type: 'POST',
+                    success: function(obj) {
+                        if (obj.state === 'success') {
+                            common.openTop({
+                                title: '操作编辑',
+                                w: '1000px',
+                                h: '500px',
+                                content: '/RecordTrancation/RecordOperation/RecordEdit?recordId=' + data.RecordID
+                            });
+                        } else {
+                            layer.msg('无当前档案的编辑权限!');
+                        }
+                    }
+                });
+
+            }
+        });
+    });
+</script>
+

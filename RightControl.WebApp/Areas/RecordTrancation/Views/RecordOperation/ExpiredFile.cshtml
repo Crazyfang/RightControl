@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "档案过期文件查看编辑";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+<input type="hidden" id="recordId" value="@ViewBag.recordId"/>
+<form class="layui-form" lay-filter="expired_form" id="expired_form" style="padding: 5px 5px">
+    
+</form>
+<script>
+    layui.use(['element', 'laydate', 'form', 'jquery'],
+        function() {
+            var element = layui.element,
+                form = layui.form,
+                laydate = layui.laydate,
+                $ = layui.jquery;
+
+            $.ajax({
+                url: '/RecordTrancation/RecordOperation/ExpiredFileList',
+                data: { 'recordId': $('#recordId').val() },
+                success: function(obj) {
+                    $('#expired_form').append(obj);
+                    lay('.datetime').each(function () {
+                        laydate.render({
+                            elem: this,
+                            trigger: 'click'
+                        });
+                    });
+                    
+                    form.render();
+                }
+            });
+
+            form.on('submit(formDemo)', function (data) {
+                $('#submit_btn').text('提交中');
+                $('#submit_btn').attr('disabled', 'disabled');
+                $.ajax({
+                    url: '/RecordTrancation/RecordOperation/ChangeFileValidateTime',
+                    type: 'post',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.state === 'success') {
+                            layer.msg(data.message);
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            }, 1500);
+                        } else {
+                            layer.msg("档案文件有效期未修改成功!");
+                            $('#submit_btn').text('立即提交');
+                            $('#submit_btn').attr('disabled', '');
+                        }
+                    },
+                    error: function (data) {
+                        $('#submit_btn').text('立即提交');
+                        $('#submit_btn').attr('disabled', '');
+                    }
+                });
+                return false;
+            });
+        });
+</script>

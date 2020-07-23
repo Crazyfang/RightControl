@@ -1,0 +1,76 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <p>手工调整档案归属</p>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+    </div>
+</div>
+<script>
+    layui.use(['table', 'common', 'form'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common;
+        //表格
+
+        //var typelist = [{ "Id": 1, "SelectTypeNameString": "企业" }];
+
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/RecordTrancation/RecordOperation/ChangedRecordManagerList' //数据接口
+            , page: true //开启分页
+            , cellMinWidth: 160
+            , cols: [[ //表头
+                { checkbox: true, fixed: true },
+                { field: 'ID', title: '序号', fixed: 'left'}
+                , { field: 'CustINNO', title: '客户内码'}
+                , { field: 'RecordID', title: '档案编号'}
+                , { field: 'RecordUserName', title: '客户姓名'}
+            ]]
+        });
+        var $ = layui.$, active = {
+                             reload: function () {
+                                 //执行重载
+                                 table.reload('defaultReload', {
+                                     page: {
+                                         curr: 1 //重新从第 1 页开始
+                                     }
+                                 });
+                             }
+                         };
+
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+        table.on('rowDouble(defaultruv)',
+            function (obj) {
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '手工调整归属关系确认'
+                    , area: ['1000px', '500px']
+                    //,shade: 0
+                    , maxmin: true
+                    , offset: 'auto'
+                    , content: '/RecordTrancation/RecordOperation/ChangeManagerView?recordId=' + obj.data.RecordID
+                });
+            });
+    });
+</script>
+
+

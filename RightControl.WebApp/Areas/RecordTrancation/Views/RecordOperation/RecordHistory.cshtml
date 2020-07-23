@@ -1,0 +1,60 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>档案流转历史查看</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="~/Areas/Admin/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="padding:20px">
+        <input type="hidden" value="@ViewBag.recordId" id="recordId" />
+        <ul class="layui-timeline" id="history_ul">
+            @*<li class="layui-timeline-item">
+                <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                <div class="layui-timeline-content layui-text">
+                    <h3 class="layui-timeline-title">新增</h3>
+                    <p>
+                        新增已维护文件身份证，数量5，过期时间2020-05-01
+                        <br>新增已维护文件驾驶证，数量1，过期时间2020-05-01
+                    </p>
+                    <span>2020-05-01</span>
+                </div>
+            </li>*@
+        </ul>
+    </div>
+    <script src="~/Areas/Admin/plugins/layui/layui.js"></script>
+    <script>
+
+    layui.use(['table', 'layer'], function(){
+        var table = layui.table,
+            $ = layui.$,
+            layer = layui.layer;
+
+        $.ajax({
+            url: '/RecordTrancation/RecordOperation/RecordHistoryData?recordId=' + $('#recordId').val(),
+            success: function (data) {
+                var data = JSON.parse(data);
+                html = '';
+                for (var i in data) {
+                    html += '<li class="layui-timeline-item"><i class="layui-icon layui-timeline-axis">&#xe63f;</i><div class="layui-timeline-content layui-text">';
+                    html += '<h3 class="layui-timeline-title">' + data[i].OperateType + '</h3>';
+                    html += '<p>' + data[i].OperateInfo + '</p>';
+                    html += '<span>操作人:' + data[i].OperatePeople + '</span><br>';
+                    html += '<span>操作时间:' + data[i].OperateTime + '</span>';
+                }
+
+                $("#history_ul").append(html);
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+﻿@media print {
+
+    body {
+        margin-top: 1cm;
+    }
+
+}
+
+table {
+    font-size: large;
+    width: 1000px;
+    text-align: center;
+    margin: 0 auto;
+    table-layout: fixed;
+    word-break: break-all
+}

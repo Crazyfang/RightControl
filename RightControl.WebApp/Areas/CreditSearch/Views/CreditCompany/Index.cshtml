@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "信用等级查询";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header" style="height: 50px;">
+                    <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">纳税人名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="TaxpayerName" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">信用代码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="TaxpayerIdentifier" placeholder="请输入" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">企业状态：</label>
+                                <div class="layui-input-inline">
+                                    <select name="Status" lay-filter="Status">
+                                        <option value="0">全部</option>
+                                        <option value="1">可认领</option>
+                                        <option value="2">已认领</option>
+                                        <option value="3">持续走访中</option>
+                                        <option value="4">完成走访</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="LAY-app-contlist-search">
+                                    <i class="layui-icon layui-icon-search layuiadmin-button-btn" style="position:inherit"></i>
+                                    搜索
+                                </button>
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn" id="TaxpayerList">查看已认领企业</button>
+                            </div>
+                            @*<div class="layui-inline">
+                                <button class="layui-btn" id="ClaimDetail">认领明细表</button>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+
+                    <table class="layui-hide" id="demo" lay-filter="test"></table>
+                    <script type="text/html" id="table-content-list">
+                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="claim"><i class="layui-icon layui-icon-edit"></i>认领</a>
+                        <a class="layui-btn layui-btn-orange layui-btn-xs" lay-event="history"><i class="layui-icon layui-icon-layer"></i>查看历史</a>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showRating(rate) {
+        if (rate === 'A') {
+            return '<span class="layui-badge">A</span>';
+        } else if (rate === 'B') {
+            return '<span class="layui-badge layui-bg-green">B</span>';
+        } else {
+            return '<span class="layui-badge layui-bg-blue">' + rate + '</span>';
+        }
+    };
+
+    function showStatus(status) {
+        if (status === 1) {
+            return '<span class="layui-badge layui-bg-green">可认领</span>';
+        } else if (status === 2) {
+            return '<span class="layui-badge layui-bg-red">已认领</span>';
+        } else if (status === 3) {
+            return '<span class="layui-badge layui-bg-blue">持续走访中</span>';
+        }else {
+            return '<span class="layui-badge layui-bg-gray">完成走访</span>';
+        }
+    };
+
+    layui.use(['table', 'layer', 'form'], function () {
+        var table = layui.table,
+            layer = layui.layer,
+            $ = layui.$,
+            form = layui.form;
+
+        table.render({
+            elem: '#demo'
+            , url: '/CreditSearch/CreditCompany/CreditCompanyList'
+            , cellMinWidth: 180 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [[
+                { field: 'Id', title: 'ID', width: 80, fixed: 'left', unresize: true }
+                , { field: 'TaxpayerName', title: '纳税人名称', width: 250 }
+                , { field: 'TaxpayerIdentifier', title: '纳税人识别号' } //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                , { field: 'ProductionAddress', title: '生产经营地址' }
+                , { field: 'ContractNumber', title: '联系电话' }
+                , { field: 'LegalRepresentative', title: '法定代表人' }
+                , { field: 'Status', title: '状态', templet: '<div>{{showStatus(d.Status)}}</div>' }
+                , { field: 'CreditRating', title: '信用等级', templet: '<div>{{showRating(d.CreditRating)}}</div>' }
+                , { field: 'BelongStreet', title: '所属街道' }
+                , { title: '操作', toolbar: '#table-content-list', fixed: 'right' }
+            ]]
+            , page: true
+            , text: {
+                none: '请核对录入企业名称，或该企业不属于ABM级企业' //默认：无数据。注：该属性为 layui 2.2.5 开始新增
+            }
+            , height: 'full-100'
+        });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'claim') {
+                layer.confirm('确认认领该企业吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                        $.ajax({
+                            url: '/CreditSearch/CreditCompany/ClaimCompany',
+                            data: { 'CreditCompanyId': data.Id },
+                            type:'post',
+                            success: function (res) {
+                                console.log(res);
+                                if (res.state === 'success') {
+                                    layer.msg("认领成功!");
+                                    table.reload('demo');
+                                    setTimeout(function () {
+                                        layer.closeAll();
+                                    }, 1500);
+                                }
+                                else {
+                                    layer.msg(res.message);
+                                    setTimeout(function () {
+                                        layer.closeAll();
+                                    }, 1500);
+                                }
+                            }
+                        })
+                }, function () {
+                    layer.closeAll();
+                });
+            } else if (obj.event === 'history') {
+                layer.open({
+                    type: 2
+                    , content: '/CreditSearch/CreditCompany/History?creditCompanyId=' + data.Id
+                    , shadeClose: true
+                    , area: ['700px', '500px']
+                    , maxmin: true
+                });
+            }
+        });
+
+        form.on('submit(LAY-app-contlist-search)', function (data) {
+            var field = data.field;
+
+            //执行重载
+            table.reload('demo', {
+                where: field
+            });
+        });
+
+        $('#TaxpayerList').click(function () {
+            var index = layer.open({
+                type: 2
+                , title: '已认领企业'
+                , content: '/CreditSearch/CreditCompany/TaxpayerList'
+                , shadeClose: true
+                , area: ['700px', '500px']
+                , maxmin: true
+                , end: function () {
+                    window.location.reload();
+                }
+            });
+            layer.full(index);
+            return false;
+        });
+
+        table.on('rowDouble(test)', function (obj) {
+            var data = obj.data;
+            layer.open({
+                type: 2
+                , content: '/CreditSearch/CreditCompany/History?CreditCompanyId=' + data.Id
+                , shadeClose: true
+                , area: ['700px', '500px']
+                , maxmin: true
+            });
+        });
+    });</script>

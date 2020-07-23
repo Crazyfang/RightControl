@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "ApplyList";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">调阅状态：</label>
+                <div class="layui-input-inline">
+                    <select name="ApplyState" lay-filter="ApplyState">
+                        <option value=""></option>
+                        <option value="1">待审核</option>
+                        <option value="2">申请调阅成功</option>
+                    </select>
+                </div>
+                @Html.SearchBtnHtml()
+                @Html.ResetBtnHtml()
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+    </div>
+</div>
+<script>
+    function showState(status) {
+        if (status === 1) {
+            return '待审核';
+        } else if (status === 2) {
+            return '申请调阅成功';
+        }
+    };
+
+    layui.use(['table', 'common', 'form'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common;
+        //表格
+
+        //var typelist = [{ "Id": 1, "SelectTypeNameString": "企业" }];
+
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/RecordTrancation/RecordBorrow/RecordListCopy' //数据接口
+            , page: true //开启分页
+            , cellMinWidth: 120
+            , cols: [[ //表头
+                { checkbox: true, fixed: true },
+                { field: 'BorrowID', title: '调阅编号'}
+                , { field: 'ApplyTime', title: '申请调阅时间', sort:true }
+                , { field: 'ApplyUser', title: '申请调阅用户'}
+                , { field: 'ApplyState', title: '申请状态', templet:'<div>{{showState(d.ApplyState)}}</div>' }
+            ]]
+        });
+        var $ = layui.$, active = {
+                             reload: function () {
+                                 //执行重载
+                                 table.reload('defaultReload', {
+                                     page: {
+                                         curr: 1 //重新从第 1 页开始
+                                     }
+                                     , where: urlToJson($("#formSearch").serialize())
+                                 });
+                             }
+                         };
+
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+        table.on('rowDouble(defaultruv)',
+            function (obj) {
+                common.openTop({
+                    detail: true,
+                    title: '调阅清单查看',
+                    w: '700px',
+                    h: '500px',
+                    content: '/RecordTrancation/RecordBorrow/CopyFileListDetail?borrowId=' + obj.data.BorrowID,
+                    clickOK: function (index) {
+                        layer.close(index);
+                    }
+                });
+            });
+
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+

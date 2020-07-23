@@ -1,0 +1,142 @@
+﻿@model RightControl.Model.RecordTrancation.Record
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+<div class="layui-col-md12" id="List">
+        <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayNameFor(x => x.RecordID)：</td>
+                    <td>@Model.RecordID</td>
+                    <td>@Html.DisplayNameFor(x => x.RecordUserName)：</td>
+                    <td>@Model.RecordUserName</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(x => x.RecordUserCode)：</td>
+                    <td colspan="3">@Model.RecordUserCode</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(x => x.CreditDueDate)：</td>
+                    <td>@Model.CreditDueDate</td>
+                    <td>@Html.DisplayNameFor(x => x.RecordManagerName)：</td>
+                    <td>@Model.RecordManagerName</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(x => x.RecordDepartmentName)：</td>
+                    <td>@Model.RecordDepartmentName</td>
+                    <td>@Html.DisplayNameFor(x => x.RecordStatus)：</td>
+                    <td>
+                        @if (Model.RecordStatus == 1)
+                        {
+                            string status = "待移交";
+                            <span class="layui-badge">@status</span>
+                        }
+                        @if (Model.RecordStatus == 2)
+                        {
+                            string status = "在库";
+                            <span class="layui-badge layui-bg-green">@status</span>
+                        }
+                        @if (Model.RecordStatus == 3)
+                        {
+                            string status = "借阅中";
+                            <span class="layui-badge layui-bg-orange">@status</span>
+                        }
+                        @*@Html.DisplayFor(x => x.RecordStatus)*@
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(x => x.RecordStorageLoc)：</td>
+                    <td>@Html.DisplayFor(x => x.RecordStorageLoc)</td>
+                    <td>@Html.DisplayNameFor(x => x.CreateOn)：</td>
+                    <td>@Html.DisplayFor(x => x.CreateOn)</td>
+                </tr>
+                <tr>
+                    
+                    <td>@Html.DisplayNameFor(x => x.HandOverTime)：</td>
+                    <td>@Html.DisplayFor(x => x.HandOverTime)</td>
+                </tr>
+        </table>
+        @*<div style="padding: 20px; background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">个人征信类</div>
+                        <div class="layui-card-body">
+                            <div class="layui-fluid">
+                                <div class="layui-row" style="text-align: center;">
+                                    <div class="layui-col-xs4">
+                                        身份证
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        无过期时间
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        x4
+                                    </div>
+                                </div>
+                                <div class="layui-row" style="text-align: center;">
+                                    <div class="layui-col-xs4">
+                                        身份证
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        2019-12-31
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        x4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">个人征信类</div>
+                        <div class="layui-card-body">
+                            <div class="layui-fluid">
+                                <div class="layui-row" style="text-align: center">
+                                    <div class="layui-col-xs4">
+                                        身份证
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        2019-12-31
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        x4
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        身份证
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        2019-12-31
+                                    </div>
+                                    <div class="layui-col-xs4">
+                                        x4
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>*@
+</div>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        var $ = layui.$;
+        var form = layui.form;
+
+        $.ajax({
+            url: "/RecordTrancation/RecordOperation/RecordFileList?recordId=@Model.RecordID",
+            type: "post",
+            success: function(data) {
+                $("#List").append(data);
+            }
+        });
+    });
+</script>
+

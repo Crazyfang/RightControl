@@ -1,0 +1,33 @@
+﻿@model RightControl.Model.PfLender.LenderList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Name)：</td>
+                <td>@Model.Name</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.IdentityCd)：</td>
+                <td>@Model.IdentityCd</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Place)：</td>
+                <td>@Model.Place</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.LawCase)：</td>
+                <td>@Model.LawCase</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Amount)：</td>
+                <td>@Model.Amount</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

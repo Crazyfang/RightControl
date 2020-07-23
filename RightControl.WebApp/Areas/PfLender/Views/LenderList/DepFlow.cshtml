@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "DepFlow";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">交易日期：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="BJ01DATE" id="BJ01DATE">
+                </div>
+                @Html.SearchBtnHtml()
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+
+      //执行一个laydate实例
+      laydate.render({
+          elem: '#BJ01DATE', //指定元素
+        });
+
+    });
+
+    layui.use(['table', 'common', 'form', 'layer'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer;
+        //表格
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/PfLender/LenderList/GetLenderListDepFlow' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'BJ01DATE', title: '交易日期', templet: '<div>{{layui.util.toDateString(d.BJ01DATE, "yyyy-MM-dd") }}</div>', width: 110, fixed: 'left' }
+                , { field: 'CARD_NO', title: '卡号', fixed: 'left', width: 200 }
+                , { field: 'ACCOUNT_NM', title: '户名', fixed: 'left', width: 300 }
+                , { field: 'CRET_ID', title: '证件号', width: 200 }
+                , { field: 'BJ02QDLB', title: '渠道类别', width: 100 }
+                , { field: 'BJ03AC15', title: '账号', width: 200 }
+                , { field: 'BJ04CCYC', title: '币种', width: 150 }
+                , { field: 'BJ05CHSX', title: '钞汇属性', width: 150 }
+                , { field: 'BJ06TXSN', title: '原交易流水号', width: 150 }
+                , { field: 'BJ10SN12', title: '前置流水号', width: 150 }
+                , { field: 'BJ33BRNO', title: '交易机构', width: 150 }
+                , { field: 'BJ34STAF', title: '交易柜员', width: 150 }
+                , { field: 'BJ35BRNO', title: '交易卡账户归属机构', width: 200 }
+                , { field: 'BJ11AC22', title: '交易卡账号', width: 200 }
+                , { field: 'BJ16AMT', title: '实际交易金额', width: 150 }
+                , { field: 'BJ17CDFG', title: '借贷标志', width: 110 }
+                , { field: 'BJ18AC32', title: '对方账号', width: 200 }
+                , { field: 'BJ19JYLX', title: '交易类型', width: 120 }
+                , { field: 'BJ20FLAG', title: '现转标志', width: 120 }
+            ]]
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                //执行重载
+                table.reload('defaultReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: urlToJson($("#formSearch").serialize())
+                });
+            }
+        };
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+

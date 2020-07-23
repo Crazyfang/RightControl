@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewBag.Title = "Deposit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">数据时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="DATA_DATE" id="DATA_DATE">
+                </div>
+                @Html.SearchBtnHtml()
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+
+      //执行一个laydate实例
+      laydate.render({
+          elem: '#DATA_DATE', //指定元素
+        });
+    });
+
+    layui.use(['table', 'common', 'form', 'layer'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer;
+        //表格
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/PfLender/LenderList/GetLenderListDep' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'DATA_DATE', title: '数据时间', templet: '<div>{{layui.util.toDateString(d.DATA_DATE, "yyyy-MM-dd") }}</div>', width: 110, fixed: 'left' }
+                , { field: 'CUST_CSNO', title: '客户内码', fixed: 'left', width: 130 }
+                , { field: 'CUST_NM', title: '客户名称', fixed: 'left', width: 300 }
+                , { field: 'CRDT_ID', title: '证件号', width: 200 }
+                , { field: 'ORG_NO', title: '机构号', width: 100 }
+                , { field: 'ACCOUNT_NO', title: '存款账号', width: 200 }
+                , { field: 'DEP_TYPE', title: '存款类型', width: 150 }
+                , { field: 'MARGIN_TYPE', title: '保证金类型', width: 150 }
+                , { field: 'CURR_VAL', title: '日切余额', width: 150 }
+                , { field: 'YEAR_AVG', title: '年日均', width: 150 }
+                , { field: 'TOTAL_VAL', title: '年积数', width: 150 }
+                , { field: 'MONTH_AVG', title: '月日均', width: 150 }
+                , { field: 'QUARTER_AVG', title: '季日均', width: 150 }
+                , { field: 'SM_PRD_AVG', title: '同期日均', width: 150 }
+                , { field: 'DEP_PERIOD', title: '存期(定期)', width: 100 }
+                , { field: 'EXPIRE_DT', title: '到期日期(定期)', width: 150, templet: '<div>{{layui.util.toDateString(d.EXPIRE_DT, "yyyy-MM-dd") }}</div>' }
+                , { field: 'PRODUCT_NM', title: '产品名称(定期)', width: 200 }
+                , { field: 'RATE', title: '利率(定期)', width: 120 }
+            ]]
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                //执行重载
+                table.reload('defaultReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: urlToJson($("#formSearch").serialize())
+                });
+            }
+        };
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+

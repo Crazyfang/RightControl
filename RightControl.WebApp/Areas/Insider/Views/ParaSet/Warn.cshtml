@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "Warn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<link href="~/Areas/Admin/Content/css/date.css" rel="stylesheet" />
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">数据时间：</label>
+                <div class="layui-input-inline ui-time">
+                    <input type="text" id="SearchTime" readonly="readonly" name="SearchTime" class="layui-input ui-time-text"  value="" kssj="" jssj="" />
+                </div>
+                <label class="layui-form-label">规则名称：</label>
+                <div class="layui-input-inline">
+                    <input name="R_Name" id="R_Name" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">关联方：</label>
+                <div class="layui-input-inline">
+                    <input name="Insider" id="Insider" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    @Html.SearchBtnHtml()
+                    @Html.ResetBtnHtml()
+                </div>
+                <div style="float:right;">
+                    @Html.TopToolBarHtml(ViewData["ActionFormRightTop"])
+                </div>
+            </div>
+</form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+    layui.use(['jquery', 'table', 'common', 'form', 'layer', 'laydate', 'dateLay'], function () {
+            var table = layui.table,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer;
+
+            var $ = layui.$;
+            //年月选择器
+            var obj = {
+                init: function () {
+                    this.dp11 = $('#SearchTime');
+                    this.initEvent();
+                },
+                initEvent: function () {
+                    this.dp11.dateLay();
+                }
+            }
+            obj.init();
+
+			//表格
+			table.render({
+			    id: 'defaultReload'
+               , elem: '#defaultTable'
+               , height: 'full-112' //高度最大化减去差值
+               , url: '/Insider/ParaSet/WarnList' //数据接口
+               , page: true //开启分页
+               , cols: [[ //表头
+                   { field: 'DataDate', title: '数据时间', width: 120, templet: '<div>{{layui.util.toDateString(d.DataDate, "yyyy-MM-dd") }}</div>' }
+                   , { field: 'R_No', title: '规则编号', width: 100 }
+                   , { field: 'R_Name', title: '规则名称', width: 400 }
+                   , { field: 'Insider', title: '关联方', width: 100 }
+                   , { field: 'WarnInfo', title: '预警信息' }
+                ]]
+                , done: function (res, curr, count) {
+                    if (res.count === 0 && ($("#R_Name").val() || $("#SearchTime").val() || $("#Insider").val())) {
+                        layer.alert('未找到查询结果!');
+                    }
+                }
+            });
+			var $ = layui.$, active = {
+			    reload: function () {
+			        //执行重载
+			        table.reload('defaultReload', {
+			            page: {
+			                curr: 1 //重新从第 1 页开始
+			            }
+                      , where: urlToJson($("#formSearch").serialize())
+			        });
+			    }
+			};
+			//服务器排序
+			table.on('sort(defaultruv)', function (obj) {
+			    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+			    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+			    table.reload('defaultReload', {
+			        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                  , where: { //请求参数
+                      field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                  }
+			    });
+			});
+			$('#btnSearch').on('click', function () {
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+			});
+	});
+</script>
+

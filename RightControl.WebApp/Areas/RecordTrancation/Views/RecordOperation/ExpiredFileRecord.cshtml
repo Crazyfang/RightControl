@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "过期文件档案查看";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">客户号：</label>
+                <div class="layui-input-inline">
+                    <input name="RecordUserCode" id="RecordUserCode" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">客户姓名：</label>
+                <div class="layui-input-inline">
+                    <input name="RecordUserName" id="RecordUserName" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                @Html.SearchBtnHtml()
+                @Html.ResetBtnHtml()
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+    </div>
+</div>
+<script>
+    layui.use(['table', 'common', 'form'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common;
+        //表格
+
+        //var typelist = [{ "Id": 1, "SelectTypeNameString": "企业" }];
+
+        table.render({
+            id: 'defaultTable',
+            cellMinWidth: 200,
+            elem: '#defaultTable',
+            height: 'full-112',
+            url: '/RecordTrancation/RecordOperation/RecordExpiredByUser',
+            page: true,
+            cols: [
+                [
+                    { field: 'RecordID', title: '档案编号' },
+                    { field: 'RecordUserName', title: '档案用户姓名' },
+                    { field: 'RecordUserCode', title: '档案客户号' },
+                    { field: 'RecordManager', title: '档案归属客户经理' },
+                    { field: 'RecordManagerDepartment', title: '档案归属支行' }
+                ]
+            ]
+        });
+        var $ = layui.$, active = {
+                             reload: function () {
+                                 //执行重载
+                                table.reload('defaultruv', {
+                                     page: {
+                                         curr: 1 //重新从第 1 页开始
+                                     }
+                                     , where: urlToJson($("#formSearch").serialize())
+                                 });
+                             }
+                         };
+
+        table.on('rowDouble(defaultruv)',
+            function (obj) {
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    , title: '过期文件更新'
+                    , area: ['900px', '400px']
+                    //,shade: 0
+                    , maxmin: true
+                    , offset: 'auto'
+                    , content: '/RecordTrancation/RecordOperation/ExpiredFile?recordId=' + obj.data.RecordID
+                    , end: function () {
+                        active['reload'].call(this);
+                    }
+                });
+            });
+
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+

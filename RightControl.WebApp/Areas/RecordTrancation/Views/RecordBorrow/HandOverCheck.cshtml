@@ -1,0 +1,98 @@
+﻿@using System.Web.UI.WebControls
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/layui/css/layui.css"/>
+</head>
+<body>
+    <form class="layui-form" id="storageForm" style="margin-right: 20px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">档案存储位置</label>
+            <div class="layui-input-block">
+                <input type="text" name="storageLoc" placeholder="请输入存储位置" autocomplete="off" class="layui-input" />
+                <input type="text" hidden="true" name="recordId" id="recordId" value="@ViewBag.recordId" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">退回缘由</label>
+            <div class="layui-input-block">
+                <input type="text" id="refuseReason" placeholder="请输入退回缘由" autocomplete="off" class="layui-input" />
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter='formDemo' id="submit_btn">提交</button>
+                <button class="layui-btn" id="refuse">档案退回</button>
+                @*<a class="layui-btn" href="/RecordTrancation/RecordBorrow/PrintPage?recordId=@ViewBag.recordId" target="_blank">打印清单</a>*@
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <a class="layui-btn" href="/RecordTrancation/RecordBorrow/PrintPage?recordId=@ViewBag.recordId" target="_blank">打印清单</a>
+            </div>
+        </div>
+    </form>
+<script src="~/Areas/Admin/plugins/layui/layui.js"></script>
+<script>
+    
+layui.use(['form', 'layer'], function() {
+    var form = layui.form, $ = layui.jquery, layer = layui.layer;
+
+    form.on('submit(formDemo)', function (data) {
+        $.ajax({
+            url: '/RecordTrancation/RecordBorrow/RecordHandOverCheck',
+            data: data.field,
+            type: 'post',
+            success: function(data) {
+                if (data.state === 'success') {
+                    layer.msg('移交成功!');
+                    setTimeout(function () {
+                        parent.layer.closeAll();
+                    }, 1000);
+                }
+            }
+        });
+        return false;
+    });
+    $('#refuse').on('click', function () {
+        var refuseReason = $('#refuseReason').val();
+        if (refuseReason === '') {
+            layer.msg('请填写拒绝原因!');
+        } else {
+            $.ajax({
+                url: '/RecordTrancation/RecordBorrow/RefuseHandOver',
+                type: 'post',
+                data: { 'refuseReason': $('#refuseReason').val(), 'recordId':$('#recordId').val() },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.state === 'success') {
+                        layer.msg('拒绝成功!');
+                        setTimeout(function () {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.layer.closeAll();
+                        }, 1000);
+                    }
+                    else {
+                        layer.msg('拒绝失败!');
+                    }
+                },
+                error: function (data) {
+                    layer.msg(data);
+                }
+            });
+            
+        }
+        return false;
+    });
+});
+
+</script>
+</body>
+</html>

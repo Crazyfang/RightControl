@@ -1,0 +1,33 @@
+﻿@model RightControl.Model.Insider.YG_InsiderList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.RepartyNm)：</td>
+                <td>@Model.RepartyNm</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.ReNature)：</td>
+                <td>@Model.ReNature</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Department)：</td>
+                <td>@Model.Department</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Post)：</td>
+                <td>@Model.Post</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.IdentityCd)：</td>
+                <td>@Model.IdentityCd</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

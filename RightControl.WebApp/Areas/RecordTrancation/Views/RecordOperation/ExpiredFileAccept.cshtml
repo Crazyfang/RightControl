@@ -1,0 +1,199 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>过期文件书籍提交确认</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="~/Areas/Admin/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row" id="div_html">
+            <input type="hidden" value="@ViewBag.recordId" id="recordId"/>
+
+            @*<div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">2020-07-03</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">2020-07-03</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6">
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset class="layui-elem-field">
+                    <legend>信贷类</legend>
+                    <div class="layui-field-box">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                        <hr class="layui-bg-green">
+                        <div class="layui-row">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">身份证</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">删除</div>
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">x1</div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>*@
+            
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-sm6 layui-col-md6 layui-col-md-offset5 layui-col-xs-offset4 layui-col-sm-offset2">
+                <button class="layui-btn" id="agree">同意更改</button>
+                <button class="layui-btn" id="refuse">拒绝更改</button>
+            </div>
+        </div>
+    </div>
+    <script src="~/Areas/Admin/plugins/layui/layui.js"></script>
+    <script>
+        layui.use(['table', 'layer'], function() {
+            var table = layui.table,
+                $ = layui.$,
+                layer = layui.layer;
+
+            $.ajax({
+                url: '/RecordTrancation/RecordOperation/GetExpiredFileCompare?recordId=' + $("#recordId").val(),
+                success: function(data) {
+                    $("#div_html").append(data);
+                }
+            });
+
+            $("#agree").on('click', function () {
+                $.ajax({
+                    url: '/RecordTrancation/RecordOperation/AcceptExpiredFileChange',
+                    type: 'post',
+                    data: { "recordId": $("#recordId").val() },
+                    success: function(data) {
+                        if (data.state === 'success') {
+                            layer.msg(data.message);
+                            setTimeout(function() {
+                                    parent.layer.closeAll();
+                            }, 1000);
+                        }
+                    }
+                });
+                
+            });
+
+            $("#refuse").on('click', function(){
+                layer.prompt({ title: '输入拒绝原因，并确认', formType: 1 }, function (pass, index) {
+                    $.ajax({
+                        url: '/RecordTrancation/RecordOperation/RefuseExpiredFileChange',
+                        type: 'post',
+                        data: { "reason": pass, "recordId": $("#recordId").val() },
+                        success: function(data) {
+                            if (data.state === 'success') {
+                                layer.msg(data.message);
+                                setTimeout(function() {
+                                    parent.layer.closeAll();
+
+                                    },
+                                1000);
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

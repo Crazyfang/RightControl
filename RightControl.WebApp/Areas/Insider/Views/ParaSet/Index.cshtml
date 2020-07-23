@@ -1,0 +1,217 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">规则名称：</label>
+                <div class="layui-input-inline" style="width:400px;">
+                    <input name="R_Name" id="R_Name" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-input-inline">
+                    @Html.SearchBtnHtml()
+                    @Html.ResetBtnHtml()
+                </div>
+                <div style="float:right;">
+                    @Html.TopToolBarHtml(ViewData["ActionFormRightTop"])
+                </div>
+                </div>
+</form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+    layui.use(['jquery', 'table', 'common', 'form', 'layer'], function () {
+            var table = layui.table,
+                form = layui.form,
+                common = layui.common,
+                layer = layui.layer;
+			//表格
+			table.render({
+			    id: 'defaultReload'
+               , elem: '#defaultTable'
+               , height: 'full-112' //高度最大化减去差值
+               , url: '/Insider/ParaSet/List' //数据接口
+               , page: true //开启分页
+               , cols: [[ //表头
+                   {
+                       field: 'btn',
+                       width: 50,
+                       align: 'center',
+                       templet: function (d) {
+                           return '<a style="width: 100%; height: 100%;cursor: pointer;" lay-event="addRowTable">+</a>'
+                       }
+                   }
+                   , { field: 'M_Name', title: '模块名称', width: 200 }
+                   , { field: 'R_No', title: '规则编号', width: 100 }
+                   , { field: 'R_Name', title: '规则名称'}
+                   , { field: '', title: '操作', toolbar: "#bar", width: 300 }
+                ]]
+                , done: function (res, curr, count) {
+                    if (res.count === 0 && $("#R_Name").val()) {
+                        layer.alert('未找到查询结果!');
+                    }
+                }
+                , parseData: function (res) { //将原始数据解析成 table 组件所规定的数据
+                    return {
+                        "code": res.code, //解析接口状态
+                        "count": res.count, //解析数据长度
+                        "data": JSON.parse(res.data)  //解析数据列表
+                    };
+                }
+            });
+			var $ = layui.$, active = {
+			    reload: function () {
+			        //执行重载
+			        table.reload('defaultReload', {
+			            page: {
+			                curr: 1 //重新从第 1 页开始
+			            }
+                      , where: urlToJson($("#formSearch").serialize())
+			        });
+			    }
+			};
+			//服务器排序
+			table.on('sort(defaultruv)', function (obj) {
+			    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+			    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+			    table.reload('defaultReload', {
+			        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                  , where: { //请求参数
+                      field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                  }
+			    });
+			});
+			$('#btnSearch').on('click', function () {
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+			});
+			//add
+			$('#btnAdd').on('click', function () {
+			    common.openTop({
+                    title: '操作添加', w: '500px', h: '400px', content: '/Insider/ParaSet/Add'
+			    });
+            });
+
+			//监听工具条
+        table.on('tool(defaultruv)', function (obj) {
+                var data = obj.data;    //获得当前行数据
+                var layEvent = obj.event;   //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+                var $this = $(this);
+                var tr = $this.parents('tr');
+                var trIndex = tr.data('index');
+            
+			    if (obj.event === 'detail') {
+			        common.openTop({
+                        detail: true,
+                        title: '操作详情', w: '600px', h: '400px', content: '/Insider/ParaSet/Detail/' + data.R_No, clickOK: function (index) {
+			                common.close(index);
+			            }
+			        });
+			    } else if (obj.event === 'del') {
+			        layer.confirm('确定要删除吗？', function (index) {
+			            $.ajax({
+                            url: "/Insider/ParaSet/Delete",
+                            type: "POST",
+                            data: { "Id": data.R_No },
+			                dataType: "json",
+                            success: function (data) {
+			                    if (data.state == "success") {
+			                        obj.del();//删除这一行
+			                        layer.close(index); //关闭弹框
+			                        common.msgSuccess("删除成功");
+			                    } else {
+			                        common.msgError("删除失败");
+			                    }
+			                }
+			            });
+			        });
+			    } else if (obj.event === 'edit') {
+			        common.openTop({
+                        title: '操作编辑', w: '500px', h: '400px', content: '/Insider/ParaSet/Edit/' + data.R_No
+			        });
+                } else if (layEvent === 'addRowTable') {
+                // 外围的table的id + tableIn_ + 当前的tr的data-index
+                $(this).attr('lay-event', 'fold').html('-');
+                var tableId = 'defaultTable_tableIn_' + trIndex;
+                var _html = [
+                    '<tr class="table-item">',
+                    '<td colspan="' + tr.find('td').length + '" style="padding: 6px 12px;">',
+                    '<table id="' + tableId + '" lay-filter="tablein"></table>',
+                    '</td>',
+                    '</tr>'
+                ];
+                tr.after(_html.join('\n'));
+                // 渲染table
+                table.render({
+                    elem: '#' + tableId,
+                    data: data.friend || [],
+                    cols: [[
+                        {
+                            field: 'btn',
+                            width: 90,
+                            align: 'center',
+                            templet: function (d) {
+                                return '<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon iconfont icon-guanbi"></i>删除</a>'
+                            }
+                        },
+                        { field: 'P_No', title: '参数编号' },
+                        { field: 'P_Name', title: '参数名称', edit: true },
+                        { field: 'P_Type', title: '参数类型', edit: true},
+                        { field: 'P_Max', title: '参数最大值', edit: true},
+                        { field: 'P_Min', title: '参数最小值', edit: true }
+                    ]],
+                });
+                } else if (layEvent === 'fold') {
+                    $(this).attr('lay-event', 'addRowTable').html('+');
+                    tr.next().remove();
+                } else if (obj.event === 'add') {
+                    common.openTop({
+                        title: '操作添加', w: '500px', h: '400px', content: '/Insider/ParaSet/ParaAdd/' + data.R_No
+                    });
+            } 
+        });
+
+        table.on('edit(tablein)', function (obj) {
+            $.ajax({
+                url: "/Insider/ParaSet/ParaEdit",
+                type: "POST",
+                data: obj.data,
+                dataType: "json",
+                success: function (data) {
+                    layer.msg('编辑成功！', {
+                        icon: 1
+                    });
+                }
+            });
+        });
+
+        table.on('tool(tablein)', function (obj) {
+            if (obj.event === 'del') {
+                $.ajax({
+                    url: "/Insider/ParaSet/ParaDel",
+                    type: "POST",
+                    data: { "Id": obj.data.P_No },
+                    dataType: "json",
+                    success: function (data) {
+                        obj.del();//删除这一行
+                        layer.msg('删除成功！', {
+                            icon: 1
+                        });
+                    }
+                });
+            }
+        });
+	});
+</script>
+

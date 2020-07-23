@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Loan";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">数据时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="DATA_DATE" id="DATA_DATE">
+                </div>
+                @Html.SearchBtnHtml()
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#DATA_DATE', //指定元素
+            });
+
+        });
+
+		layui.use(['table', 'common', 'form', 'layer'], function () {
+            var table = layui.table,
+                form = layui.form,
+                common = layui.common,
+                layer = layui.layer;
+			//表格
+			table.render({
+			    id: 'defaultReload'
+               , elem: '#defaultTable'
+               , height: 'full-112' //高度最大化减去差值
+               , url: '/PfLender/LenderList/GetLenderListLoan' //数据接口
+               , page: true //开启分页
+                , cols: [[ //表头
+                    { field: 'DATA_DATE', title: '数据时间', templet: '<div>{{layui.util.toDateString(d.DATA_DATE, "yyyy-MM-dd") }}</div>', width: 110, fixed: 'left' }
+                    , { field: 'CUST_CSNO', title: '客户内码', fixed: 'left', width: 130 }
+                    , { field: 'CUST_NM', title: '客户名称', fixed: 'left', width: 300 }
+                    , { field: 'CUST_ADDR', title: '客户联系地址', width: 320 }
+                    , { field: 'CLASSIFY', title: '行业分类', width: 110 }
+                    , { field: 'CRE_QUOTA2', title: '授信额度', width: 110 }
+                    , { field: 'ORG_NM', title: '机构名称', width: 280 }
+                    , { field: 'LN_TLR', title: '经办客户经理', width: 130 }
+                    , { field: 'PRD_NM', title: '产品名称', width: 250 }
+                    , { field: 'ACCOUNT_NO', title: '贷款账号', width: 200 }
+                    , { field: 'LOAN_USE', title: '贷款用途', width: 200 }
+                    , { field: 'LOAN_TYPE', title: '贷款类型', width: 110 }
+                    , { field: 'CONTRACT_NO', title: '贷款合同号', width: 180 }
+                    , { field: 'IOU_NUM', title: '借据序号', width: 100 }
+                    , { field: 'GUA_TYPE', title: '担保方式', width: 110 }
+                    , { field: 'LOAN_TERM', title: '贷款期限', width: 110 }
+                    , { field: 'CONTRACT_VAL', title: '贷款合同金额', width: 150 }
+                    , { field: 'CURR_VAL', title: '贷款余额', width: 110 }
+                    , { field: 'PAYOUT_VAL', title: '发放金额', width: 110 }
+                    , { field: 'PAYOUT_DT', title: '贷款发放日期', templet: '<div>{{layui.util.toDateString(d.PAYOUT_DT, "yyyy-MM-dd") }}</div>', width: 120 }
+                    , { field: 'MATRT_DT', title: '贷款结束日期', templet: '<div>{{layui.util.toDateString(d.MATRT_DT, "yyyy-MM-dd") }}</div>', width: 120 }
+                ]]
+            });
+			var $ = layui.$, active = {
+			    reload: function () {
+			        //执行重载
+			        table.reload('defaultReload', {
+			            page: {
+			                curr: 1 //重新从第 1 页开始
+			            }
+                      , where: urlToJson($("#formSearch").serialize())
+			        });
+			    }
+			};
+			//服务器排序
+			table.on('sort(defaultruv)', function (obj) {
+			    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+			    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+			    table.reload('defaultReload', {
+			        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                  , where: { //请求参数
+                      field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                  }
+			    });
+            });
+            $('#btnSearch').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+</script>
+

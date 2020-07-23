@@ -1,0 +1,55 @@
+﻿@model RightControl.Model.Insider.Parameter
+@{
+    ViewBag.Title = "ParaAdd";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutForm.cshtml";
+}
+
+<div class="layui-col-md12 top10">
+    <form class="layui-form" id="form" action="/Insider/ParaSet/ParaAdd" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">规则名称</label>
+            <div class="layui-input-block">
+                @Html.DropDownList("R_No", ViewBag.RuleNo as IEnumerable<SelectListItem>, null, new Dictionary<string, object> { { "lay-verify", "required" } })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数名称</label>
+            <div class="layui-input-inline">
+                <input name="P_Name" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数类型</label>
+            <div class="layui-input-inline">
+                <input name="P_Type" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数最大值</label>
+            <div class="layui-input-inline">
+                <input name="P_Max" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">参数最小值</label>
+            <div class="layui-input-inline">
+                <input name="P_Min" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submitForm">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['jquery', 'form'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        submitForm(form, "添加成功"); //监听提交
+    });
+</script>
+

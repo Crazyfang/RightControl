@@ -1,0 +1,243 @@
+﻿@model RightControl.Model.UserModel
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutForm.cshtml";
+}
+@section styles{ 
+    <link rel="stylesheet" href="~/Areas/Admin/plugins/layui/css/eleTree.css">
+    <style>
+        .nav{
+            position: fixed;
+            right: 25px;
+            top: calc(50% - 90px);
+            border: 1px solid #d2d2d2;
+            background-color:#fff;
+            z-index: 100000;
+        }
+        .nav-title{
+            background-color: #F8F8F8; 
+            padding:0 80px 0 20px;
+            margin: 0px;
+            height: 42px;
+            line-height: 42px;
+            border-bottom: 1px solid #eee;
+        }
+        .nav ul{
+            padding:10px 0px 10px 35px;
+        }
+        .nav ul li{
+            padding: 5px 0px;
+            list-style-type: decimal;
+        }
+        .nav ul a{
+            color: #333;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .eleTree{
+            width: 350px;
+            height: auto;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            display: inline-block;
+        }
+        .inp{
+            width: 100%;
+            line-height: 30px;
+        }
+        .slideTest{
+            margin: 0 10px;
+        }
+        .met{
+            display: none;
+            width: 100%;
+        }
+        .blue{
+            color: #01AAED;
+        }
+        a:hover{
+            color: #01AAED;
+        }
+        .ele{
+            max-height: 150px;
+            width: 100%;
+            display: none;
+            position: absolute;
+            top:100%;
+            background-color: #fff;
+            z-index: 100;
+        }
+    </style>
+}
+<div class="layui-col-md12 top10">
+    <form class="layui-form" id="form" action="/Permissions/User/Add" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名称</label>
+            <div class="layui-input-inline">
+                <input name="UserName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">真实名称</label>
+            <div class="layui-input-inline">
+                <input name="RealName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+            <div class="layui-form-mid layui-word-aux">姓名 如：张三</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所属部门</label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="DepartmentId" class="layui-input">
+                <input type="text" name="DepartmentName" required lay-verify="required" placeholder="请选择部门" readonly autocomplete="off" class="layui-input">
+                <div class="eleTree ele" lay-filter="departmentdata"></div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-inline">
+                @Html.DropDownList("RoleId", null, "-请选择角色-", new Dictionary<string, object> { { "lay-verify", "required" }, { "lay-vertype", "tips" }, { "class", "layui-input" } })
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态</label>
+            <div class="layui-input-inline">
+                @Html.StatusRadioHtml(true)
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submitForm">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    layui.use(['jquery','table','eleTree','form', 'code', 'slider'], function () {
+        var $ = layui.jquery;
+        var eleTree = layui.eleTree;
+        var table = layui.table;
+        var code = layui.code;
+        var form = layui.form;
+        var slider = layui.slider;
+        submitForm(form, "添加成功"); //监听提交
+
+        //var data=[
+        //        {
+        //            "id": 1,
+        //            "label": "安徽省",
+        //            "children": [
+        //                {
+        //                    "id": 2,
+        //                    "label": "马鞍山市",
+        //                    "disabled": true,
+        //                    "children": [
+        //                        {
+        //                            "id": 3,
+        //                            "label": "和县"
+        //                        },
+        //                        {
+        //                            "id": 4,
+        //                            "label": "花山区",
+        //                            "checked": true
+        //                        }
+        //                    ]
+        //                },
+        //                {
+        //                    "id": 22,
+        //                    "label": "淮北市",
+        //                    "children": [
+        //                        {
+        //                            "id": 23,
+        //                            "label": "濉溪县"
+        //                        },
+        //                        {
+        //                            "id": 24,
+        //                            "label": "相山区",
+        //                            "checked": true
+        //                        }
+        //                    ]
+        //                }
+        //            ]
+        //        },
+        //        {
+        //            "id": 5,
+        //            "label": "河南省",
+        //            "children": [
+        //                {
+        //                    "id": 6,
+        //                    "label": "郑州市"
+        //                }
+        //            ]
+        //        },
+        //        {
+        //            "id": 10,
+        //            "label": "江苏省",
+        //            "children": [
+        //                {
+        //                    "id": 11,
+        //                    "label": "苏州市"
+        //                },
+        //                {
+        //                    "id": 12,
+        //                    "label": "南京市",
+        //                    "children": [
+        //                        {
+        //                            "id": 13,
+        //                            "label": "姑苏区"
+        //                        },
+        //                        {
+        //                            "id": 14,
+        //                            "label": "相城区"
+        //                        }
+        //                    ]
+        //                }
+        //            ]
+        //        }
+        //    ];
+
+        var el;
+        $.ajax({
+            url: '/Permissions/Department/GetAllDepartment',
+            type: 'post',
+            dataType:'json',
+            success: function (data) {
+                //console.log(typeof(data));
+                el = eleTree.render({
+                    elem: '.ele',
+                    data: data,
+                    defaultExpandAll: true,
+                    expandOnClickNode: false,
+                    highlightCurrent: true
+                });
+            }
+        });
+        $("[name='DepartmentName']").on("click",
+            function(e) {
+                e.stopPropagation();
+                if (!el) {
+                    //el = eleTree.render({
+                    //    elem: '.ele',
+                    //    data: data,
+                    //    defaultExpandAll: true,
+                    //    expandOnClickNode: false,
+                    //    highlightCurrent: true
+                    //});
+                }
+                $(".ele").toggle();
+            });
+        eleTree.on("nodeClick(departmentdata)",
+            function(d) {
+                $("[name='DepartmentName']").val(d.data.currentData.label);
+                $("[name='DepartmentId']").val(d.data.currentData.id);
+                $(".ele").hide();
+            });
+        $(document).on("click",
+            function() {
+                $(".ele").hide();
+            });
+    });
+</script>
+

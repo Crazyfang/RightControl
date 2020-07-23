@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">操作人：</label>
+                <div class="layui-input-inline">
+                    <input name="OperaterName" id="OperaterName" lay-verify="" autocomplete="off" class="layui-input">
+                </div>
+                @Html.SearchBtnHtml()
+                @Html.ResetBtnHtml()
+                <div style="float:right;">
+                    @Html.TopToolBarHtml(ViewData["ActionFormRightTop"])
+                </div>
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+<script>
+		layui.use(['table', 'common', 'form', 'layer'], function () {
+            var table = layui.table,
+                form = layui.form,
+                common = layui.common,
+                layer = layui.layer;
+			//表格
+			table.render({
+			    id: 'defaultReload'
+               , elem: '#defaultTable'
+               , height: 'full-112' //高度最大化减去差值
+               , url: '/InforSearch/BlackList/GetTheOperateLog' //数据接口
+               , page: true //开启分页
+               , cols: [[ //表头
+                   { checkbox: true, fixed: true },
+                    { field: 'Id', title: 'Id', width: 80, fixed: 'left' }
+                   , { field: 'OperaterName', title: '操作人' }
+                   , {field: 'DepartmentName', title: '所属部门'}
+                , { field: 'CreateOn', title: '操作时间', templet: '<div>{{showDate(d.CreateOn)}}</div>' }
+                , { field: 'OperateMsg', title: '操作日志' }
+                ]]
+            });
+			var $ = layui.$, active = {
+			    reload: function () {
+			        //执行重载
+			        table.reload('defaultReload', {
+			            page: {
+			                curr: 1 //重新从第 1 页开始
+			            }
+                      , where: urlToJson($("#formSearch").serialize())
+			        });
+			    }
+			};
+			//服务器排序
+			table.on('sort(defaultruv)', function (obj) {
+			    //尽管我们的 table 自带排序功能，但并没有请求服务端。
+			    //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+			    table.reload('defaultReload', {
+			        initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                  , where: { //请求参数
+                      field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                  }
+			    });
+			});
+			$('#btnSearch').on('click', function () {
+			    var type = $(this).data('type');
+			    active[type] ? active[type].call(this) : '';
+			});
+        });
+</script>
+

@@ -1,0 +1,234 @@
+﻿@{
+    ViewBag.Title = "档案关系转让";
+}
+<div id="app">
+    <section>
+        <el-row style="margin-top: 20px">
+            <el-col :span="4" :offset="10">
+                <span>档案关系转让</span>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 20px">
+            <el-col :span="12" :offset="6">
+                <el-col :span="4">
+                    <span>选择部门</span>
+                </el-col>
+                <el-col :span="8">
+                    <el-select v-model="department" placeholder="选择部门" v-on:change="departmentChange">
+                        <el-option v-for="depart in departmentList" :label="depart.value" :value="depart.id"></el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4">
+                    <span>选择转出人</span>
+                </el-col>
+                <el-col :span="8">
+                    <el-select v-model="recordTransfer" placeholder="选择转出者" v-on:change="userChange">
+                        <el-option v-for="user in userList" :label="user.value" :value="user.id"></el-option>
+                    </el-select>
+                </el-col>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 20px">
+            <el-col :span="12" :offset="6">
+                <el-col :span="12">
+                    <el-radio-group v-model="transferType" v-on:change="changeTransferType">
+                        <el-radio label="1">全部转让</el-radio>
+                        <el-radio label="2">部分转让</el-radio>
+                    </el-radio-group>
+                </el-col>
+                <el-col :span="12">
+                    <el-button v-if="transferType === '2' || otherReciever.length === 0" v-on:click="addReciever">增添接收者</el-button>
+                </el-col>
+            </el-col>
+        </el-row>
+        <el-row v-for="(item, index) in otherReciever" :key="item.id" style="margin-top: 20px">
+            <el-col :span="12" :offset="6">
+                <el-col :span="4">
+                    <span>选择接收者</span>
+                </el-col>
+                <el-col :span="6">
+                    <el-select v-model="item.value" placeholder="选择接收者">
+                        <el-option v-for="user in userList" :label="user.value" :value="user.id"></el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4">
+                    <span>选择接收档案</span>
+                </el-col>
+                <el-col :span="6">
+                    <el-select v-model="item.selectRecord" multiple v-on:change="initOption" collapse-tags>
+                        <el-option v-for="record in optionSelect[index]" :key="record.value" :label="record.label" :value="record.value">
+                            <span style="float:left">{{ record.label }}</span>
+                            <span style="float:right;color:#8492a6;font-size:13px">{{ record.value }}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col :span="4">
+                    <el-button type="primary" v-on:click="delReciever(item.id, index)">
+                        删除
+                    </el-button>
+                </el-col>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 20px">
+            <el-col :span="12" :offset="6">
+                <el-button type="primary" :loading="buttonLoaing" v-on:click="clickSubmit">{{ buttonString }}</el-button>
+            </el-col>
+        </el-row>
+    </section>
+</div>
+
+<script src="~/Areas/Admin/Content/js/vue.js"></script>
+<script src="~/Areas/Admin/Content/js/axios.min.js"></script>
+<script src="~/Areas/Admin/Content/js/elementui.js"></script>
+<script src="~/Areas/Admin/Content/js/qs.min.js"></script>
+<link rel="stylesheet" href="~/Areas/Admin/Content/css/elementui.css" />
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            department: '',
+            departmentList: [],
+            userList: [],
+            recordTransfer: '',
+            otherReciever: [],
+            optionSelect: [],
+            transferType: '',
+            buttonString: '点击提交',
+            buttonLoaing: false,
+            recordList: [],
+            num: 1
+        },
+        mounted () {
+            axios
+                .get('/Permissions/Department/GetSelectDepartment')
+                .then(response => {
+                    this.departmentList = JSON.parse(response.data)
+                    console.log(JSON.parse(response.data))
+                })
+                .catch(error => { console.log(error) })
+        },
+        methods: {
+            clickSubmit: function () {
+                this.buttonString = '正在提交'
+                this.buttonLoaing = true
+                let val = new FormData()
+                val.append('recordOwner', this.recordTransfer)
+                val.append('otherReciever', JSON.stringify(this.otherReciever))
+                //const val = window.Qs.stringify({
+                //    otherReciever: JSON.stringify(this.otherReciever),
+                //    recordOwner: this.recordTransfer
+                //})
+                axios({
+                    method: 'post',
+                    url: '/RecordTrancation/RecordOperation/RecordBelongChange',
+                    data: val,
+                    headers: {'Content-type': 'application/x-www-form-urlencoded'}
+                }).then(response => {
+                        console.log(response)
+                        if (response.data.state === 'success') {
+                            this.$message({
+                                message: '变更成功',
+                                type: 'success'
+                            })
+
+                            this.department = ''
+                            this.userList = []
+                            this.recordTransfer = ''
+                            this.otherReciever = []
+                            this.optionSelect = []
+                            this.transferType = ''
+                            this.buttonString = '点击提交'
+                            this.buttonLoaing = false
+                            this.recordList = []
+                        }
+                        else {
+                            this.$message({
+                                message: '变更失败',
+                                type: 'error'
+                            })
+                            this.buttonString = '点击提交'
+                            this.buttonLoaing = false
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        this.buttonString = '点击提交'
+                        this.buttonLoaing = false
+                    })
+            },
+            userChange: function (value) {
+                axios
+                    .get('/RecordTrancation/RecordOperation/RecordBelongList', { params: { userCode: value }})
+                    .then(response => {
+                        this.recordList = response.data
+                    })
+                    .catch(error => { console.log(error) })
+            },
+            departmentChange: function () {
+                axios
+                    .post('/Permissions/User/UserBelonged', { departmentCode: this.department })
+                    .then(response => {
+                        this.userList = JSON.parse(response.data)
+                    })
+                    .catch(error => { console.log(error) })
+
+            },
+            changeTransferType: function (value) {
+                if (value === '1') {
+                    if (this.otherReciever.length > 1) {
+                        this.otherReciever.splice(1, this.otherReciever.length - 1)
+                        this.optionSelect.splice(1, this.optionSelect.length - 1)
+                    }
+                    if (this.otherReciever.length === 0) {
+                        this.addReciever()
+                    }
+                    
+                    this.otherReciever[0].selectRecord = this.recordList.reduce((previousValue, cur) => [...previousValue, cur.value], [])
+                }
+            },
+            addReciever: function () {
+                if (this.transferType) {
+                    this.otherReciever.forEach(
+                        (item, index, arr) => {
+                            if (this.num <= item.id) {
+                                this.num = item.id + 1
+                            }
+                        }
+                    )
+                    this.otherReciever.push({ id: this.num, value: '', selectRecord: [] })
+                    if (this.transferType === '1' && this.otherReciever.length === 1) {
+                        this.otherReciever[0].selectRecord = this.recordList.reduce((previousValue, cur) => [...previousValue, cur.value], [])
+                    }
+                    this.initOption()
+                } else {
+                    this.$message({
+                        message: '请选择转让类型',
+                        type: 'error'
+                    })
+                }
+            },
+            delReciever: function (id, index) {
+                this.otherReciever = this.otherReciever.filter(i => i.id !== id)
+                this.optionSelect.splice(index, 1)
+                this.initOption()
+            },
+            initOption() {
+                // 首先遍历所有已经选中的值
+                this.otherReciever.forEach((_, i) => {
+                    // 假设遍历到第一个， i = 0
+                    const totalOtherChoose = this.otherReciever
+                        .filter((_, idx) => idx !== i) // 过滤出除了第一项的剩余的数组集合
+                        .reduce((total, cur) => [...total, ...cur.selectRecord], [])
+                    // 用reduce 将他们的值集合起来，例如第二项选了黄金糕，第三项选了双皮奶，那么值就是
+                    // 把未选中的所有下拉选项重新复制给 第一项
+                    this.optionSelect[i] = this.recordList.filter(
+                        // 先通过new Set().has()方法判断是否存在
+                        // 如果有了，则返回false，这样就过滤掉
+                        // 那么他剩下的就是所有未选中的
+                        x => !new Set(totalOtherChoose).has(x.value)
+                    )
+                })
+            }
+        }
+    })
+</script>

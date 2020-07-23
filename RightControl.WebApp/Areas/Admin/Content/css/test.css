@@ -1,0 +1,21 @@
+﻿@media print {
+    @page{margin: 0;}
+    body{ margin-top: 200px;margin-left: 1cm;margin-right: 1cm}
+
+    td {
+        text-align: center;
+        color: black;
+        border: solid #000 !important;
+        border-width: 2px !important
+    }
+
+    table {
+        table-layout: fixed;
+        font-size: 200pt;
+        border: solid #000 !important;
+        border-width: 2px !important
+    }
+    .title {
+        width: 20%
+    }
+}

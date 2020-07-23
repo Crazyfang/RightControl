@@ -1,0 +1,529 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+<link href="~/Areas/Admin/Content/css/RecordSetting.css" rel="stylesheet">
+<link href="~/Areas/Admin/plugins/app/formSelects-v4.css" rel="stylesheet">
+<div style="display: none" id="fileTypeList">
+    <div class="layui-row">
+        <div class="layui-col-md3 layui-col-md-offset1">
+            文件类型
+        </div>
+        <div class="layui-col-md8">
+            <select name="fileType" xm-select="selectId" xm-select-max="3" xm-select-search-type="title" xm-select-search>
+
+            </select>
+        </div>
+    </div>
+</div>
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">档案类别信息编辑</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md4 layui-col-md-offset2">
+                            <div style="float: left" id="div_record_type">
+                                <label class="label-block">
+                                    档案类别
+                                </label>
+                                <div class="layui-btn-group" id="btn_group_type">
+                                    <button type="button" class="layui-btn">增加</button>
+                                    <button type="button" class="layui-btn">编辑</button>
+                                    <button type="button" class="layui-btn">删除</button>
+                                </div>
+                                <ul class="display_ul">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4 layui-col-md-offset2">
+                            <div style="float: left" id="div_file_type_bel">
+                                <label class="label-block">
+                                    文件类别
+                                </label>
+                                <div class="layui-btn-group" id="btn_group_infortype">
+                                    <button type="button" class="layui-btn">增加</button>
+                                    <button type="button" class="layui-btn">删除</button>
+                                </div>
+                                <ul class="display_ul">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header">文件类别信息编辑</div>
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md4 layui-col-md-offset2">
+                            <div style="float: left" id="div_file_type">
+                                <label class="label-block">
+                                    文件类别
+                                </label>
+                                <div class="layui-btn-group" id="btn_group_infortype_1">
+                                    <button type="button" class="layui-btn">增加</button>
+                                    <button type="button" class="layui-btn">编辑</button>
+                                    <button type="button" class="layui-btn">删除</button>
+                                </div>
+                                <ul class="display_ul">
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="layui-col-md4 layui-col-md-offset2">
+                            <div style="float: left" id="div_file">
+                                <label class="label-block">
+                                    文件名目
+                                </label>
+                                <div class="layui-btn-group" id="btn_group_list">
+                                    <button type="button" class="layui-btn">增加</button>
+                                    <button type="button" class="layui-btn">编辑</button>
+                                    <button type="button" class="layui-btn">删除</button>
+                                </div>
+                                <ul class="display_ul">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.use(['jquery', 'layer', 'formSelects', 'element'], function () {
+        var $ = layui.jquery, layer = layui.layer, formSelects = layui.formSelects, element = layui.element;
+
+        //获取档案类别信息填充列表
+        $.ajax({
+            url: '/RecordSetting/SettingEdit/ReturnRecordType',
+            type: 'post',
+            async: false,
+            success: function(data) {
+                if (data.state) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        $('#div_record_type').children('ul')
+                            .append('<li name="' + data.data[i].Id + '">'+ data.data[i].SelectTypeNameString +'</li>');
+                    }
+                } else {
+                    layer.msg('请求数据失败，请重试!');
+                }
+            }
+        });
+
+        //获取文件类别信息填充列表
+        $.ajax({
+            url: '/RecordSetting/SettingEdit/ReturnFileType',
+            type: 'post',
+            async: false,
+            success: function(data) {
+                if (data.state) {
+                    for (var i = 0; i < data.data.length; i++) {
+                        $('#div_file_type').children('ul')
+                            .append('<li name="' + data.data[i].ID + '">'+ data.data[i].RecordTypeName +'</li>');
+                    }
+                } else {
+                    layer.msg('请求数据失败，请重试!');
+                }
+            }
+        });
+
+        //列表选项选中效果设置
+        function selectLiFunction() {
+            $("ul[class='display_ul'] li").click(function () {
+                $(this).parent().children().removeClass('SelectedClass');
+                $(this).toggleClass('SelectedClass');
+            });
+        }
+
+        selectLiFunction();
+
+        function recordTypeClick() {
+            //档案类别项目选中填充档案类别所拥有的文件类别
+            $("#div_record_type ul[class='display_ul'] li").click(function () {
+                $('#div_file_type_bel ul').empty();
+                $.ajax({
+                    url: '/RecordSetting/SettingEdit/ReturnRecordTypeOfFileType',
+                    data: { 'recordTypeId': $(this).attr('name') },
+                    success: function(data) {
+                        if (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                $('#div_file_type_bel').children('ul')
+                                    .append('<li name="' + data[i].Id + '">' + data[i].RecordFileTypeName + '</li>');
+                            }
+                            $('#div_file_type_bel ul li').click(function() {
+                                $(this).parent().children().removeClass('SelectedClass');
+                                $(this).toggleClass('SelectedClass');
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        function fileTypeClick() {
+            //文件类别项目选中填充文件类别所用的文件
+            $("#div_file_type ul[class='display_ul'] li").click(function () {
+                $('#div_file ul').empty();
+                $.ajax({
+                    url: '/RecordSetting/SettingEdit/ReturnFileTypeOfFile',
+                    data: { 'fileTypeId': $(this).attr('name') },
+                    success: function(data) {
+                        if (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                $('#div_file').children('ul')
+                                    .append('<li name="' + data[i].FileID + '">' + data[i].FileName + '</li>');
+                            }
+                            $('#div_file ul li').click(function() {
+                                $(this).parent().children().removeClass('SelectedClass');
+                                $(this).toggleClass('SelectedClass');
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        recordTypeClick();
+        fileTypeClick();
+
+        //档案类别按钮组点击事件
+        $('#btn_group_type button').click(function() {
+            var button = $(this);
+            if ($(this).text() === '增加') {
+                layer.prompt({ title: '输入档案类别名称', formType: 2 }, function (text, index) {
+                    $.ajax({
+                        url: '/RecordSetting/SettingEdit/InsertRecordType',
+                        data: { 'recordTypeName': text },
+                        success: function(data) {
+                            if (data.state) {
+                                layer.close(index);
+                                layer.msg('您添加了:' + text);
+                                button.parent().nextAll("ul").append('<li name="' + data.Id + '">' + text + '</li>');
+
+                                $('#div_record_type ul li').click(function() {
+                                    $(this).parent().children().removeClass('SelectedClass');
+                                    $(this).toggleClass('SelectedClass');
+                                });
+
+                                recordTypeClick();
+                            } else {
+                                layer.close(index);
+                                layer.msg('添加失败!' + data.message);
+                            }
+                        }
+                    });
+
+                    $('#div_record_type ul li').click(function() {
+                        $(this).parent().children().removeClass('SelectedClass');
+                        $(this).toggleClass('SelectedClass');
+                    });
+                });
+            }
+            else if ($(this).text() === '编辑') {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    layer.prompt({ title: '输入档案类别名称', formType: 2 }, function (text, index) {
+                        var id = button.parent().nextAll("ul").children('.SelectedClass').attr('name');
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/EditRecordType',
+                            data: { 'SelectTypeNameString': text, 'Id': id },
+                            type: 'post',
+                            success: function(data) {
+                                if (data.state) {
+                                    layer.close(index);
+                                    layer.msg('您编辑了:' + text);
+                                    button.parent().nextAll("ul").children('.SelectedClass').text(text);
+                                } else {
+                                    layer.close(index);
+                                    layer.msg('编辑失败!' + data.msg);
+                                }
+                            }
+                        });
+                    });
+                }
+                else {
+                    layer.alert('请选择需要编辑的节点!');
+                }
+            }
+            else {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    var Id = $(this).parent().next().children('.SelectedClass').attr('name');
+                    layer.confirm('您确定删除当前节点吗？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/DeleteRecordType',
+                            data: { 'Id': Id },
+                            success: function (data) {
+                                if (data.state) {
+                                    button.parent().next().children(".SelectedClass").remove();
+                                    layer.msg("删除成功!", { time: 2000 });
+                                } else {
+                                    layer.msg(data.msg);
+                                }
+                            }
+                        });
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+                else {
+                    layer.alert('请选择需要删除的节点!');
+                }
+            }
+        });
+
+        //档案类别所属文件类别按钮组点击
+        $("#btn_group_infortype button").click(function () {
+            var button = $(this);
+            if ($(this).text() === '增加') {
+                if ($('#div_record_type').children('ul').children('.SelectedClass').length) {
+                    var id = $('#div_record_type').children('ul').children('.SelectedClass').attr('name');
+                    layer.open({
+                        type: 1,
+                        skin: 'layui-layer-rim',
+                        area: ['500px', '360px'],
+                        content: $('#fileTypeList'),
+                        title: '选择文件类型',
+                        btn: ['确定', '取消'],
+                        yes: function(index, layero) {
+                            $.ajax({
+                                url: '/RecordSetting/SettingEdit/InsertFileTypeOfRt',
+                                data: { 'Tags': formSelects.value("selectId", "val"), 'id': id },
+                                success: function(data) {
+                                    if (data.state) {
+                                        layer.msg('添加成功!');
+                                        layer.close(index);
+                                        $('#div_record_type').children('ul').children('.SelectedClass').click();
+                                    } else {
+                                        layer.close(index);
+                                        layer.msg('添加失败!');
+                                    }
+                                }
+                            });
+                        },
+                        btn2: function(index, layero) {
+                            layer.close(index);
+                        },
+                        success: function (layero, index) {
+                            $.ajax({
+                                url: '/RecordSetting/SettingEdit/FileTypeListOfUnselected',
+                                data: { 'Id': id },
+                                success: function(data) {
+                                    formSelects.data('selectId',
+                                        'local',
+                                        {
+                                            arr: data
+                                        });
+                                }
+                            });
+                            formSelects.maxTips('selectId',
+                                function(id, vals, val, max) {
+                                    layer.msg("选超了...");
+                                });
+                        }
+                    });
+                } else {
+                    layer.msg('请先选中档案类型!');
+                }
+            }
+            else {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    //var recordTypeId = $('#div_record_type').children('ul').children('.SelectedClass').attr('name');
+                    var fileTypeId = button.parent().nextAll('ul').children('.SelectedClass').attr('name');
+                    layer.confirm('您确定删除当前节点吗？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                            $.ajax({
+                                url: '/RecordSetting/SettingEdit/DeleteFileTypeOfRt',
+                                data: { 'deleteId': fileTypeId},
+                                type: 'post',
+                                success: function(data) {
+                                    if (data.state === 'success') {
+                                        button.parent().next().children(".SelectedClass").remove();
+                                        layer.msg("删除成功!", { time: 2000 });
+                                    } else {
+                                        layer.msg('删除失败!');
+                                    }
+                                }
+                        });
+                        
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+                else {
+                    layer.alert('请选择需要删除的节点!');
+                }
+            }
+        });
+
+        //文件类别按钮组点击事件
+        $("#btn_group_infortype_1 button").click(function () {
+            var button = $(this);
+            var id = $(this).parent().next().children('.SelectedClass').attr('name');
+            if ($(this).text() === '增加') {
+                layer.prompt({ title: '输入文件类别名称', formType: 2 }, function (text, index) {
+                    $.ajax({
+                        url: '/RecordSetting/SettingEdit/InsertFileType',
+                        data: { 'fileTypeName': text },
+                        success: function(data) {
+                            if (data.state) {
+                                layer.close(index);
+                                layer.msg('您添加了:' + text);
+                                button.parent().nextAll("ul").append('<li name="' + data.Id + '">' + text + '</li>');
+
+                                $('#div_file_type ul li').click(function() {
+                                    $(this).parent().children().removeClass('SelectedClass');
+                                    $(this).toggleClass('SelectedClass');
+                                });
+
+                                fileTypeClick();
+                            } else {
+                                layer.close(index);
+                                layer.msg('添加失败!' + data.message);
+                            }
+                        }
+                    });
+                });
+            }
+            else if ($(this).text() === '编辑') {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    layer.prompt({ title: '输入文件类别名称', formType: 2 }, function (text, index) {
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/EditFileType',
+                            data: { 'id': id, 'fileTypeName': text },
+                            success: function(data) {
+                                if (data.state) {
+                                    layer.close(index);
+                                    button.parent().next().children(".SelectedClass").text(text);
+                                    layer.msg('修改成功!');
+                                } else {
+                                    layer.close(index);
+                                    layer.msg('修改失败!');
+                                }
+                            }
+                        });
+                    });
+                }
+                else {
+                    layer.alert('请选择需要编辑的节点!');
+                }
+            }
+            else {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    layer.confirm('您确定删除当前节点吗？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/DeleteFileType',
+                            data: { 'id': id },
+                            success: function(data) {
+                                if (data.state) {
+                                    layer.closeAll();
+                                    button.parent().next().children(".SelectedClass").remove();
+                                    layer.msg('删除成功!');
+                                } else {
+                                    layer.close(index);
+                                    layer.msg('删除失败!');
+                                }
+                            }
+                        });
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+                else {
+                    layer.alert('请选择需要删除的节点!');
+                }
+            }
+        });
+
+        //文件列表按钮点击事件
+        $("#btn_group_list button").click(function () {
+            var button = $(this);
+            var filetypeid = $('#div_file_type').children('ul').children('.SelectedClass').attr('name');
+            var fileid = button.parent().nextAll('ul').children('.SelectedClass').attr('name');
+            if ($(this).text() === '增加') {
+                if ($('#div_file_type').children('ul').children('.SelectedClass').length) {
+                    layer.prompt({ title: '输入文件名称', formType: 2 },
+                        function(text, index) {
+                            $.ajax({
+                                url: '/RecordSetting/SettingEdit/InsertFile',
+                                data: { 'fileTypeId': filetypeid, 'fileName': text },
+                                type: 'post',
+                                success: function(data) {
+                                    if (data.state === 'success') {
+                                        layer.close(index);
+                                        layer.msg('您添加了:' + text);
+                                        $('#div_file_type').children('ul').children('.SelectedClass').click();
+                                        //button.parent().nextAll("ul").append('<li name="' + data.Id + '">' + text + '</li>');
+                                    }
+                                }
+                            });
+
+                            $('#div_file ul li').click(function() {
+                                $(this).parent().children().removeClass('SelectedClass');
+                                $(this).toggleClass('SelectedClass');
+                            });
+                        });
+                } else {
+                    layer.msg('请选中文件类型!');
+                }
+                
+            }
+            else if ($(this).text() === '编辑') {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    layer.prompt({ title: '输入档案类别名称', formType: 2 }, function (text, index) {
+
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/EditFile',
+                            data: { 'fileId': fileid, 'fileName': text },
+                            type: 'post',
+                            success: function(data) {
+                                if (data.state === 'success') {
+                                    layer.close(index);
+                                    button.parent().nextAll("ul").children('.SelectedClass').text(text);
+                                    layer.msg('您修改了:' + text);
+                                } else {
+                                    layer.msg('修改失败!');
+                                }
+                            }
+                        });
+                    });
+                }
+                else {
+                    layer.alert('请选择需要编辑的节点!');
+                }
+            }
+            else {
+                if ($(this).parent().next().children('.SelectedClass').length) {
+                    layer.confirm('您确定删除当前节点吗？', {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $.ajax({
+                            url: '/RecordSetting/SettingEdit/DeleteFile',
+                            data: { 'fileId': fileid },
+                            type: 'post',
+                            success: function(data) {
+                                if (data.state === 'success') {
+                                    layer.closeAll();
+                                    button.parent().next().children(".SelectedClass").remove();
+                                    layer.msg("删除成功!", { time: 2000 });
+                                } else {
+                                    layer.msg('删除失败!');
+                                }
+                            }
+                        });
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+                else {
+                    layer.alert('请选择需要删除的节点!');
+                }
+            }
+        });
+    })
+</script>

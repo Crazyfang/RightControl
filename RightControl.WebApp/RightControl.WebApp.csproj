@@ -1,0 +1,1114 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{635643AA-388B-4305-91A8-BDBE2DE1837D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RightControl.WebApp</RootNamespace>
+    <AssemblyName>RightControl.WebApp</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Cells, Version=20.7.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Cells.20.7.0\lib\net40\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac">
+      <HintPath>..\packages\Autofac.4.0.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.9.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.7.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="FreeSql, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a33928e5d4a4b39c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSql.1.5.0\lib\net45\FreeSql.dll</HintPath>
+    </Reference>
+    <Reference Include="FreeSql.Provider.SqlServer, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d313b98af285bd88, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSql.Provider.SqlServer.1.5.0\lib\net451\FreeSql.Provider.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=3.1.5.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.3.1.5\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.SqlClient, Version=4.6.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.8.1\lib\net461\System.Data.SqlClient.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.4\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.4\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.4\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.4\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.4\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.4\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\Admin\Content\bootstrap-theme.css" />
+    <Content Include="Areas\Admin\Content\bootstrap-theme.min.css" />
+    <Content Include="Areas\Admin\Content\bootstrap.css" />
+    <Content Include="Areas\Admin\Content\bootstrap.min.css" />
+    <Content Include="Areas\Admin\Content\css\admin.css" />
+    <Content Include="Areas\Admin\Content\css\bootstrap.min.css" />
+    <Content Include="Areas\Admin\Content\css\content.min.css" />
+    <Content Include="Areas\Admin\Content\css\date.css" />
+    <Content Include="Areas\Admin\Content\css\elementui.css" />
+    <Content Include="Areas\Admin\Content\css\empty.css" />
+    <Content Include="Areas\Admin\Content\css\font-awesome.css" />
+    <Content Include="Areas\Admin\Content\css\global.css" />
+    <Content Include="Areas\Admin\Content\css\HandOverPrint.css" />
+    <Content Include="Areas\Admin\Content\css\login.css" />
+    <Content Include="Areas\Admin\Content\css\main.css" />
+    <Content Include="Areas\Admin\Content\css\RecordSetting.css" />
+    <Content Include="Areas\Admin\Content\css\test.css" />
+    <Content Include="Areas\Admin\Content\css\ztree\img\line_conn.png" />
+    <Content Include="Areas\Admin\Content\css\ztree\img\loading.gif" />
+    <Content Include="Areas\Admin\Content\css\ztree\img\metro.gif" />
+    <Content Include="Areas\Admin\Content\css\ztree\img\metro.png" />
+    <Content Include="Areas\Admin\Content\css\ztree\metroStyle.css" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.css" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.js" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.svg" />
+    <Content Include="Areas\Admin\Content\images\0.jpg" />
+    <Content Include="Areas\Admin\Content\images\ajax-loader.gif" />
+    <Content Include="Areas\Admin\Content\images\bg.jpg" />
+    <Content Include="Areas\Admin\Content\images\favicon.ico" />
+    <Content Include="Areas\Admin\Content\js\axios.min.js" />
+    <Content Include="Areas\Admin\Content\js\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Content\js\elementui.js" />
+    <Content Include="Areas\Admin\Content\js\global.js" />
+    <Content Include="Areas\Admin\Content\js\index.js" />
+    <Content Include="Areas\Admin\Content\js\jquery-1.10.2.min.js" />
+    <Content Include="Areas\Admin\Content\js\jquery.cookie.js" />
+    <Content Include="Areas\Admin\Content\js\jquery.md5.js" />
+    <Content Include="Areas\Admin\Content\js\jquery.ztree.all.js" />
+    <Content Include="Areas\Admin\Content\js\jucheap.ztree.js" />
+    <Content Include="Areas\Admin\Content\js\qs.min.js" />
+    <Content Include="Areas\Admin\Content\js\vue.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\config.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\console\prograss.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\console\top-card.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\console\top-search.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\content\comment.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\content\list.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\content\tags.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\forum\list.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\forum\replys.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\layer\photos.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\layim\getList.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\layim\getMembers.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\mall\order.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\menu.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\menu1.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\message\all.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\message\detail.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\message\direct.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\message\new.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\message\notice.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\table\demo.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\table\demo2.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\table\demo3.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\table\user.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\table\user30.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\upload\demo.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\useradmin\mangadmin.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\useradmin\role.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\useradmin\webuser.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\forget.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\login.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\logout.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\reg.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\resetpass.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\session.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\user\sms.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\workorder\demo.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\json\说明.txt" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\layui.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\layui.mobile.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\code.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\laydate\default\font.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\icon.png" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\layer.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\html\chatlog.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\html\find.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\html\msgbox.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\layim.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\mobile\layim.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\1.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\2.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\3.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\4.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\5.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\skin\logo.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\voice\default.mp3" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\font\iconfont.svg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\0.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\1.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\10.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\11.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\12.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\13.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\14.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\15.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\16.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\17.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\18.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\19.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\2.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\20.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\21.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\22.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\23.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\24.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\25.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\26.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\27.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\28.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\29.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\3.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\30.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\31.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\32.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\33.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\34.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\35.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\36.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\37.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\38.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\39.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\4.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\40.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\41.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\42.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\43.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\44.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\45.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\46.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\47.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\48.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\49.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\5.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\50.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\51.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\52.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\53.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\54.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\55.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\56.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\57.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\58.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\59.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\6.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\60.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\61.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\62.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\63.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\64.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\65.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\66.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\67.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\68.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\69.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\7.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\70.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\71.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\8.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\images\face\9.gif" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\layui.all.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\layui.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\all-mobile.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\all.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\carousel.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\code.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\colorpicker.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\element.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\flow.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\form.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\jquery.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\laydate.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\layedit.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\layer.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\layim.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\laypage.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\laytpl.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile\layer-mobile.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile\layim-mobile-open.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile\layim-mobile.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile\upload-mobile.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\mobile\zepto.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\rate.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\slider.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\table.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\tree.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\upload.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\lay\modules\util.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\lib\admin.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\lib\extend\echarts.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\lib\extend\echartsTheme.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\lib\index.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\lib\view.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\common.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\console.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\contlist.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\forum.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\im.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\message.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\navbar.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\sample.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\senior.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\set.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\tab.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\user.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\useradmin.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\modules\workorder.js" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\admin.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\login.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\bg-none.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\layui-logo.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\logo-black.png" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\logo.png" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\template\character.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\template\huge.jpg" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\res\template\portrait.png" />
+    <Content Include="Areas\Admin\Content\layuiadmin\style\template.css" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\layim\demo.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\system\about.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\system\get.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\system\more.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\system\theme.html" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\system\说明.txt" />
+    <Content Include="Areas\Admin\Content\layuiadmin\tpl\说明.txt" />
+    <Content Include="Areas\Admin\Content\Site.css" />
+    <Content Include="Areas\Admin\datas\nav.js" />
+    <Content Include="Areas\Admin\datas\tree.js" />
+    <Content Include="Areas\Admin\plugins\app\element.js" />
+    <Content Include="Areas\Admin\plugins\app\eleTree.js" />
+    <Content Include="Areas\Admin\plugins\app\formSelects-v3.js" />
+    <Content Include="Areas\Admin\plugins\app\formSelects-v4.css" />
+    <Content Include="Areas\Admin\plugins\app\formSelects-v4.js" />
+    <Content Include="Areas\Admin\plugins\app\formSelects-v4.min.js" />
+    <Content Include="Areas\Admin\plugins\app\iconPicker.js" />
+    <Content Include="Areas\Admin\plugins\app\slider.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\eleTree.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\layui.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\layui.mobile.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\code.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\flat\green.png" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\flat\_all.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\futurico\futurico.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\icheck.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\line\_all.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\minimal\_all.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\polaris\polaris.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\icheck\square\_all.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\laydate\default\laydate.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\icon.png" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\layer.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\0.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\1.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\10.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\11.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\12.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\13.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\14.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\15.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\16.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\17.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\18.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\19.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\2.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\20.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\21.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\22.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\23.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\24.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\25.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\26.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\27.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\28.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\29.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\3.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\30.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\31.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\32.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\33.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\34.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\35.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\36.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\37.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\38.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\39.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\4.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\40.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\41.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\42.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\43.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\44.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\45.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\46.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\47.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\48.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\49.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\5.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\50.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\51.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\52.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\53.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\54.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\55.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\56.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\57.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\58.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\59.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\6.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\60.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\61.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\62.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\63.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\64.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\65.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\66.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\67.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\68.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\69.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\7.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\70.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\71.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\8.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\images\face\9.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\layui.all.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\layui.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\carousel.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\code.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\flow.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\form.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\icheck.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\jquery.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\laydate.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\layedit.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\layer.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\laypage.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\laytpl.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\table.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\tree.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\upload.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\lay\modules\util.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\layui.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\layui.mobile.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\code.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\laydate\default\laydate.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\icon.png" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\layer.css" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\font\iconfont.svg" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\0.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\1.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\10.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\11.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\12.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\13.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\14.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\15.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\16.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\17.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\18.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\19.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\2.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\20.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\21.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\22.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\23.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\24.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\25.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\26.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\27.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\28.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\29.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\3.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\30.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\31.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\32.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\33.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\34.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\35.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\36.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\37.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\38.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\39.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\4.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\40.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\41.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\42.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\43.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\44.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\45.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\46.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\47.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\48.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\49.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\5.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\50.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\51.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\52.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\53.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\54.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\55.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\56.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\57.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\58.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\59.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\6.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\60.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\61.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\62.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\63.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\64.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\65.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\66.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\67.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\68.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\69.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\7.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\70.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\71.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\8.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\images\face\9.gif" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\layui.all.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\layui.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\carousel.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\code.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\colorpicker.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\element.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\flow.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\form.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\jquery.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\laydate.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\layedit.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\layer.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\laypage.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\laytpl.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\rate.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\slider.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\table.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\transfer.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\tree.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\upload.js" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\lay\modules\util.js" />
+    <Content Include="Areas\Admin\plugins\layui\css\eleTree.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\lay-icon.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\layui.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\layui.mobile.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\code.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\icon.png" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\layer.css" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="Areas\Admin\plugins\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\0.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\1.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\10.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\11.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\12.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\13.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\14.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\15.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\16.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\17.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\18.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\19.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\2.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\20.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\21.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\22.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\23.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\24.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\25.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\26.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\27.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\28.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\29.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\3.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\30.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\31.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\32.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\33.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\34.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\35.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\36.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\37.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\38.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\39.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\4.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\40.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\41.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\42.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\43.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\44.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\45.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\46.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\47.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\48.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\49.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\5.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\50.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\51.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\52.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\53.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\54.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\55.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\56.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\57.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\58.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\59.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\6.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\60.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\61.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\62.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\63.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\64.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\65.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\66.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\67.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\68.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\69.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\7.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\70.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\71.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\8.gif" />
+    <Content Include="Areas\Admin\plugins\layui\images\face\9.gif" />
+    <Content Include="Areas\Admin\plugins\layui\layui.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\all-mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\all.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\carousel.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\code.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\colorpicker.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\element.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\flow.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\form.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\jquery.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\laydate.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\layedit.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\layer.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\laypage.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\laytpl.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\mobile\layer-mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\mobile\layim-mobile-open.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\mobile\upload-mobile.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\mobile\zepto.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\rate.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\slider.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\table.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\tree.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\upload.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\modules\util.js" />
+    <Content Include="Areas\Admin\plugins\layui\lay\mymodules\eleTree.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\.gitignore" />
+    <Content Include="Areas\Admin\Scripts\Print.js\karma.conf.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\index.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\browser.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\functions.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\html.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\image.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\init.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\json.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\modal.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\pdf.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\print.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\print.min.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\js\raw-html.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\print.min.css" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\base64.txt" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\index.html" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\test-01.jpg" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\test-02.jpg" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\test.css" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\browser.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\functions.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\html.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\image.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\init.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\json.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\modal.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\pdf.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\unit\print.spec.js" />
+    <Content Include="Areas\Admin\Scripts\Print.js\webpack.config.js" />
+    <Content Include="Areas\SysSet\Views\Log\Index.cshtml" />
+    <Content Include="favicon.ico" />
+    <Content Include="Areas\Admin\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\Admin\plugins\app\common.js" />
+    <Content Include="Areas\Admin\plugins\app\dateLay.js" />
+    <Content Include="Areas\Admin\plugins\app\navbar.js" />
+    <Content Include="Areas\Admin\plugins\app\tab.js" />
+    <Content Include="Areas\Admin\plugins\app\treeGrid.js" />
+    <Content Include="Areas\Admin\plugins\app\treeSelect.js" />
+    <Content Include="Areas\Admin\plugins\jquery.treegrid.min.js" />
+    <Content Include="Areas\Admin\Scripts\bootstrap.js" />
+    <Content Include="Areas\Admin\Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Views\web.config" />
+    <Content Include="Areas\Admin\Content\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Areas\Admin\Content\fonts\fontawesome-webfont.woff" />
+    <Content Include="Areas\Admin\Content\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Areas\Admin\plugins\layui\font\iconfont.eot" />
+    <Content Include="Areas\Admin\plugins\layui\font\iconfont.svg" />
+    <Content Include="Areas\Admin\plugins\layui\font\iconfont.ttf" />
+    <Content Include="Areas\Admin\plugins\layui\font\iconfont.woff" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\font\iconfont.eot" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\font\iconfont.ttf" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\font\iconfont.woff" />
+    <Content Include="Areas\Admin\plugins\layui-2.5.5\font\iconfont.woff2" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\font\iconfont.eot" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\font\iconfont.svg" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\font\iconfont.ttf" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\font\iconfont.woff" />
+    <Content Include="Areas\Admin\plugins\layui-2.2.6\font\iconfont1.ttf" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\css\modules\layim\html\getmsg.json" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\font\iconfont.eot" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\font\iconfont.ttf" />
+    <Content Include="Areas\Admin\Content\layuiadmin\layui\font\iconfont.woff" />
+    <Content Include="Areas\Admin\Content\css\fonts\element-icons.ttf" />
+    <Content Include="Areas\Admin\Content\css\fonts\element-icons.woff" />
+    <None Include="Areas\Admin\Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Areas\Admin\Scripts\jquery-1.10.2.js" />
+    <Content Include="Areas\Admin\Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Areas\Admin\Scripts\modernizr-2.6.2.js" />
+    <Content Include="Icon.html" />
+    <Content Include="Upload\img\502.jpg" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Handler\HandlerErrorAttribute.cs" />
+    <Compile Include="App_Start\Handler\HandlerLoginAttribute.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
+    <Compile Include="Areas\CreditSearch\Controllers\CreditCompanyController.cs" />
+    <Compile Include="Areas\CreditSearch\CreditSearchAreaRegistration.cs" />
+    <Compile Include="Areas\InforSearch\Controllers\BlackListController.cs" />
+    <Compile Include="Areas\InforSearch\InforSearchAreaRegistration.cs" />
+    <Compile Include="Areas\Insider\Controllers\InsiderListController.cs" />
+    <Compile Include="Areas\Insider\Controllers\InsiderRltsListController.cs" />
+    <Compile Include="Areas\Insider\Controllers\ParaSetController.cs" />
+    <Compile Include="Areas\Insider\InsiderAreaRegistration.cs" />
+    <Compile Include="Areas\Permissions\Controllers\ActionController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\DepartmentController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\MenuActionController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\MenuController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\MenuRoleActionController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Permissions\Controllers\UserController.cs" />
+    <Compile Include="Areas\Permissions\PermissionsAreaRegistration.cs" />
+    <Compile Include="Areas\PfLender\Controllers\LenderListController.cs" />
+    <Compile Include="Areas\PfLender\PfLenderAreaRegistration.cs" />
+    <Compile Include="Areas\RecordSetting\Controllers\SettingEditController.cs" />
+    <Compile Include="Areas\RecordSetting\RecordSettingAreaRegistration.cs" />
+    <Compile Include="Areas\RecordTrancation\Controllers\RecordBorrowController.cs" />
+    <Compile Include="Areas\RecordTrancation\Controllers\RecordOperationController.cs" />
+    <Compile Include="Areas\RecordTrancation\RecordTrancationAreaRegistration.cs" />
+    <Compile Include="Areas\SysSet\Controllers\InfoController.cs" />
+    <Compile Include="Areas\SysSet\Controllers\LogController.cs" />
+    <Compile Include="Areas\SysSet\Controllers\PassWordController.cs" />
+    <Compile Include="Areas\SysSet\Controllers\WebSiteController.cs" />
+    <Compile Include="Areas\SysSet\SysSetAreaRegistration.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Models\HtmlHelper.cs" />
+    <Compile Include="Areas\Admin\Models\WebSiteModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="Configs\database.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Configs\log4net.config" />
+    <Content Include="Configs\system.config" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.eot" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.ttf" />
+    <Content Include="Areas\Admin\Content\fonts\iconfont.woff" />
+    <Content Include="Areas\Admin\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Admin\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Areas\Admin\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index_old.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Main.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Permissions\Views\web.config" />
+    <Content Include="Areas\SysSet\Views\web.config" />
+    <Content Include="Areas\SysSet\Views\WebSite\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutSinglePage.cshtml" />
+    <Content Include="Areas\SysSet\Views\Info\Index.cshtml" />
+    <Content Include="Areas\SysSet\Views\PassWord\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutList.cshtml" />
+    <Content Include="Areas\Permissions\Views\Action\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutForm.cshtml" />
+    <Content Include="Areas\Permissions\Views\Action\Detail.cshtml" />
+    <Content Include="Areas\Permissions\Views\Action\Edit.cshtml" />
+    <Content Include="Areas\Permissions\Views\Action\Add.cshtml" />
+    <Content Include="Areas\Permissions\Views\User\Index.cshtml" />
+    <Content Include="Areas\Permissions\Views\User\Detail.cshtml" />
+    <Content Include="Areas\Permissions\Views\User\Edit.cshtml" />
+    <Content Include="Areas\Permissions\Views\User\Add.cshtml" />
+    <Content Include="Areas\Permissions\Views\Menu\Index.cshtml" />
+    <Content Include="Areas\Permissions\Views\Menu\Edit.cshtml" />
+    <Content Include="Areas\Permissions\Views\Menu\Add.cshtml" />
+    <Content Include="Areas\Permissions\Views\Role\Index.cshtml" />
+    <Content Include="Areas\Permissions\Views\Role\Detail.cshtml" />
+    <Content Include="Areas\Permissions\Views\Role\Edit.cshtml" />
+    <Content Include="Areas\Permissions\Views\Role\Add.cshtml" />
+    <Content Include="Areas\Permissions\Views\Role\Assign.cshtml" />
+    <Content Include="Areas\Permissions\Views\Action\MenuActionList.cshtml" />
+    <Content Include="Areas\Permissions\Views\Department\Index.cshtml" />
+    <Content Include="Areas\Permissions\Views\Department\Add.cshtml" />
+    <Content Include="Areas\Permissions\Views\Department\Edit.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\web.config" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordAdd.cshtml" />
+    <Content Include="Areas\InforSearch\Views\web.config" />
+    <Content Include="Areas\InforSearch\Views\BlackList\Index.cshtml" />
+    <Content Include="Areas\InforSearch\Views\BlackList\Add.cshtml" />
+    <Content Include="Areas\InforSearch\Views\BlackList\Detail.cshtml" />
+    <Content Include="Areas\InforSearch\Views\BlackList\Edit.cshtml" />
+    <Content Include="Areas\Admin\Scripts\Print.js\.babelrc" />
+    <Content Include="Areas\Admin\Scripts\Print.js\.npmignore" />
+    <Content Include="Areas\Admin\Scripts\Print.js\.travis.yml" />
+    <Content Include="Areas\Admin\Scripts\Print.js\bower.json" />
+    <Content Include="Areas\Admin\Scripts\Print.js\LICENSE" />
+    <Content Include="Areas\Admin\Scripts\Print.js\package.json" />
+    <Content Include="Areas\Admin\Scripts\Print.js\README.md" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\sass\index.scss" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\sass\modules\_colors.scss" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\sass\partials\_modal.scss" />
+    <Content Include="Areas\Admin\Scripts\Print.js\src\sass\partials\_spinner.scss" />
+    <Content Include="Areas\Admin\Scripts\Print.js\test\manual\test.pdf" />
+    <Content Include="Areas\InforSearch\Views\BlackList\PrintPage.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordEdit.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordIndex.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordDetail.cshtml" />
+    <Content Include="Areas\RecordSetting\Views\web.config" />
+    <Content Include="Areas\RecordSetting\Views\SettingEdit\Index.cshtml" />
+    <Content Include="Areas\InforSearch\Views\BlackList\OperateLog.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordBorrow\HandOverCheck.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordList.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordBorrow\PrintPage.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordIndexManager.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordBorrow\RecordReturn.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordTransferNew.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ExpiredFile.cshtml" />
+    <Content Include="Log4Net.config" />
+    <Content Include="Areas\RecordTrancation\Views\RecordBorrow\BorrowList.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordBorrow\ApplyList.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordNeedCreate.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordCreate.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ContractDelView.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ChangedRecordManagerIndex.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ChangeManagerView.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordTransfer.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ExpiredFileCheck.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ExpiredFileCheckList.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ExpiredFileAccept.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordHistory.cshtml" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\ExpiredFileRecord.cshtml" />
+    <Content Include="Areas\CreditSearch\Views\web.config" />
+    <Content Include="Areas\CreditSearch\Views\CreditCompany\Index.cshtml" />
+    <Content Include="Areas\CreditSearch\Views\CreditCompany\TaxpayerList.cshtml" />
+    <Content Include="Areas\CreditSearch\Views\CreditCompany\ResultVisit.cshtml" />
+    <Content Include="Areas\CreditSearch\Views\CreditCompany\History.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderList\Add.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderList\Detail.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderList\Edit.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderList\Index.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderList\RelationGraph.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderRltsList\Add.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderRltsList\Detail.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderRltsList\Edit.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderRltsList\Index.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\Add.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\Detail.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\Edit.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\Index.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\ParaAdd.cshtml" />
+    <Content Include="Areas\Insider\Views\ParaSet\Warn.cshtml" />
+    <Content Include="Areas\Insider\Views\web.config" />
+    <Content Include="Areas\PfLender\Views\LenderList\Add.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\DepFlow.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\Deposit.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\Detail.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\Edit.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\Index.cshtml" />
+    <Content Include="Areas\PfLender\Views\LenderList\Loan.cshtml" />
+    <Content Include="Areas\PfLender\Views\web.config" />
+    <None Include="packages.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Scripts\jquery-1.10.2.min.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\plugins\echarts\build\" />
+    <Folder Include="Areas\Admin\plugins\echarts\extension-src\bmap\" />
+    <Folder Include="Areas\Admin\plugins\echarts\extension-src\dataTool\" />
+    <Folder Include="Areas\Admin\plugins\echarts\licenses\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\action\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\bar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\boxplot\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\candlestick\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\chord\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\effectScatter\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\funnel\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\gauge\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\graph\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\heatmap\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\helper\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\lines\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\line\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\map\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\parallel\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\pie\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\radar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\sankey\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\scatter\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\sunburst\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\themeRiver\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\treemap\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\chart\tree\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\axisPointer\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\axis\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\brush\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\calendar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\dataZoom\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\geo\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\helper\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\legend\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\marker\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\radar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\timeline\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\toolbox\feature\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\tooltip\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\component\visualMap\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\calendar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\cartesian\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\geo\fix\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\parallel\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\polar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\radar\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\coord\single\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\data\helper\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\layout\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\loading\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\model\mixin\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\preprocessor\helper\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\processor\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\scale\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\stream\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\theme\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\util\shape\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\view\" />
+    <Folder Include="Areas\Admin\plugins\echarts\src\visual\" />
+    <Folder Include="Areas\Admin\plugins\echarts\theme\tool\option\" />
+    <Folder Include="Areas\Admin\Views\Base\" />
+    <Folder Include="Areas\CreditSearch\Data\" />
+    <Folder Include="Areas\CreditSearch\Views\Shared\" />
+    <Folder Include="Areas\InforSearch\Models\" />
+    <Folder Include="Areas\InforSearch\Views\Shared\" />
+    <Folder Include="Areas\Insider\Models\" />
+    <Folder Include="Areas\Insider\Views\Shared\" />
+    <Folder Include="Areas\Permissions\Models\" />
+    <Folder Include="Areas\Permissions\Views\MenuAction\" />
+    <Folder Include="Areas\Permissions\Views\MenuRoleAction\" />
+    <Folder Include="Areas\Permissions\Views\Shared\" />
+    <Folder Include="Areas\PfLender\Models\" />
+    <Folder Include="Areas\PfLender\Views\Shared\" />
+    <Folder Include="Areas\RecordSetting\Models\" />
+    <Folder Include="Areas\RecordSetting\Views\Shared\" />
+    <Folder Include="Areas\RecordTrancation\Models\" />
+    <Folder Include="Areas\RecordTrancation\Views\Shared\" />
+    <Folder Include="Areas\SysSet\Models\" />
+    <Folder Include="Areas\SysSet\Views\Shared\" />
+    <Folder Include="Logs\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RightControl.Common\RightControl.Common.csproj">
+      <Project>{2b8432aa-bcd5-485b-afc8-a272e0ab182e}</Project>
+      <Name>RightControl.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RightControl.IRepository\RightControl.IRepository.csproj">
+      <Project>{a165e473-bdbc-4745-859f-531dc96f06f1}</Project>
+      <Name>RightControl.IRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RightControl.IService\RightControl.IService.csproj">
+      <Project>{80c9536c-8ac9-4252-9112-488fcc4b99bf}</Project>
+      <Name>RightControl.IService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RightControl.Model\RightControl.Model.csproj">
+      <Project>{f4fc7b89-2dfc-4186-9955-5f903fed159e}</Project>
+      <Name>RightControl.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RightControl.Repository\RightControl.Repository.csproj">
+      <Project>{160064bc-4b0b-4181-bd16-f1f25dc1b1f4}</Project>
+      <Name>RightControl.Repository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RightControl.Service\RightControl.Service.csproj">
+      <Project>{6cf118a9-3edd-47f0-aba7-b1ddbbed6dd0}</Project>
+      <Name>RightControl.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Areas\Admin\Scripts\Print.js\src\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>27948</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:27948/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

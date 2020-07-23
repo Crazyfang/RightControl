@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>打印界面</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="~/Areas/Admin/Content/css/HandOverPrint.css"/>
+    <style>
+        .dontprint {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center;width: auto" id="buttongroup">
+        <input type="button" value="打印" id="PrintButton" onclick="printPage()" class="layui-btn layui-btn-normal" />
+    </div>
+@Html.Raw(ViewBag.html)
+<script src="~/Areas/Admin/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    function printPage() {
+        $("#buttongroup").toggleClass('dontprint', true);
+        window.print();
+        $("#buttongroup").toggleClass('dontprint', false);
+    }
+</script>
+</body>
+</html>
+

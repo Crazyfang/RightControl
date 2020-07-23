@@ -1,0 +1,73 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>过期文件书籍提交确认</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link href="~/Areas/Admin/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">过期文件提交信息确认</div>
+                    <div class="layui-card-body">
+                        <table class="layui-hide" id="demo" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="~/Areas/Admin/plugins/layui/layui.js"></script>
+<script>
+
+    layui.use(['table', 'layer'], function(){
+        var table = layui.table,
+            layer = layui.layer;
+
+        table.render({
+            elem: '#demo'
+            , url: '/RecordTrancation/RecordOperation/ExpiredFileListData'
+            ,cellMinWidth: 120 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: [[
+                {type:'numbers'}
+                ,{type: 'checkbox'}
+                ,{field:'RecordId', title: '档案编号'}
+                ,{field:'RecordManager', title: '档案归属人'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+                ,{field:'RecordManagerDepartment', title: '档案归属部门'}
+                ,{field:'ChangedDateTime', title: '提交时间'}
+            ]]
+            ,page: true
+            ,height: 'full-100'
+        });
+
+        table.on('rowDouble(test)', function(obj){
+            var data = obj.data;
+            // alert(123);
+            layer.open({
+                type: 2
+                , content: '/RecordTrancation/RecordOperation/ExpiredFileAccept?recordId=' + data.RecordId
+                ,shadeClose: true
+                ,area: ['700px', '500px']
+                , maxmin: true
+                , end: function() {
+                    table.reload('test', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

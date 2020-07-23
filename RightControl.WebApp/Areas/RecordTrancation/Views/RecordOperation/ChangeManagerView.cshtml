@@ -1,0 +1,160 @@
+﻿@model RightControl.Model.RecordTrancation.Record
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutSinglePage.cshtml";
+}
+
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>档案编辑</legend>
+</fieldset>
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">行社编号</label>
+                <div class="layui-input-block">
+                    @Html.HiddenFor(item => item.CreateOn)
+                    @Html.HiddenFor(item => item.HandOverTime)
+                    @Html.HiddenFor(item => item.RecordID)
+                    <input type="text" name="RecordManagerDepartment" value="@Model.RecordManagerDepartment" autocomplete="off" placeholder="行社编号" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户经理</label>
+                <div class="layui-input-block" id="ManagerDiv">
+                    <select name="RecordManager" id="RecordManager" lay-filter="RecordManager" lay-verify="required">
+                        <option value="">请选择客户经理</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">授信到期日</label>
+                <div class="layui-input-block">
+                    <input type="text" name="CreditDueDate" id="CreditDueDate" value="@Model.CreditDueDate" autocomplete="off" placeholder="授信到期日" class="layui-input datetime" lay-verify="required">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordUserName" autocomplete="off" value="@Model.RecordUserName" placeholder="客户姓名" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordUserCode" value="@Model.RecordUserCode" lay-verify="required" placeholder="客户号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">存储位置</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordStorageLoc" value="@Model.RecordStorageLoc" placeholder="存储位置" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">移交时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="HandOverTime" id="HandOverTime" value="" placeholder="移交时间" autocomplete="off" class="layui-input datetime">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md6">
+            <label class="layui-form-label">客户内码</label>
+            <div class="layui-input-block">
+                <input type="text" name="RecordUserInCode" value="@Model.RecordUserInCode" placeholder="客户内码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item" style="margin-top: 10px;text-align: right">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit_btn">立即提交</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['form', 'laydate', 'element', 'layer'], function () {
+        var form = layui.form
+            , laydate = layui.laydate
+            , element = layui.element
+            , $ = layui.jquery
+            , layer = layui.layer;
+
+        if ('@Model.CreditDueDate') {
+            $("#CreditDueDate").val('@Model.CreditDueDate'.split(" ")[0].replace('/', '-').replace('/', '-'));
+        }
+
+        if ('@Model.HandOverTime') {
+            form.val("example",
+            {
+                'HandOverTime': '@Model.HandOverTime'.split(" ")[0].replace('/', '-').replace('/', '-')
+            });
+        }
+
+        $.ajax({
+            url: '/RecordTrancation/RecordOperation/GetDepAndManager',
+            data: { 'custInCode': $('input[name=RecordUserInCode]').val() },
+            type: 'post',
+            success: function (res) {
+                console.log(res);
+                if (res.length > 1) {
+                    $('input[name=RecordManagerDepartment]').val(res[0]['DepartmentCode']);
+                    for (var i = 0; i < res.length; i++) {
+                        $("#RecordManager").append("<option value='" + res[i]['ManagerCode'] + "'>" + res[i]['ManagerName'] + "</option>");
+                    }
+                    layer.msg("当前档案找到多个客户经理维护，请自行选择!");
+                } else if (res.length === 1) {
+                    $('input[name=RecordManagerDepartment]').val(res[0]['DepartmentCode']);
+                    $("#RecordManager").append("<option selected='' value='" +
+                        res[0]['ManagerCode'] +
+                        "'>" +
+                        res[0]['ManagerName'] +
+                        "</option>");
+                } else {
+                    $('#ManagerDiv').empty();
+                    $('#ManagerDiv')
+                        .append(
+                            '<input name="RecordManager" id="RecordManager" lay-filter="RecordManager" lay-verify="required" class="layui-input">');
+                    layer.msg("当前信贷档案未找到相关维护人!");
+                }
+
+
+                form.render();
+            }
+        });
+
+        form.on('submit(formDemo)', function (data) {
+            $.ajax({
+                url: '/RecordTrancation/RecordOperation/ChangeRecordManger',
+                type: 'post',
+                data: data.field,
+                success: function (data) {
+                    if (data.state === 'success') {
+                        layer.msg(data.message);
+                        setTimeout(layer.closeAll(), 1000);
+                        setTimeout(parent.location.reload(), 1500);
+                    } else {
+                        layer.msg("修改档案记录出错!");
+                    }
+                }
+            });
+            return false;
+        });
+    });</script>

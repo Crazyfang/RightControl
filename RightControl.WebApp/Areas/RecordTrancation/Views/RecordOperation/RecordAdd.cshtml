@@ -1,0 +1,319 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutSinglePage.cshtml";
+}
+
+<fieldset class="layui-elem-field layui-field-title">
+    <legend>档案录入</legend>
+</fieldset>
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">行社编号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordManagerDepartment" value="@ViewBag.Department" autocomplete="off" placeholder="行社编号" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户经理</label>
+                <div class="layui-input-block">
+                    <select name="RecordManager" id="RecordManager" lay-filter="RecordManager" lay-verify="required">
+                        <option value="">请选择客户经理</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">授信到期日</label>
+                <div class="layui-input-block">
+                    <input type="text" name="CreditDueDate" id="CreditDueDate" autocomplete="off" placeholder="授信到期日" class="layui-input datetime" lay-verify="required">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordUserName" autocomplete="off" placeholder="客户姓名" class="layui-input" lay-verify="required">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordUserCode" lay-verify="required" placeholder="客户号" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-col-md6">
+                <label class="layui-form-label">客户内码</label>
+                <div class="layui-input-block">
+                    <input type="text" name="RecordUserInCode" lay-verify="required" placeholder="客户内码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">档案所属类别</label>
+                <div class="layui-input-block" id="radioDiv">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>文件清单添加</legend>
+    </fieldset>
+    <div class="layui-collapse" lay-filter="FileType" id="FileType">
+        
+    </div>
+
+    <div class="layui-form-item" style="margin-top: 10px;text-align: right">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="formDemo" id="submit_btn" >立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+@*<script src="layui/layui.js" type="text/javascript"></script>*@
+<script>layui.use(['form', 'laydate', 'element', 'layer'], function () {
+           var form = layui.form
+               ,laydate = layui.laydate
+               ,element = layui.element
+               ,$ = layui.jquery
+        , layer = layui.layer;
+
+        //GetTheFileList("2");
+
+
+        function otherFileAdd() {
+            layui.$('.add').on('click', function () {
+               var counter = 1;
+               var name = $(this).parent().attr('id') + '_Other_' + counter;
+
+               while ($("#" + name).length > 0) {
+                   counter += 1;
+                   name = $(this).parent().attr('id') + '_Other_' + counter;
+               }
+
+               $(this).prev('.OtherFile').append('<div class="layui-form-item">' +
+                                               '<div class="layui-input-inline">' +
+                                               '<input type="text" name="' + name + '_Name" placeholder="证件名称" class="layui-input">' +
+                                               '</div>' +
+                                               '<div class="layui-input-inline">' +
+                                               '<input type="text" name="' + name + '_Date" placeholder="到期日" class="layui-input datetime">' +
+                                               '</div>' +
+                                               "<div class='layui-input-inline'>" +
+                                               "<div class='layui-row'>" +
+                                               "<div class='layui-col-md3' style='text-align: right'>" +
+                                               "<button type='button' class='layui-btn layui-btn-primary num_action_sub'>-</button>" +
+                                               "</div>" +
+                                               "<div class='layui-col-md6'>" +
+                                               "<input type='text' value='1' name='"+ name +"_Amount' class='layui-input num' style='text-align: center'>" +
+                                               "</div>" +
+                                               "<div class='layui-col-md3'>" +
+                                               "<button type='button' class='layui-btn layui-btn-primary num_action_add'>+</button>" +
+                                               "</div>" +
+                                               "</div>" +
+                                               "</div>" +
+                   '</div>');
+               layui.$('.num_action_sub').off('click').on('click', function () {
+                   if ($(this).parent().next().children('.num').val() === '1') {
+
+                   }
+                   else {
+                       $(this).parent().next().children('.num').val(parseInt($(this).parent().next().children('.num').val()) - 1);
+                   }
+               });
+
+               layui.$('.num_action_add').off('click').on('click', function () {
+                   // layer.msg($(this).siblings('.num').val());
+                   $(this).parent().prev().children('.num').val(parseInt($(this).parent().prev().children('.num').val()) + 1);
+               });
+               // layer.msg($(this).parent().attr('class'));
+               element.render('collapse');
+               form.render();
+
+               lay('.datetime').each(function () {
+                   laydate.render({
+                       elem: this,
+                       trigger: 'click'
+                   });
+               });
+           });
+        }
+
+        
+        function delList() {
+            layui.$('.delItem').off('click').on('click',
+                function() {
+                    $(this).parent().parent().remove();
+
+                    return false;
+                });
+        }
+
+        function GetTheFileList(data) {
+            $.ajax({
+                   url: '/RecordTrancation/RecordOperation/GetFileList',
+                   type: 'post',
+                   data: { 'recordType': data },
+                   success: function(data) {
+                       if (data.status) {
+                           $('#FileType').append(data.content);
+                           lay('.datetime').each(function () {
+                               laydate.render({
+                                   elem: this,
+                                   trigger: 'click'
+                               });
+                           });
+
+                           element.render('collapse');
+                           form.render();
+
+                           $('.addNewItem').on('click', function () {
+                               var type = $(this).parent().next().attr('id');
+                               var counter = 1;
+                               var name = type + counter;
+
+                               while ($("#" + name).length > 0) {
+                                   counter += 1;
+                                   name = type + counter;
+                               }
+                               var addParent = $(this);
+
+                               $.ajax({
+                                   url: '/RecordTrancation/RecordOperation/GetExtendContent',
+                                   data: { 'recordFileType': type, 'newFileTypeName': name },
+                                   success: function (obj) {
+                                       addParent.parent().parent().after(obj);
+                                       lay('.datetime').each(function () {
+                                           laydate.render({
+                                               elem: this,
+                                               trigger: 'click'
+                                           });
+                                       });
+
+                                       element.render('collapse');
+                                       form.render();
+
+                                       otherFileAdd();
+                                       delList();
+                                   }
+                               });
+                               
+
+                               //$(this).parent().parent().after("<div class='layui-colla-item'><h2 class='layui-colla-title'>权证类1</h></div>");
+                               return false;
+                           });
+
+                           otherFileAdd();
+                           layui.$('.num_action_sub').on('click', function () {
+                               if ($(this).parent().next().children('.num').val() === '1') {
+
+                               }
+                               else {
+                                   $(this).parent().next().children('.num').val(parseInt($(this).parent().next().children('.num').val()) - 1);
+                               }
+                           });
+
+                           layui.$('.num_action_add').on('click', function () {
+                               // layer.msg($(this).siblings('.num').val());
+                               $(this).parent().prev().children('.num').val(parseInt($(this).parent().prev().children('.num').val()) + 1);
+                           });
+                       }
+                   }
+                });
+            }
+
+    
+        
+           $.ajax({
+               url: '/Permissions/User/UserBelonged',
+               data: { 'departmentCode': $('input[name=RecordManagerDepartment]').val() },
+               type: 'post',
+               success: function (res) {
+                   var user = JSON.parse(res);
+                   $("#RecordManager").find("option:not(:first)").remove();
+                   for (var i = 0; i < user.length; i++) {
+                       $("#RecordManager")
+                           .append("<option value='" + user[i]['id'] + "'>" + user[i]['value'] + "</option>");
+                   }
+
+                   form.render('select');
+               }
+           });
+
+           $.ajax({
+               url: '/RecordSetting/SettingEdit/GetRecordType',
+               success: function (obj) {
+                   var num = 1;
+                   for (var i = 0; i < obj.length; i++) {
+                       if (i === 0) {
+                           num = obj[i].Id;
+                           $("#radioDiv")
+                               .append('<input type="radio" name="RecordType" lay-filter="RecordType" value="' +
+                                   obj[i].Id +
+                                   '" title="' +
+                                   obj[i].SelectTypeNameString +
+                                   '" checked="">');
+                       } else {
+                           $("#radioDiv").append('<input type="radio" name="RecordType" lay-filter="RecordType" value="'+ obj[i].Id +'" title="'+  obj[i].SelectTypeNameString +'">')
+                       }
+                   }
+                   GetTheFileList(num);
+                   form.on('radio(RecordType)',
+                       function(data) {
+                           var value = data.value;
+                           $('#FileType').empty();
+                           GetTheFileList(value);
+                       });
+               }
+           });
+           
+
+            //表单取值
+            layui.$('#LAY-component-form-getval').on('click', function(){
+                var data = form.val('example');
+                alert(JSON.stringify(data));
+            });
+
+            form.on('submit(formDemo)', function (data) {
+                $('#submit_btn').text('提交中');
+                $('#submit_btn').attr('disabled', 'disabled');
+                $.ajax({
+                    url: '/RecordTrancation/RecordOperation/RecordAdd',
+                    type: 'post',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.state === 'success') {
+                            layer.msg(data.message);
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            }, 1500);
+                        } else {
+                            layer.msg("添加档案记录出错!");
+                            $('#submit_btn').text('立即提交');
+                            $('#submit_btn').attr('disabled', '');
+                        }
+                    },
+                    error: function (data) {
+                        $('#submit_btn').text('立即提交');
+                        $('#submit_btn').attr('disabled', '');
+                    }
+                });
+                return false;
+            });
+        });</script>

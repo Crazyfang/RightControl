@@ -1,0 +1,470 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>控制面板</title>
+    <link href="~/Areas/Admin/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/main.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/HandOverPrint.css"/>
+</head>
+<body style="background-color:white">
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space5" style="text-align: center; background-color: #F2F2F2;">
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">在库档案数</div>
+                <div class="layui-card-body" id="RecordIn">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">外借档案数</div>
+                <div class="layui-card-body" id="RecordOut">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md4">
+            <div class="layui-card">
+                <div class="layui-card-header">待移交档案数</div>
+                <div class="layui-card-body" id="RecordHand">
+
+                </div>
+            </div>
+        </div>
+     </div>
+</div>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+        <blockquote class="layui-elem-quote">
+            待移交档案清单
+            <form id="formSearch" class="layui-form" action="">
+                <div class="layui-form-item" style="margin-bottom: 0px;">
+                    <label class="layui-form-label">客户姓名：</label>
+                    <div class="layui-input-inline">
+                        <input name="RecordUserName" id="RecordUserName" lay-verify="" autocomplete="off" class="layui-input">
+                    </div>
+                    @Html.SearchBtnHtml()
+                </div>
+            </form>
+        </blockquote>
+        <table id="table_handover" lay-filter="table1"></table>
+    </div>
+    <div class="layui-col-md6">
+        <blockquote class="layui-elem-quote">
+            借阅档案归还
+            <form id="formSearch_borrow" class="layui-form" action="">
+                <div class="layui-form-item" style="margin-bottom: 0px;">
+                    <label class="layui-form-label">借阅用户：</label>
+                    <div class="layui-input-inline">
+                        <input name="ApplyUser" lay-verify="" autocomplete="off" class="layui-input">
+                    </div>
+                    <a href="javascript:;" class='layui-btn' id='btnSearch_borrow' data-type='reload'><i class='layui-icon'>&#xe615;</i>搜索</a>
+                </div>
+            </form>
+        </blockquote>
+        <table id="table_borrow" lay-filter="table2"></table>
+    </div>
+</div>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+        <blockquote class="layui-elem-quote">
+            档案文件过期提示
+        </blockquote>
+        <table id="table_expired" lay-filter="table3"></table>
+    </div>
+    <div class="layui-col-md6">
+        <blockquote class="layui-elem-quote">
+            申请借阅档案
+            @*<form id="formSearch_applyborrow" class="layui-form" action="">
+                    <div class="layui-form-item" style="margin-bottom: 0px;">
+                        <label class="layui-form-label">借阅用户：</label>
+                        <div class="layui-input-inline">
+                            <input name="ApplyUser" lay-verify="" autocomplete="off" class="layui-input">
+                        </div>
+                        <a href="javascript:;" class='layui-btn' id='btnSearch_applyborrow' data-type='reload'><i class='layui-icon'>&#xe615;</i>搜索</a>
+                    </div>
+                </form>*@
+        </blockquote>
+        <table id="table_applyborrow" lay-filter="table4"></table>
+    </div>
+    
+</div>
+<div class="layui-row layui-col-space10">
+    <div class="layui-col-md6">
+        <blockquote class="layui-elem-quote">
+            申请调阅档案列表
+        </blockquote>
+        <table id="table_applycopy" lay-filter="table5"></table>
+    </div>
+</div>
+<script src="~/Areas/Admin/plugins/layui-2.5.5/layui.js"></script>
+<script src="~/Areas/Admin/Content/js/global.js"></script>
+<script type="text/javascript">
+    layui.config({
+        base: '/Areas/Admin/plugins/app/',
+        version: '1522709297490' //为了更新 js 缓存，可忽略
+    });
+
+    layui.use(['table', 'layer', 'common'],
+        function() {
+            var table = layui.table,
+                layer = layui.layer,
+                common = layui.common;
+
+            var $ = layui.$,
+                active = {
+                    reload: function() {
+                        //执行重载
+                        table.reload('table_handover',
+                            {
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                },
+                                where: urlToJson($("#formSearch").serialize())
+                            });
+                    }
+                },
+                active2 = {
+                    reload: function() {
+                        table.reload('table_borrow',
+                            {
+                                page: {
+                                    curr: 1
+                                },
+                                where: { ApplyUser: $("input[name='ApplyUser']").val(), ApplyState: 2 }
+                            });
+                    }
+                },
+                active3 = {
+                    reload: function() {
+                        table.reload('table_expired',
+                            {
+                                page: {
+                                    curr: 1
+                                }
+                            });
+                    }
+                },
+                active4 = {
+                    reload: function() {
+                        table.reload('table_applyborrow',
+                            {
+                                page: {
+                                    curr: 1
+                                },
+                                where: { ApplyState: 1 }
+                            });
+                    }
+                },
+                active5 = {
+                    reload: function() {
+                        table.reload('table_applycopy',
+                            {
+                                page: {
+                                    curr: 1
+                                }
+                            });
+                    }
+                };
+
+            $.ajax({
+                url: '/RecordTrancation/RecordOperation/GetRecordInforDif',
+                success: function (obj) {
+                    $('#RecordIn').append("<p>" + obj[1]['Value'] + "</p>");
+                    $('#RecordOut').append("<p>" + obj[2]['Value'] + "</p>");
+                    $('#RecordHand').append("<p>" + obj[0]['Value'] + "</p>");
+                }
+            });
+
+            table.render({
+                id: 'table_borrow',
+                elem: '#table_borrow',
+                height: 300,
+                where: {ApplyState:2},
+                url: '/RecordTrancation/RecordBorrow/RecordListBorrow',
+                page: true,
+                cellMinWidth:200,
+                cols: [
+                    [
+                        { field: 'BorrowID', title: '借阅编号'},
+                        { field: 'ApplyUser', title: '借阅人'},
+                        { field: 'ApplyTime', title: '借阅时间'}
+                    ]
+                ]
+            });
+
+            table.render({
+                id: 'table_handover',
+                cellMinWidth:200,
+                elem: '#table_handover',
+                height: 300,
+                url: '/RecordTrancation/RecordBorrow/RecordListHandOver',
+                page: true,
+                cols: [
+                    [
+                        { field: 'RecordID', title: '档案编号'},
+                        { field: 'RecordUserName', title: '档案用户姓名'},
+                        { field: 'RecordUserCode', title: '档案客户号'}
+                    ]
+                ]
+            });
+
+            table.render({
+                id: 'table_expired',
+                cellMinWidth: 200,
+                elem: '#table_expired',
+                height: 300,
+                url: '/RecordTrancation/RecordOperation/RecordExpired',
+                page: true,
+                cols: [
+                    [
+                        { field: 'RecordID', title: '档案编号' },
+                        { field: 'RecordUserName', title: '档案用户姓名' },
+                        { field: 'RecordUserCode', title: '档案客户号' },
+                        { field: 'RecordManager', title: '档案归属客户经理' },
+                        { field: 'RecordManagerDepartment', title: '档案归属支行' }
+                    ]
+                ]
+            });
+
+            table.render({
+                id: 'table_applyborrow',
+                cellMinWirdth: 200,
+                elem: '#table_applyborrow',
+                where: {ApplyState:1},
+                height: 300,
+                url: '/RecordTrancation/RecordBorrow/RecordListBorrow',
+                page: true,
+                cols: [
+                    [
+                        { field: 'BorrowID', title: '借阅编号' },
+                        { field: 'ApplyUser', title: '借阅人' },
+                        { field: 'ApplyTime', title: '借阅时间' }
+                    ]
+                ]
+            });
+
+            table.render({
+                id: 'table_applycopy',
+                cellMinWirdth: 200,
+                elem: '#table_applycopy',
+                where: {ApplyState:1},
+                height: 300,
+                url: '/RecordTrancation/RecordBorrow/RecordListCopy',
+                page: true,
+                cols: [
+                    [
+                        { field: 'BorrowID', title: '调阅编号' },
+                        { field: 'ApplyUser', title: '调阅人' },
+                        { field: 'ApplyTime', title: '调阅时间' }
+                    ]
+                ]
+            });
+
+            table.on('rowDouble(table5)',
+                function(obj) {
+                    common.openTop({
+                        detail: false,
+                        btn:['同意调阅', '取消'],
+                        title: '申请调阅清单',
+                        w: '700px',
+                        h: '500px',
+                        content: '/RecordTrancation/RecordBorrow/CopyFileListDetail?borrowId='+obj.data.BorrowID,
+                        clickOK: function(index) {
+                            $.ajax({
+                                url: '/RecordTrancation/RecordBorrow/ApplyCopyAgree',
+                                data: { 'borrowId': obj.data.BorrowID },
+                                type: 'post',
+                                success: function(data) {
+                                    if (data.state === 'success') {
+                                        layer.msg('申请调阅审核成功!');
+                                        common.close(index);
+                                        active5['reload'].call(this);
+                                    } else {
+                                        layer.msg(data.message);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+
+            table.on('rowDouble(table1)',
+                function(obj) {
+                    //common.openTop({
+                    //    detail: true,
+                    //    title: '移交确认',
+                    //    w: '700px',
+                    //    h: '500px',
+                    //    content: '/RecordTrancation/RecordOperation/RecordDetail?recordId=' + obj.data.RecordID,
+                    //    clickOK: function(index) {
+                    //        $.ajax({
+                    //            url: '/RecordTrancation/RecordBorrow/RecordHandOverCheck',
+                    //            data: { 'recordId': obj.data.RecordID },
+                    //            type: 'post',
+                    //            success: function(data) {
+                    //                if (data.status) {
+                    //                    layer.msg('移交成功!');
+                    //                    common.close(index);
+                    //                }
+                    //            }
+                    //        });
+                    //    }
+                    //});
+                    layer.open({
+                        type: 2 //此处以iframe举例
+                        , title: '移交确认'
+                        , area: ['700px', '500px']
+                        //,shade: 0
+                        ,maxmin: true
+                        ,offset: 'auto'
+                        ,content: '/RecordTrancation/RecordOperation/RecordDetail?recordId=' + obj.data.RecordID
+                        , btn: ['确定移交', '取消']
+                        , yes: function (index, layero) {
+                            layer.open({
+                                type: 2,
+                                title: '移交确认',
+                                area: ['400px', '250px'],
+                                content: '/RecordTrancation/RecordBorrow/HandOverCheck?recordId=' + obj.data.RecordID,
+                                btn: ['关闭'],
+                                yes: function(index, layero) {
+                                    layer.closeAll();
+                                    
+                                },
+                                end: function () {
+                                    active['reload'].call(this);
+                                }
+                            });
+                        }
+                        ,btn2: function() {
+                            layer.closeAll();
+                        }
+                    });
+                });
+
+            table.on('rowDouble(table2)',
+                function(obj) {
+                    common.openTop({
+                        detail: true,
+                        title: '借阅归还清单确认',
+                        w: '700px',
+                        h: '500px',
+                        content: '/RecordTrancation/RecordBorrow/ReturnListDetail?borrowId='+obj.data.BorrowID,
+                        clickOK: function(index) {
+                            $.ajax({
+                                url: '/RecordTrancation/RecordBorrow/RecordBorrowReturn',
+                                data: { 'borrowId': obj.data.BorrowID },
+                                type: 'post',
+                                success: function(data) {
+                                    if (data.state === 'success') {
+                                        layer.msg('借阅归还成功!');
+                                        common.close(index);
+                                        active2['reload'].call(this);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                });
+
+
+            table.on('rowDouble(table4)',
+                function (obj) {
+                    layer.open({
+                        type: 2 //此处以iframe举例
+                        , title: '申请借阅清单'
+                        , area: ['700px', '500px']
+                        //,shade: 0
+                        ,maxmin: true
+                        ,offset: 'auto'
+                        ,content: '/RecordTrancation/RecordBorrow/ReturnListDetail?borrowId='+obj.data.BorrowID
+                        , btn: ['同意借阅', '取消']
+                        , yes: function (index, layero) {
+                            $.ajax({
+                                url: '/RecordTrancation/RecordBorrow/ApplyBorrowAgree',
+                                data: { 'borrowId': obj.data.BorrowID },
+                                type: 'post',
+                                success: function(data) {
+                                    if (data.state === 'success') {
+                                        layer.msg('申请借阅审核成功!');
+                                        layer.close(index);
+                                        active4['reload'].call(this);
+                                    } else {
+                                        layer.msg(data.message);
+                                    }
+                                }
+                            });
+                        }
+                        , btn2: function (index) {
+                            layer.close(index);
+                        }     
+                        ,zIndex: layer.zIndex //重点1
+                        ,success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+
+                    //common.openTop({
+                    //    detail: false,
+                    //    btn:['同意借阅', '取消'],
+                    //    title: '申请借阅清单',
+                    //    w: '700px',
+                    //    h: '500px',
+                    //    content: '/RecordTrancation/RecordBorrow/ReturnListDetail?borrowId='+obj.data.BorrowID,
+                    //    clickOK: function(index) {
+                    //        $.ajax({
+                    //            url: '/RecordTrancation/RecordBorrow/ApplyBorrowAgree',
+                    //            data: { 'borrowId': obj.data.BorrowID },
+                    //            type: 'post',
+                    //            success: function(data) {
+                    //                if (data.state === 'success') {
+                    //                    layer.msg('申请借阅审核成功!');
+                    //                    common.close(index);
+                    //                    active4['reload'].call(this);
+                    //                } else {
+                    //                    layer.msg(data.message);
+                    //                }
+                    //            }
+                    //        });
+                    //    }
+                    //});
+                });
+
+            table.on('rowDouble(table3)',
+                function(obj) {
+                    layer.open({
+                        type: 2 //此处以iframe举例
+                        , title: '过期文件更新'
+                        , area: ['900px', '400px']
+                        //,shade: 0
+                        ,maxmin: true
+                        ,offset: 'auto'
+                        , content: '/RecordTrancation/RecordOperation/ExpiredFile?recordId=' + obj.data.RecordID
+                        , end: function() {
+                            active3['reload'].call(this);
+                        }
+                    });
+                });
+
+            $('#btnSearch').on('click',
+                function() {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
+
+            $('#btnSearch_borrow').on('click',
+                function() {
+                    var type = $(this).data('type');
+                    active2[type] ? active2[type].call(this) : '';
+                });
+        });
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+﻿@model RightControl.Model.Insider.RuleList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.R_No)：</td>
+                <td>@Model.R_No</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.R_Name)：</td>
+                <td>@Model.R_Name</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.R_Description)：</td>
+                <td>@Model.R_Description</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.CreateOn)：</td>
+                <td>@Model.CreateOn</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.M_No)：</td>
+                <td>@Model.M_No</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.M_Name)：</td>
+                <td>@Model.M_Name</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

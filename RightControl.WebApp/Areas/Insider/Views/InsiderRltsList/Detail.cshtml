@@ -1,0 +1,49 @@
+﻿@model RightControl.Model.Insider.YG_InsiderRltsList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Department)：</td>
+                <td>@Model.Department</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.InsiderNm)：</td>
+                <td>@Model.InsiderNm</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.RltsNm)：</td>
+                <td>@Model.RltsNm</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.IdentityCd)：</td>
+                <td>@Model.IdentityCd</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Relationship)：</td>
+                <td>@Model.Relationship</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.CompanyNm)：</td>
+                <td>@Model.CompanyNm</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.SocialCreditCode)：</td>
+                <td>@Model.SocialCreditCode</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Controller)：</td>
+                <td>@Model.Controller</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.ControllerRlts)：</td>
+                <td>@Model.ControllerRlts</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

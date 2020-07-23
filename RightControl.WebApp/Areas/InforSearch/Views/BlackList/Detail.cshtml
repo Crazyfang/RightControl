@@ -1,0 +1,88 @@
+﻿@model RightControl.Model.InforSearch.BlackList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+@section styles
+{
+    <script src="~/Areas/Admin/Scripts/Print.js/src/js/print.min.js"></script>
+    <script src="~/Areas/Admin/Content/js/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Areas/Admin/Scripts/Print.js/src/print.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Areas/Admin/Content/css/test.css">
+    <style>
+        .dontprint {
+            display: none
+        }
+    </style>
+}
+<div class="layui-col-md12" id="PrintArea">
+    <!--startprint-->
+    <div style="text-align: center" class="dontprint" id="title"><span style="font-size: 20pt">镇海农商银行贴现承兑行黑名单查询</span></div>
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.BankName)：</td>
+                <td>@Model.BankName</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.RefuseReason)：</td>
+                <td>@Model.RefuseReason</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.CreateOn)：</td>
+                <td>@Model.CreateOn</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.SearchMan)：</td>
+                <td>@Model.SearchMan</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.SearchBranch)：</td>
+                <td>@Model.SearchBranch</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.SearchTime)：</td>
+                <td>@Model.SearchTime</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.OtherDescription)：</td>
+                <td>@Model.OtherDescription</td>
+            </tr>
+        </tbody>
+    </table>
+    <!--endprint-->
+</div>
+<div class="layui-col-md12" style="text-align: center" id="buttongroup">
+    <input type="button" value="打印" id="PrintButton" onclick="doprint()" class="layui-btn layui-btn-normal" />
+</div>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        var form = layui.form, $ = layui.$;
+
+        //$("#PrintButton").click(function() {
+        //    printJS(
+        //        { printable: 'PrintArea', type: 'html', header: '镇海农商银行贴现承兑行黑名单查询', documentTitle: '', maxWidth:1200, headerStyle:"text-align:center", css:'../../../Areas/Admin/Content/css/test.css', style:'table-layout: fixed'});
+        //});
+    });
+
+    //$("#PrintButton").click(function () {
+    function doprint() {
+        //var headeritem = '   <div style="text-align: center"><span style="font-size: 20pt">镇海农商银行贴现承兑行黑名单查询</span></div>';
+        //var headeritem = '';
+        //bdhtml = window.document.body.innerHTML;//获取当前页的html代码
+        //sprnstr = "<!--startprint-->";//设置打印开始区域
+        //eprnstr = "<!--endprint-->";//设置打印结束区域
+        //prnhtml = bdhtml.substring(bdhtml.indexOf(sprnstr) + 18); //从开始代码向后取html
+        //prnhtml = prnhtml.substring(0, prnhtml.indexOf(eprnstr));//从结束代码向前取html
+        //prnhtml = headeritem + prnhtml;
+        //window.document.body.innerHTML = prnhtml;
+        $("#title").toggleClass('dontprint', false);
+        $("#buttongroup").toggleClass('dontprint', true);
+        window.print();
+        $("#title").toggleClass('dontprint', true);
+        $("#buttongroup").toggleClass('dontprint', false);
+        //window.document.body.innerHTML = bdhtml;
+
+    };
+</script>
+
