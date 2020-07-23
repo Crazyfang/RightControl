@@ -64,6 +64,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(js);
             JObject jo = JObject.Parse(json);
 
+
             IEnumerable<dynamic> dynamics = jo.Values().Values().Values().Children();
             int count = dynamics.Count();
             dynamic[] arrays = dynamics.ToArray();
