@@ -71,6 +71,7 @@
     <Compile Include="Permissions\IMenuRoleActionService.cs" />
     <Compile Include="Permissions\IMenuService.cs" />
     <Compile Include="Permissions\IRoleService.cs" />
+    <Compile Include="Permissions\IUserRoleService.cs" />
     <Compile Include="Permissions\IUserService.cs" />
     <Compile Include="PfLender\ILenderListDepFlowService.cs" />
     <Compile Include="PfLender\ILenderListDepService.cs" />

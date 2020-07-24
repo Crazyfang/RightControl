@@ -298,6 +298,22 @@ namespace RightControl.Service.RecordTrancation
 
         public dynamic NeedVerifyExpiredFileList(PageInfo pageInfo)
         {
+            var total = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+                    .LeftJoin(a => a.RecordID == b.RecordId)
+                    .LeftJoin(a => a.RecordID == c.RecordID)
+                    .LeftJoin(a => b.ID == d.RecordFileId)
+                    .LeftJoin(a => c.ID == d.OtherFileId))
+                    .Where((s, b, c, d) => d.Status == 0)
+                    .Distinct()
+                    .OrderBy((s, b, c, d) => s.RecordID)
+                    .Page(pageInfo.page, pageInfo.limit)
+                    .ToList((s, b, c, d) => new {
+                        RecordId = s.RecordID,
+                        RecordManager = s.RecordManager,
+                        RecordManagerDepartment = s.RecordManagerDepartment,
+                        ChangedDateTime = d.OperateTime
+                    }).Count;
+
             var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
                     .LeftJoin(a => a.RecordID == b.RecordId)
                     .LeftJoin(a => a.RecordID == c.RecordID)
@@ -305,7 +321,6 @@ namespace RightControl.Service.RecordTrancation
                     .LeftJoin(a => c.ID == d.OtherFileId))
                     .Where((s, b, c, d) => d.Status == 0)
                     .Distinct()
-                    .Count(out var total)
                     .OrderBy((s, b, c, d) => s.RecordID)
                     .Page(pageInfo.page, pageInfo.limit)
                     .ToList((s, b, c, d) => new { RecordId = s.RecordID,

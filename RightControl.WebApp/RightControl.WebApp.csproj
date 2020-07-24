@@ -379,6 +379,7 @@
     <Content Include="Areas\Admin\plugins\app\formSelects-v4.min.js" />
     <Content Include="Areas\Admin\plugins\app\iconPicker.js" />
     <Content Include="Areas\Admin\plugins\app\slider.js" />
+    <Content Include="Areas\Admin\plugins\app\xm-select.js" />
     <Content Include="Areas\Admin\plugins\layui-2.2.6\css\eleTree.css" />
     <Content Include="Areas\Admin\plugins\layui-2.2.6\css\layui.css" />
     <Content Include="Areas\Admin\plugins\layui-2.2.6\css\layui.mobile.css" />

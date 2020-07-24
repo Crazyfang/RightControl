@@ -101,6 +101,12 @@
                 <div class="eleTree ele" lay-filter="departmentdata"></div>
             </div>
         </div>
+        @*<div class="layui-form-item">
+            <label class="layui-form-label">测试</label>
+            <div class="layui-input-inline">
+                <div id="demo1"></div>
+            </div>
+        </div>*@
         <div class="layui-form-item">
             <label class="layui-form-label">角色</label>
             <div class="layui-input-inline">
@@ -121,8 +127,9 @@
         </div>
     </form>
 </div>
+<script src="~/Areas/Admin/plugins/app/xm-select.js" type="text/javascript" charset="utf-8"></script>
 <script>
-        layui.use(['jquery', 'table', 'eleTree', 'form', 'code', 'slider'], function () {
+    layui.use(['jquery', 'table', 'eleTree', 'form', 'code', 'slider'], function () {
             var $ = layui.jquery;
             var eleTree = layui.eleTree;
             var table = layui.table;
@@ -155,7 +162,7 @@
                 function(e) {
                     e.stopPropagation();
                     if (!el) {
-                    
+
                     }
                     $(".ele").toggle();
                 });
@@ -165,10 +172,35 @@
                     $("[name='DepartmentId']").val(d.data.currentData.id);
                     $(".ele").hide();
                 });
+
             $(document).on("click",
                 function() {
                     $(".ele").hide();
                 });
+
+            //var demo1 = xmSelect.render({
+            //    el: '#demo1',
+            //    height: '150px',
+            //    prop: {
+            //        name: 'RoleName',
+            //        value: 'Id',
+            //    },
+            //    data: [],
+            //    on: function (data) {
+            //        alert(demo1.getValue('value'));
+            //    },
+            //});
+
+            //$.ajax({
+            //    url: '/Permissions/User/GetRoleList',
+            //    type: 'post',
+            //    success: function (data) {
+            //        demo1.update({
+            //            initValue: [2,4],
+            //            data: data
+            //        });
+            //    }
+            //});
         });
 </script>
 

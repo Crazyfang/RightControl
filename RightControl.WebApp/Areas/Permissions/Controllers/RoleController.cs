@@ -15,6 +15,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             base.Index(id);
             return View();
         }
+
         [HttpGet]
         public JsonResult List(PageInfo pageInfo, RoleModel filter)
         {
@@ -26,11 +27,13 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var model = service.ReadModel(Id);
             return View(model);
         }
+
         public ActionResult Edit(int Id)
         {
             var model = service.ReadModel(Id);
             return View(model);
         }
+
         [HttpPost]
         public ActionResult Edit(RoleModel model)
         {
@@ -39,10 +42,12 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var result = service.UpdateModel(model) ? SuccessTip() : ErrorTip();
             return Json(result);
         }
+
         public ActionResult Add()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Add(RoleModel model)
         {
@@ -51,6 +56,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var result = service.CreateModel(model) ? SuccessTip() : ErrorTip();
             return Json(result);
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -63,6 +69,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var result = service.DeleteRoleAllByRoleId(Id) ? SuccessTip() : ErrorTip();
             return Json(result);
         }
+
         public ActionResult Assign(int Id)
         {
             ViewBag.RoleId = Id;

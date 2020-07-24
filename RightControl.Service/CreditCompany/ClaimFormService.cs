@@ -29,11 +29,11 @@ namespace RightControl.Service.CreditCompany
 
             var creditCompany = fsql.Select<CreditCompanyModel>().Where(i => i.Id == creditCompanyId).First();
 
-            if(department == null)
+            if (department == null)
             {
                 return new AjaxResult { state = ResultType.error.ToString(), message = "当前用户部门为空，不允许认领企业!" };
             }
-            if(department.BelongStreet != creditCompany.BelongStreet)
+            if (department.BelongStreet != creditCompany.BelongStreet)
             {
                 return new AjaxResult { state = ResultType.error.ToString(), message = "该企业辖区与用户部门所属辖区不同，不允许认领!" };
             }
@@ -44,12 +44,13 @@ namespace RightControl.Service.CreditCompany
             }
             else
             {
-                if(creditCompany.Status != 1)
+                if (creditCompany.Status != 1)
                 {
                     return new AjaxResult { state = ResultType.error.ToString(), message = "当前纳税企业不是可认领状态!" };
                 }
                 var userCount = fsql.Select<ClaimFormModel>()
-                    .Where(i => i.UserId == user.Id && i.CreditCompany.Status == 0)
+                    .Where(i => i.UserId == user.Id)
+                    .Where(i => i.CreditCompany.Status == 2 || i.CreditCompany.Status == 3)
                     .Where(i => i.EndSign == 0)
                     .Count();
                 if(userCount >= 10)

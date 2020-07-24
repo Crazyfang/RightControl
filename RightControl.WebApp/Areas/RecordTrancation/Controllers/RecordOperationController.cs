@@ -903,7 +903,8 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                     {
                         RecordFileId = id,
                         RecordDelSign = string.IsNullOrEmpty(Request[item + "_remove"]) ? false : true,
-                        RecordFileDate = Request[item].ToDateOrNull()
+                        RecordFileDate = Request[item].ToDateOrNull(),
+                        OperateTime = DateTime.Now
                     };
                     var recordFile = RecordListService.ReadModel(id);
                     var contract = ContractFileTypeService.ReadModel(recordFile.RecordType);
@@ -942,7 +943,8 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                     {
                         OtherFileId = id,
                         OtherDelSign = string.IsNullOrEmpty(Request[item + "_remove"]) ? false : true,
-                        OtherFileDate = Request[item].ToDateOrNull()
+                        OtherFileDate = Request[item].ToDateOrNull(),
+                        OperateTime = DateTime.Now
                     };
                     operateLog.OperateInfo += $"更新 {recordFileType.RecordTypeName}-{contract.HoldingCell} 用户自定义文件{otherFile.FileName} ";
                     if (expiredFile.RecordDelSign)
