@@ -949,6 +949,7 @@
     <Content Include="Areas\PfLender\Views\LenderList\Index.cshtml" />
     <Content Include="Areas\PfLender\Views\LenderList\Loan.cshtml" />
     <Content Include="Areas\PfLender\Views\web.config" />
+    <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordFileAdjust.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

@@ -9,6 +9,11 @@ namespace RightControl.Model.RecordTrancation
         [Column(IsIdentity = true)]
         public int Id { get; set; }
 
+        public string RecordItemId { get; set; }
+
+        [Navigate(nameof(RecordItemId))]
+        public Record RecordItem { get; set; }
+
         /// <summary>
         /// 档案文件主键
         /// </summary>
@@ -54,5 +59,10 @@ namespace RightControl.Model.RecordTrancation
         public DateTime? OperateTime { get; set; }
 
         public string RefuseReason { get; set; }
+
+        /// <summary>
+        /// 更新原因 0-过期更新 1-主动更新
+        /// </summary>
+        public int Type { get; set; }
     }
 }

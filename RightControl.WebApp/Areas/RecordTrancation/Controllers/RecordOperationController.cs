@@ -884,6 +884,8 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
 
         public ActionResult ChangeFileValidateTime()
         {
+            var operateTime = DateTime.Now;
+            var recordId = Request.Form["recordId"];
             var fileList = Request.Form.AllKeys.Where(x => x.Contains("File_") && !x.Contains("_remove"));
             var otherFileList = Request.Form.AllKeys.Where(x => x.Contains("Other_") && !x.Contains("_remove"));
             var expiredFileList = new List<ExpiredFileVerifyEntity>();
@@ -902,9 +904,10 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                     var expiredFile = new ExpiredFileVerifyEntity()
                     {
                         RecordFileId = id,
-                        RecordDelSign = string.IsNullOrEmpty(Request[item + "_remove"]) ? false : true,
+                        RecordDelSign = !string.IsNullOrEmpty(Request[item + "_remove"]),
                         RecordFileDate = Request[item].ToDateOrNull(),
-                        OperateTime = DateTime.Now
+                        OperateTime = operateTime,
+                        RecordItemId = recordId
                     };
                     var recordFile = RecordListService.ReadModel(id);
                     var contract = ContractFileTypeService.ReadModel(recordFile.RecordType);
@@ -942,9 +945,10 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                     var expiredFile = new ExpiredFileVerifyEntity()
                     {
                         OtherFileId = id,
-                        OtherDelSign = string.IsNullOrEmpty(Request[item + "_remove"]) ? false : true,
+                        OtherDelSign = !string.IsNullOrEmpty(Request[item + "_remove"]),
                         OtherFileDate = Request[item].ToDateOrNull(),
-                        OperateTime = DateTime.Now
+                        OperateTime = operateTime,
+                        RecordItemId = recordId
                     };
                     operateLog.OperateInfo += $"更新 {recordFileType.RecordTypeName}-{contract.HoldingCell} 用户自定义文件{otherFile.FileName} ";
                     if (expiredFile.RecordDelSign)
@@ -1192,17 +1196,22 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
             var otherList = dic.otherList;
             var expiredVerifyList = dic.expiredVerifyList;
 
+            var recordContractList = new List<ContractFileType>();
+            var otherContractList = new List<ContractFileType>();
+
             if (recordList.Count > 0)
             {
                 var item = recordList.Select(a => a.RecordType);
-                contractList = contractList.Where(i => item.Contains(i.ID)).ToList();
+                recordContractList = contractList.Where(i => item.Contains(i.ID)).ToList();
             }
 
             if (otherList.Count > 0)
             {
                 var item = otherList.Select(a => a.RecordFileType);
-                contractList = contractList.Where(i => item.Contains(i.ID)).ToList();
+                otherContractList = contractList.Where(i => item.Contains(i.ID)).ToList();
             }
+
+            contractList = recordContractList.Union(otherContractList).ToList();
 
             var html = new StringBuilder();
 
@@ -1319,6 +1328,164 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
             var list = RecordService.GetRecordHistory(recordId);
 
             return Json(JsonConvert.SerializeObject(list), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult RecordFileAdjust(string recordId)
+        {
+            ViewBag.recordId = recordId;
+            return View();
+        }
+
+        public ActionResult RecordFileAdjustList(string recordId)
+        {
+            var contractList = RecordService.GetTheTypeList(recordId);
+            var fileList = RecordService.GetRecordListByRecordId(recordId);
+            var otherFileList = RecordService.GetOtherFileListByRecordId(recordId);
+
+            var html = new StringBuilder();
+
+            contractList = contractList.Where(i => fileList.Select(a => a.RecordType).Contains(i.ID)
+                                                || otherFileList.Select(a => a.RecordFileType).Contains(i.ID)).ToList();
+
+            foreach (var contract in contractList)
+            {
+                html.Append("<fieldset class='layui-elem-field'>" +
+                            $"<legend>{contract.RecordTypeName}-{contract.HoldingCell}</legend>" +
+                            "<div class='layui-field-box'>");
+
+                foreach (var item in fileList.Where(i => i.RecordType == contract.ID))
+                {
+                    html.Append("<div class='layui-form-item'>");
+                    html.Append("<div class='layui-input-inline'><label class='layui-form-lable'>" + item.RecordFileName +
+                                "</lable></div>");
+                    html.Append(
+                        "<div class='layui-input-inline'><input class='layui-input datetime' type='text' placeholder='选择过期时间' name='File_" +
+                        item.ID + "'></div>");
+
+                    html.Append("<div class='layui-input-inline'><label class='layui-form-label'>x" + item.Amount +
+                                "</label></div>");
+                    html.Append("<div class='layui-input-inline'><input type='checkbox' name='File_" + item.ID + "_remove' lay-skin='switch' lay-text='删除|保留'></div>");
+                    html.Append("</div>");
+                }
+
+                foreach (var item in otherFileList.Where(i => i.RecordFileType == contract.ID))
+                {
+                    html.Append("<div class='layui-form-item'>");
+                    html.Append("<div class='layui-input-inline'><label class='layui-form-lable'>" + item.FileName +
+                                "</lable></div>");
+                    html.Append(
+                        "<div class='layui-input-inline'><input class='layui-input datetime' type='text' placeholder='选择过期时间' name='Other_" +
+                        item.ID + "'></div>");
+
+                    html.Append("<div class='layui-input-inline'><label class='layui-form-label'>x" + item.Amount +
+                                "</label></div>");
+                    html.Append("<div class='layui-input-inline'><input type='checkbox' name='Other_" + item.ID + "_remove' lay-skin='switch' lay-text='删除|保留'></div>");
+                    html.Append("</div>");
+                }
+
+                html.Append("</div></fieldset>");
+            }
+
+            html.Append("<div class='layui-form-item' style='margin-top: 10px; text-align: center' id='buttonGroup'><div class='layui-input-block'>");
+            html.Append("<button class='layui-btn' lay-submit lay-filter='formDemo' id='submit_btn'>立即提交</button></div></div>");
+
+            return Content(html.ToString());
+        }
+
+        public ActionResult RecieveAdjust()
+        {
+            var recordId = Request.Form["recordId"];
+            var fileList = Request.Form.AllKeys.Where(x => x.Contains("File_") && !x.Contains("_remove"));
+            var otherFileList = Request.Form.AllKeys.Where(x => x.Contains("Other_") && !x.Contains("_remove"));
+            var expiredFileList = new List<ExpiredFileVerifyEntity>();
+            var operateTime = DateTime.Now;
+
+            var operateLog = new OperateLog()
+            {
+                OperatePeople = Operator.RealName,
+                OperateType = "文件主动更新申请",
+                OperateTime = DateTime.Now
+            };
+            try
+            {
+                foreach (var item in fileList)
+                {
+                    var id = int.Parse(item.Split('_')[1]);
+                    var expiredFile = new ExpiredFileVerifyEntity()
+                    {
+                        RecordFileId = id,
+                        RecordDelSign = !string.IsNullOrEmpty(Request[item + "_remove"]),
+                        RecordFileDate = Request[item].ToDateOrNull(),
+                        OperateTime = operateTime,
+                        Type = 1,
+                        RecordItemId = recordId
+                    };
+                    var recordFile = RecordListService.ReadModel(id);
+                    var contract = ContractFileTypeService.ReadModel(recordFile.RecordType);
+                    var recordFileType = RecordFileTypeService.ReadModel(contract.RecordTypeID);
+                    if (string.IsNullOrEmpty(operateLog.RecordId))
+                    {
+                        operateLog.RecordId = recordFile.RecordId;
+                    }
+
+                    operateLog.OperateInfo += $"更新 {recordFileType.RecordTypeName}-{contract.HoldingCell} 预设文件{recordFile.RecordFileName} ";
+                    if (expiredFile.RecordDelSign)
+                    {
+                        operateLog.OperateInfo += $"删除 <br>";
+                    }
+                    else
+                    {
+                        operateLog.OperateInfo += $"<br> 原过期时间 {recordFile.ExpirationTime} 申请更新过期时间 {expiredFile.RecordFileDate} <br>";
+                    }
+                    expiredFileList.Add(expiredFile);
+                    //var recordList = RecordListService.ReadModel(id);
+                    //recordList.ExpirationTime = Request[item].ToDateOrNull();
+                    //RecordListService.UpdateModel(recordList);
+                }
+
+                foreach (var item in otherFileList)
+                {
+                    var id = int.Parse(item.Split('_')[1]);
+                    var otherFile = OtherFileListService.ReadModel(id);
+                    var contract = ContractFileTypeService.ReadModel(otherFile.RecordFileType);
+                    var recordFileType = RecordFileTypeService.ReadModel(contract.RecordTypeID);
+                    if (string.IsNullOrEmpty(operateLog.RecordId))
+                    {
+                        operateLog.RecordId = otherFile.RecordID;
+                    }
+                    var expiredFile = new ExpiredFileVerifyEntity()
+                    {
+                        OtherFileId = id,
+                        OtherDelSign = !string.IsNullOrEmpty(Request[item + "_remove"]),
+                        OtherFileDate = Request[item].ToDateOrNull(),
+                        OperateTime = operateTime,
+                        Type = 1,
+                        RecordItemId = recordId
+                    };
+                    operateLog.OperateInfo += $"更新 {recordFileType.RecordTypeName}-{contract.HoldingCell} 用户自定义文件{otherFile.FileName} ";
+                    if (expiredFile.RecordDelSign)
+                    {
+                        operateLog.OperateInfo += $"删除 <br>";
+                    }
+                    else
+                    {
+                        operateLog.OperateInfo += $"<br> 原过期时间 {otherFile.ExpirationTime} 申请更新过期时间 {expiredFile.RecordFileDate} <br>";
+                    }
+                    expiredFileList.Add(expiredFile);
+
+                    //var otherFile = OtherFileListService.ReadModel(id);
+                    //otherFile.ExpirationTime = Request[item].ToDateOrNull();
+                    //OtherFileListService.UpdateModel(otherFile);
+                }
+
+                OperateLogService.CreateModel(operateLog);
+                var result = ExpiredFileVerifyService.InsertItems(expiredFileList) ? SuccessTip("已提交更新请求，等待管理员审核") : ErrorTip("更新失败,请重试!");
+                return Json(result);
+            }
+            catch (Exception e)
+            {
+                return Json(ErrorTip());
+            }
         }
     }
 }

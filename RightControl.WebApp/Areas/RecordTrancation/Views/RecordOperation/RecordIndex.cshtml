@@ -269,7 +269,12 @@
                                 content: '/RecordTrancation/RecordOperation/RecordEdit?recordId=' + data.RecordID
                             });
                         } else {
-                            layer.msg('无当前档案的编辑权限!');
+                            common.openTop({
+                                title: '申请更新文件',
+                                w: '800px',
+                                h: '500px',
+                                content: '/RecordTrancation/RecordOperation/RecordFileAdjust?recordId=' + data.RecordID
+                            });
                         }
                     }
                 });
