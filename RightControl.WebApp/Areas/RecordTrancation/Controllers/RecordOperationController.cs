@@ -14,6 +14,7 @@ using RightControl.IService.Permissions;
 using RightControl.Model;
 using RightControl.IService;
 using Newtonsoft.Json.Linq;
+using RightControl.Common;
 
 namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
 {
@@ -1184,7 +1185,7 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
         public ActionResult ExpiredFileListData(PageInfo pageInfo)
         {
             var result = RecordService.NeedVerifyExpiredFileList(pageInfo);
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Content(JsonConvert.SerializeObject(result), "application/json");
         }
 
         public ActionResult GetExpiredFileCompare(string recordId)
@@ -1226,8 +1227,8 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                 {
                     html.Append("<div class='layui-row'>");
                     html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.File.FileName + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.ExpirationTime + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>x" + item.Amount + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>" + Common.Common.TransferDateTime(item.ExpirationTime) + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>x" + item.Amount + "</div>");
                     html.Append("</div>");
                 }
 
@@ -1235,8 +1236,8 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                 {
                     html.Append("<div class='layui-row'>");
                     html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.FileName + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.ExpirationTime + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>x" + item.Amount + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>" + Common.Common.TransferDateTime(item.ExpirationTime) + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>x" + item.Amount + "</div>");
                     html.Append("</div>");
                 }
 
@@ -1253,22 +1254,22 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                 foreach (var item in recordList.Where(i => i.RecordType == contract.ID))
                 {
                     var expire = expiredVerifyList.Where(i => i.RecordFileId == item.ID).FirstOrDefault();
-                    var data = expire.RecordDelSign ? "删除" : expire.RecordFileDate.ToString();
+                    var data = expire.RecordDelSign ? "删除" : Common.Common.TransferDateTime(expire.RecordFileDate);
                     html.Append("<div class='layui-row'>");
                     html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.File.FileName + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + data + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>x" + item.Amount + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>" + data + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>x" + item.Amount + "</div>");
                     html.Append("</div>");
                 }
 
                 foreach (var item in otherList.Where(i => i.RecordFileType == contract.ID))
                 {
                     var expire = expiredVerifyList.Where(i => i.OtherFileId == item.ID).FirstOrDefault();
-                    var data = expire.OtherDelSign ? "删除" : expire.OtherFileDate.ToString();
+                    var data = expire.OtherDelSign ? "删除" : Common.Common.TransferDateTime(expire.OtherFileDate);
                     html.Append("<div class='layui-row'>");
                     html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + item.FileName + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>" + data + "</div>");
-                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4'>x" + item.Amount + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>" + data + "</div>");
+                    html.Append("<div class='layui-col-xs4 layui-col-sm4 layui-col-md4' style='text-align:center'>x" + item.Amount + "</div>");
                     html.Append("</div>");
                 }
 
@@ -1487,5 +1488,7 @@ namespace RightControl.WebApp.Areas.RecordTrancation.Controllers
                 return Json(ErrorTip());
             }
         }
+
+        
     }
 }

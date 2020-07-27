@@ -45,5 +45,17 @@ namespace RightControl.Common
             return recordId;
         }
         #endregion
+
+        public static string TransferDateTime(DateTime? value)
+        {
+            if (value.HasValue)
+            {
+                return value.Value.ToString("yyyy-MM-dd");
+            }
+            else
+            {
+                return "无";
+            }
+        }
     }
 }

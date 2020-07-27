@@ -248,8 +248,7 @@ namespace RightControl.Service.RecordTrancation
 
             var total = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
                     .LeftJoin(a => a.RecordID == b.RecordItemId))
-                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any())
-                    .Where((s, b) => fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
                     .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
@@ -259,13 +258,13 @@ namespace RightControl.Service.RecordTrancation
 
             var recordList = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
                     .LeftJoin(a => a.RecordID == b.RecordItemId))
-                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any())
-                    .Where((s, b) => fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
                     .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
                     .Distinct()
                     .OrderBy((s, b) => s.RecordID)
+                    .Page(pageInfo.page, pageInfo.limit)
                     .ToList((s, b) => s);
 
             return new { code = 0, count = total, data = recordList };
@@ -277,8 +276,7 @@ namespace RightControl.Service.RecordTrancation
 
             var sql = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
                     .LeftJoin(a => a.RecordID == b.RecordItemId))
-                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any())
-                    .Where((s, b) => fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
                     .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
                     .Where((s, b) => s.RecordManager == userCode)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
@@ -289,8 +287,7 @@ namespace RightControl.Service.RecordTrancation
 
             var total = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
                     .LeftJoin(a => a.RecordID == b.RecordItemId))
-                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any())
-                    .Where((s, b) => fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
                     .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
                     .Where((s, b) => s.RecordManager == userCode)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
@@ -301,14 +298,14 @@ namespace RightControl.Service.RecordTrancation
 
             var recordList = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
                     .LeftJoin(a => a.RecordID == b.RecordItemId))
-                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any())
-                    .Where((s, b) => fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
                     .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
                     .Where((s, b) => s.RecordManager == userCode)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
                     .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
                     .Distinct()
                     .OrderBy((s, b) => s.RecordID)
+                    .Page(pageInfo.page, pageInfo.limit)
                     .ToList((s, b) => s);
 
             //var sql = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s

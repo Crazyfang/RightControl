@@ -123,8 +123,16 @@
         });
         //add
         $('#btnAdd').on('click', function () {
-            common.openTop({
-                title: '档案添加', w: '1000px', h: '500px', content: '/RecordTrancation/RecordOperation/RecordAdd'
+            layer.open({
+                type: 2
+                , title: '档案添加'
+                , content: '/RecordTrancation/RecordOperation/RecordAdd'
+                , shadeClose: true
+                , area: ['1000px', '500px']
+                , maxmin: true
+                , end: function () {
+                    active["reload"].call(this);
+                }
             });
         });
         //借阅
