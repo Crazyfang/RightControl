@@ -12,8 +12,8 @@ namespace RightControl.Model.Permissions
     [DapperExtensions.Table("t_DepartmentUser")]
     public class DepartmentUserModel
     {
-        [FreeSql.DataAnnotations.Column(IsIdentity = true, IsPrimary = true)]
         [DapperExtensions.Key(true)]
+        [FreeSql.DataAnnotations.Column(IsIdentity = true, IsPrimary = true)]
         public int Id { get; set; }
 
         [Computed]

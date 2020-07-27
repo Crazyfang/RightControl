@@ -20,6 +20,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
         public IRoleService roleService { get; set; }
         public IDepartmentService departmentService { get; set; }
         public IDepartmentUserService departmentUserService { get; set; }
+        public IUserRoleService userRoleService { get; set; }
         public SelectList RoleList { get { return new SelectList(roleService.GetRoleList(), "Id", "RoleName"); } }
 
         // GET: Permissions/User
@@ -70,6 +71,12 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             return Content(JsonConvert.SerializeObject(data), "application/json");
         }
 
+        public ActionResult GetUserRoleList(string UserName)
+        {
+            var result = userRoleService.GetUserRoleList(UserName);
+
+            return Content(JsonConvert.SerializeObject(result), "application/json");
+        }
         //public ActionResult GetOwnedRoleList()
         //{
 
@@ -78,6 +85,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
         [HttpPost]
         public ActionResult Edit(UserModel model)
         {
+            var roleStr = Request.Form["select"];
             model.UpdateOn = DateTime.Now;
             model.UpdateBy = Operator.UserId;
 
@@ -95,7 +103,8 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
                     UserId = model.Id
                 });
             }
-            
+            userRoleService.UpdateUserRoleRelation(roleStr, Operator.UserName);
+
             var result = userService.UpdateModel(model) ? SuccessTip() : ErrorTip();
             return Json(result);
         }

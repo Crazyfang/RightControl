@@ -1,142 +1,168 @@
 ﻿@model RightControl.Model.UserModel
-@{
-    ViewBag.Title = "Edit";
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutForm.cshtml";
-}
-@section styles{ 
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/Areas/Admin/plugins/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/fonts/iconfont.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/Content/css/admin.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Areas/Admin/plugins/layui/css/eleTree.css">
     <style>
-        .nav{
+        .nav {
             position: fixed;
             right: 25px;
             top: calc(50% - 90px);
             border: 1px solid #d2d2d2;
-            background-color:#fff;
+            background-color: #fff;
             z-index: 100000;
         }
-        .nav-title{
-            background-color: #F8F8F8; 
-            padding:0 80px 0 20px;
+
+        .nav-title {
+            background-color: #F8F8F8;
+            padding: 0 80px 0 20px;
             margin: 0px;
             height: 42px;
             line-height: 42px;
             border-bottom: 1px solid #eee;
         }
-        .nav ul{
-            padding:10px 0px 10px 35px;
-        }
-        .nav ul li{
-            padding: 5px 0px;
-            list-style-type: decimal;
-        }
-        .nav ul a{
-            color: #333;
-            font-size: 14px;
-            text-decoration: none;
+
+        .nav ul {
+            padding: 10px 0px 10px 35px;
         }
 
-        .eleTree{
+            .nav ul li {
+                padding: 5px 0px;
+                list-style-type: decimal;
+            }
+
+            .nav ul a {
+                color: #333;
+                font-size: 14px;
+                text-decoration: none;
+            }
+
+        .eleTree {
             width: 350px;
             height: auto;
             border: 1px solid #ccc;
             overflow-y: scroll;
             display: inline-block;
         }
-        .inp{
+
+        .inp {
             width: 100%;
             line-height: 30px;
         }
-        .slideTest{
+
+        .slideTest {
             margin: 0 10px;
         }
-        .met{
+
+        .met {
             display: none;
             width: 100%;
         }
-        .blue{
+
+        .blue {
             color: #01AAED;
         }
-        a:hover{
+
+        a:hover {
             color: #01AAED;
         }
-        .ele{
+
+        .ele {
             height: 150px;
             width: 100%;
             display: none;
             position: absolute;
-            top:100%;
+            top: 100%;
             background-color: #fff;
             z-index: 100;
         }
     </style>
-}
-<div class="layui-col-md12 top10">
-    <form class="layui-form" id="form" action="/Permissions/User/Edit" method="post">
-        <input name="Id" value="@Model.Id" type="hidden">
-        @Html.HiddenFor(x => x.CreateOn)
-        @Html.HiddenFor(x => x.PassWord)
-        @Html.HiddenFor(x => x.Phone)
-        @Html.HiddenFor(x => x.Email)
-        @Html.HiddenFor(x => x.Gender)
-        @Html.HiddenFor(x => x.Remark)
-        @Html.HiddenFor(x => x.HeadShot)
-        <div class="layui-form-item">
-            <label class="layui-form-label">用户名称</label>
-            <div class="layui-input-inline">
-                <input name="UserName" value="@Model.UserName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+    <script src="~/Areas/Admin/plugins/layui/layui.js"></script>
+    <script src="~/Areas/Admin/Content/js/global.js"></script>
+    <style type="text/css">
+
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="layui-col-md12 top10">
+        <form class="layui-form" id="form" action="" method="post">
+            <input name="Id" value="@Model.Id" type="hidden">
+            @Html.HiddenFor(x => x.CreateOn)
+            @Html.HiddenFor(x => x.PassWord)
+            @Html.HiddenFor(x => x.Phone)
+            @Html.HiddenFor(x => x.Email)
+            @Html.HiddenFor(x => x.Gender)
+            @Html.HiddenFor(x => x.Remark)
+            @Html.HiddenFor(x => x.HeadShot)
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名称</label>
+                <div class="layui-input-inline">
+                    <input name="UserName" value="@Model.UserName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">真实姓名</label>
-            <div class="layui-input-inline">
-                <input name="RealName" value="@Model.RealName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+            <div class="layui-form-item">
+                <label class="layui-form-label">真实姓名</label>
+                <div class="layui-input-inline">
+                    <input name="RealName" value="@Model.RealName" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+                </div>
+                <div class="layui-form-mid layui-word-aux">姓名 如：张三</div>
             </div>
-            <div class="layui-form-mid layui-word-aux">姓名 如：张三</div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">所属部门</label>
-            <div class="layui-input-inline">
-                <input type="hidden" name="DepartmentId" class="layui-input">
-                <input type="text" name="DepartmentName" required lay-verify="required" placeholder="请选择部门" readonly autocomplete="off" class="layui-input">
-                <div class="eleTree ele" lay-filter="departmentdata"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-inline">
+                    <input type="hidden" name="DepartmentId" class="layui-input">
+                    <input type="text" name="DepartmentName" required lay-verify="required" placeholder="请选择部门" readonly autocomplete="off" class="layui-input">
+                    <div class="eleTree ele" lay-filter="departmentdata"></div>
+                </div>
             </div>
-        </div>
-        @*<div class="layui-form-item">
-            <label class="layui-form-label">测试</label>
-            <div class="layui-input-inline">
-                <div id="demo1"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-inline">
+                    <div id="demo1"></div>
+                </div>
             </div>
-        </div>*@
-        <div class="layui-form-item">
-            <label class="layui-form-label">角色</label>
-            <div class="layui-input-inline">
-                @Html.DropDownList("RoleId", null, "-请选择角色-", new Dictionary<string, object> { { "lay-verify", "required" }, { "lay-vertype", "tips" }, { "class", "layui-input" }, { "lay-filter", "RoleId" } })
+            @*<div class="layui-form-item">
+                <label class="layui-form-label">角色</label>
+                <div class="layui-input-inline">
+                    @Html.DropDownList("RoleId", null, "-请选择角色-", new Dictionary<string, object> { { "lay-verify", "required" }, { "lay-vertype", "tips" }, { "class", "layui-input" }, { "lay-filter", "RoleId" } })
+                </div>
+            </div>*@
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    @Html.StatusRadioHtml(Model.Status)
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">状态</label>
-            <div class="layui-input-inline">
-                @Html.StatusRadioHtml(Model.Status)
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submit_btn">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submitForm">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
-    </form>
-</div>
-<script src="~/Areas/Admin/plugins/app/xm-select.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    layui.use(['jquery', 'table', 'eleTree', 'form', 'code', 'slider'], function () {
+        </form>
+    </div>
+    <script src="~/Areas/Admin/plugins/app/xm-select.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+            layui.config({
+                base: '/Areas/Admin/plugins/app/',
+                version: '1522709297490' //为了更新 js 缓存，可忽略
+            }).use(['jquery', 'table', 'eleTree', 'form', 'code', 'slider'], function () {
             var $ = layui.jquery;
             var eleTree = layui.eleTree;
             var table = layui.table;
             var code = layui.code;
             var form = layui.form;
             var slider = layui.slider;
-            submitForm(form, "编辑成功"); //监听提交
+
             $("#RoleId").val(@Model.RoleId);
             form.render('select');
 
@@ -178,29 +204,106 @@
                     $(".ele").hide();
                 });
 
-            //var demo1 = xmSelect.render({
-            //    el: '#demo1',
-            //    height: '150px',
-            //    prop: {
-            //        name: 'RoleName',
-            //        value: 'Id',
-            //    },
-            //    data: [],
-            //    on: function (data) {
-            //        alert(demo1.getValue('value'));
-            //    },
-            //});
+            var demo1 = xmSelect.render({
+                el: '#demo1',
+                height: '150px',
+                prop: {
+                    name: 'RoleName',
+                    value: 'Id',
+                },
+                data: []
+            });
 
-            //$.ajax({
-            //    url: '/Permissions/User/GetRoleList',
-            //    type: 'post',
-            //    success: function (data) {
-            //        demo1.update({
-            //            initValue: [2,4],
-            //            data: data
+            $.ajax({
+                url: '/Permissions/User/GetUserRoleList',
+                type: 'post',
+                data: {'UserName':'@Model.UserName'},
+                success: function (data) {
+                    console.log(data);
+                    demo1.update({
+                        initValue: data
+                    });
+                    $.ajax({
+                        url: '/Permissions/User/GetRoleList',
+                        type: 'post',
+                        success: function (data) {
+                            demo1.update({
+                                data: data
+                            });
+
+                        }
+                    });
+                }
+            });
+
+            form.on('submit(submitForm)', function (data) {
+                $('#submit_btn').text('提交中');
+                $('#submit_btn').attr('disabled', 'disabled');
+                $.ajax({
+                    url: '/Permissions/User/Edit',
+                    type: 'post',
+                    data: data.field,
+                    success: function (data) {
+                        if (data.state === 'success') {
+                            layer.msg(data.message);
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            }, 1500);
+                        } else {
+                            layer.msg("编辑用户出错!");
+                            $('#submit_btn').text('立即提交');
+                            $('#submit_btn').attr('disabled', '');
+                        }
+                    },
+                    error: function (data) {
+                        $('#submit_btn').text('立即提交');
+                        $('#submit_btn').attr('disabled', '');
+                    }
+                });
+                return false;
+            });
+
+                //$.ajax({
+                //    url: action, //你的路由地址
+                //    type: "post",
+                //    dataType: "json",
+                //    data: _filter,
+                //    timeout: 30000,
+                //    success: function (data) {
+                //        if (func) {
+                //            func(data);
+                //        }
+                //    },
+                //    error: function (data) {
+                //        console.log(data);
+                //    }
+                //}
+
+            //监听表单提交
+            //function submitForm(form, msg) {
+            //    layui.use(['common', 'layer'],
+            //        function () {
+            //            var $ = layui.jquery;
+            //            common = layui.common;
+            //            form.on('submit(submitForm)',
+            //                function (data) {
+            //                    ajaxSubmitForm($("#form"),
+            //                        function (data) {
+            //                            if (data.state === "success") {
+            //                                common.msgSuccess(msg);
+            //                                //setTimeout(function () {
+            //                                //    parent.layer.closeAll();
+            //                                //}, 2000);
+
+            //                                setTimeout(CloseWin, 1500);
+            //                            }
+            //                        });
+            //                    return false;
+            //                });
             //        });
-            //    }
-            //});
+            //}
         });
-</script>
-
+    </script>
+</body>
+</html>

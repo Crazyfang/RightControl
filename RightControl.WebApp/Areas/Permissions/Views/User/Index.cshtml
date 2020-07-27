@@ -124,9 +124,24 @@
                         });
                     });
                 } else if (obj.event === 'edit') {
-                    common.openTop({
-                        title: '用户编辑', w: '600px', h: '360px', content: '/Permissions/User/Edit/' + data.Id
+                    layer.open({
+                        type: 2 //此处以iframe举例
+                        , title: '用户编辑'
+                        , area: ['600px', '360px']
+                        , maxmin: true
+                        , offset: 'auto'
+                        , content: '/Permissions/User/Edit/' + data.Id
+                        , end: function () {
+                            active['reload'].call(this);
+                        }
+                        , zIndex: layer.zIndex //重点1
+                        , success: function (layero) {
+                            layer.setTop(layero); //重点2
+                        }
                     });
+                    //common.openTop({
+                    //    title: '用户编辑', w: '600px', h: '360px', content: '/Permissions/User/Edit/' + data.Id
+                    //});
                 } else if (obj.event === 'reset') {
                     layer.confirm('确定要初始化密码吗？', function (index) {
                         $.ajax({
