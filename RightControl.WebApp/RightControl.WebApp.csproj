@@ -957,6 +957,7 @@
     <Content Include="Areas\Insider\Views\InsiderFaRenList\Edit.cshtml" />
     <Content Include="Areas\Insider\Views\InsiderFaRenList\Index.cshtml" />
     <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordFileAdjust.cshtml" />
+    <Content Include="Download\Template_inFaRen.xls" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
