@@ -174,16 +174,16 @@
 			    });
             });
 
-            $("#btnDownload").click(function () {
-                $.ajax({
-                    type: "GET",
-                    url: "/Insider/InsiderList/Download",
-                    success: function (result) {
-                        window.location.target = "_blank";
-                        window.location.href = result;
-                    }
-                })
+        $("#btnDownload").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "/Insider/InsiderList/Download",
+                success: function (result) {
+                    window.location.target = "_blank";
+                    window.location.href = result;
+                }
             })
+        });
 
 			//监听工具条
 			table.on('tool(defaultruv)', function (obj) {

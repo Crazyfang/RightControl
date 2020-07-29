@@ -57,6 +57,7 @@
     <Compile Include="Insider\Parameter.cs" />
     <Compile Include="Insider\RuleList.cs" />
     <Compile Include="Insider\RuleList_a.cs" />
+    <Compile Include="Insider\YG_InsiderFaRenList.cs" />
     <Compile Include="Insider\YG_InsiderList.cs" />
     <Compile Include="Insider\YG_InsiderRltsList.cs" />
     <Compile Include="Insider\YG_InsiderWarn.cs" />

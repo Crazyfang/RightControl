@@ -65,6 +65,7 @@
     <Compile Include="CreditCompany\CreditCompanyService.cs" />
     <Compile Include="InforSearch\BlackListService.cs" />
     <Compile Include="InforSearch\InforSearchOperateService.cs" />
+    <Compile Include="Insider\InsiderFaRenListService.cs" />
     <Compile Include="Insider\InsiderListService.cs" />
     <Compile Include="Insider\InsiderRltsListService.cs" />
     <Compile Include="Insider\InsiderWarnService.cs" />

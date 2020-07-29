@@ -4,95 +4,13 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
 }
 
-@section styles{
-    <link rel="stylesheet" href="~/Areas/Admin/plugins/layui/css/eleTree.css">
-    <style>
-        .nav {
-            position: fixed;
-            right: 25px;
-            top: calc(50% - 90px);
-            border: 1px solid #d2d2d2;
-            background-color: #fff;
-            z-index: 100000;
-        }
-
-        .nav-title {
-            background-color: #F8F8F8;
-            padding: 0 80px 0 20px;
-            margin: 0px;
-            height: 42px;
-            line-height: 42px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .nav ul {
-            padding: 10px 0px 10px 35px;
-        }
-
-            .nav ul li {
-                padding: 5px 0px;
-                list-style-type: decimal;
-            }
-
-            .nav ul a {
-                color: #333;
-                font-size: 14px;
-                text-decoration: none;
-            }
-
-        .eleTree {
-            width: 350px;
-            height: auto;
-            border: 1px solid #ccc;
-            overflow-y: scroll;
-            display: inline-block;
-        }
-
-        .inp {
-            width: 100%;
-            line-height: 30px;
-        }
-
-        .slideTest {
-            margin: 0 10px;
-        }
-
-        .met {
-            display: none;
-            width: 100%;
-        }
-
-        .blue {
-            color: #01AAED;
-        }
-
-        a:hover {
-            color: #01AAED;
-        }
-
-        .ele {
-            max-height: 150px;
-            width: 100%;
-            display: none;
-            position: absolute;
-            top: 100%;
-            background-color: #fff;
-            z-index: 100;
-        }
-    </style>
-}
-
 <div class="admin-main">
     <blockquote class="layui-elem-quote p10">
         <form id="formSearch" class="layui-form" action="">
             <div class="layui-form-item" style="margin-bottom:0px;">
-                <label class="layui-form-label">岗位：</label>
+                <label class="layui-form-label">法人或其他组织名称：</label>
                 <div class="layui-input-inline">
-                    <input name="InsiderPs" id="InsiderPs" lay-verify="" autocomplete="off" class="layui-input">
-                </div>
-                <label class="layui-form-label">内部人：</label>
-                <div class="layui-input-inline">
-                    <input name="InsiderNm" id="InsiderNm" lay-verify="" autocomplete="off" class="layui-input">
+                    <input name="FaRenNm" id="FaRenNm" lay-verify="" autocomplete="off" class="layui-input">
                 </div>
                 @Html.SearchBtnHtml()
                 @Html.ResetBtnHtml()
@@ -111,7 +29,7 @@
 </div>
 
 <script>
-    layui.use(['jquery', 'eleTree', 'table', 'common', 'form', 'layer'], function () {
+    layui.use(['jquery', 'table', 'common', 'form', 'layer'], function () {
             var table = layui.table,
                 form = layui.form,
                 common = layui.common,
@@ -121,21 +39,19 @@
 			    id: 'defaultReload'
                , elem: '#defaultTable'
                , height: 'full-112' //高度最大化减去差值
-                , url: '/Insider/InsiderRltsList/List' //数据接口
+                , url: '/Insider/InsiderFaRenList/List' //数据接口
                , page: true //开启分页
                , cols: [[ //表头
                  { checkbox: true, fixed: true },
-                   { field: 'Id', title: '序号', width: 60, fixed: 'left' }
-                   , { field: 'InsiderPs', title: '岗位', width: 150 }
-                   , { field: 'InsiderNm', title: '内部人姓名', width: 100 }
-                   , { field: 'RltsNm', title: '姓名', width: 100  }
-                   , { field: 'IdentityCd', title: '身份证号码', width: 180 }
-                   , { field: 'Relationship', title: '与内部人关系' }
-                   , { field: 'CreateOn', title: '添加时间', templet: '<div>{{showDate(d.CreateOn)}}</div>', width: 180 }
+                 { field: 'Id', title: '序号', width: 60, fixed: 'left' }
+                   , { field: 'FaRenNm', title: '法人或其他组织名称', width: 230 }
+                   , { field: 'ReKind', title: '关联类型', width: 180 }
+                   , { field: 'ReportUnit', title: '报告单位', width: 230 }
+                   , { field: 'Relationship', title: '与报告单位关系', width: 150 }
                    , { field: '', title: '操作', toolbar: "#bar" }
                 ]]
                 , done: function(res, curr, count) {
-                    if (res.count === 0 && ($("#InsiderPs").val() || $("#InsiderNm").val())) {
+                    if (res.count === 0 && $("#FaRenNm").val()) {
                         layer.alert('未找到查询结果!');
                     }
                 }
@@ -170,20 +86,20 @@
 			//add
 			$('#btnAdd').on('click', function () {
 			    common.openTop({
-                    title: '操作添加', w: '500px', h: '500px', content: '/Insider/InsiderRltsList/Add'
+                    title: '操作添加', w: '500px', h: '410px', content: '/Insider/InsiderFaRenList/Add'
 			    });
             });
 
             $("#btnDownload").click(function () {
                 $.ajax({
                     type: "GET",
-                    url: "/Insider/InsiderRltsList/Download",
+                    url: "/Insider/InsiderFaRenList/Download",
                     success: function (result) {
                         window.location.target = "_blank";
                         window.location.href = result;
                     }
                 })
-            })
+            });
 
 			//监听工具条
 			table.on('tool(defaultruv)', function (obj) {
@@ -191,14 +107,14 @@
 			    if (obj.event === 'detail') {
 			        common.openTop({
 			            detail:true,
-                        title: '操作详情', w: '600px', h: '500px', content: '/Insider/InsiderRltsList/Detail/' + data.Id, clickOK: function (index) {
+                        title: '操作详情', w: '600px', h: '400px', content: '/Insider/InsiderFaRenList/Detail/' + data.Id, clickOK: function (index) {
 			                common.close(index);
 			            }
 			        });
 			    } else if (obj.event === 'del') {
 			        layer.confirm('确定要删除吗？', function (index) {
 			            $.ajax({
-                            url: "/Insider/InsiderRltsList/Delete",
+                            url: "/Insider/InsiderFaRenList/Delete",
 			                type: "POST",
 			                data: { "Id": data.Id },
 			                dataType: "json",
@@ -215,9 +131,9 @@
 			        });
 			    } else if (obj.event === 'edit') {
 			        common.openTop({
-                        title: '操作编辑', w: '500px', h: '500px', content: '/Insider/InsiderRltsList/Edit/' + data.Id
+                        title: '操作编辑', w: '500px', h: '410px', content: '/Insider/InsiderFaRenList/Edit/' + data.Id
 			        });
-			    }
+                }
         });
 
 		});
@@ -240,7 +156,7 @@
         //执行实例
         var uploadInst = upload.render({
             elem: '#btnImport' //绑定元素
-            , url: '/Insider/InsiderRltsList/Import' //上传接口
+            , url: '/Insider/InsiderFaRenList/Import' //上传接口
             , accept: 'file'//允许上传的文件类型
             , auto: true
             , done: function (res) {
@@ -256,6 +172,6 @@
                 //请求异常回调
             }
         });
-    })
+    });
 </script>
 

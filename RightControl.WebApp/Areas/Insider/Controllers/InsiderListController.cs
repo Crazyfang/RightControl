@@ -50,10 +50,10 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetRelationData(string Department,string RepartyNm)
+        public JsonResult GetRelationData(string Post, string RepartyNm)
         {
             YG_InsiderRltsList rltsList = new YG_InsiderRltsList();
-            rltsList.Department = Department;
+            rltsList.InsiderPs = Post;
             rltsList.InsiderNm = RepartyNm;
 
             PageInfo pageInfo = new PageInfo();

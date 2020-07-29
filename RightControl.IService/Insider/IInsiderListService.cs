@@ -9,6 +9,8 @@ namespace RightControl.IService.Insider
 {
     public interface IInsiderListService : IBaseService<YG_InsiderList>
     {
-        IEnumerable<dynamic> GetInsiderList(string dep);
+        IEnumerable<dynamic> GetInsiderList(string InsiderPs);  //根据岗位得到所有该岗位的关联方
+
+        IEnumerable<dynamic> GetAllPost();    //得到所有的关联方岗位
     }
 }

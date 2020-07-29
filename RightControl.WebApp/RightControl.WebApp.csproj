@@ -792,6 +792,7 @@
     <Compile Include="Areas\CreditSearch\CreditSearchAreaRegistration.cs" />
     <Compile Include="Areas\InforSearch\Controllers\BlackListController.cs" />
     <Compile Include="Areas\InforSearch\InforSearchAreaRegistration.cs" />
+    <Compile Include="Areas\Insider\Controllers\InsiderFaRenListController.cs" />
     <Compile Include="Areas\Insider\Controllers\InsiderListController.cs" />
     <Compile Include="Areas\Insider\Controllers\InsiderRltsListController.cs" />
     <Compile Include="Areas\Insider\Controllers\ParaSetController.cs" />
@@ -948,6 +949,12 @@
     <Content Include="Areas\PfLender\Views\LenderList\Index.cshtml" />
     <Content Include="Areas\PfLender\Views\LenderList\Loan.cshtml" />
     <Content Include="Areas\PfLender\Views\web.config" />
+    <Content Include="Download\Template.xls" />
+    <Content Include="Download\Template_in.xls" />
+    <Content Include="Areas\Insider\Views\InsiderFaRenList\Add.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderFaRenList\Detail.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderFaRenList\Edit.cshtml" />
+    <Content Include="Areas\Insider\Views\InsiderFaRenList\Index.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

@@ -1,0 +1,58 @@
+﻿@model RightControl.Model.Insider.YG_InsiderFaRenList
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutForm.cshtml";
+}
+
+<div class="layui-col-md12 top10">
+    <form class="layui-form" id="form" action="/Insider/InsiderFaRenList/Edit" method="post">
+        <input name="Id" value="@Model.Id" type="hidden">
+        @Html.HiddenFor(x => x.CreateOn)
+        <div class="layui-form-item">
+            @Html.HiddenFor(item => item.CreateOn)
+            <label class="layui-form-label">法人或其他组织名称</label>
+            <div class="layui-input-block">
+                <input name="FaRenNm" value="@Model.FaRenNm" lay-verify="required" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">关联类型</label>
+            <div class="layui-input-inline">
+                <input name="ReKind" value="@Model.ReKind" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">报告单位</label>
+            <div class="layui-input-inline">
+                <input name="ReportUnit" value="@Model.ReportUnit" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">与报告单位关系</label>
+            <div class="layui-input-inline">
+                <input name="Relationship" value="@Model.Relationship" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">说明</label>
+            <div class="layui-input-block">
+                <input name="Description" value="@Model.Description" lay-vertype="tips" class="layui-input" type="text">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="submitForm" id="submitForm">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    layui.use(['jquery', 'form'], function () {
+        var form = layui.form;
+        var $ = layui.$;
+        submitForm(form, "编辑成功"); //监听提交
+    });
+</script>
+

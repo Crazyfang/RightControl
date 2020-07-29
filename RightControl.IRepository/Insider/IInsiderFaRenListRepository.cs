@@ -7,10 +7,8 @@ using RightControl.Model.Insider;
 
 namespace RightControl.IRepository.Insider
 {
-    public interface IInsiderListRepository : IBaseRepository<YG_InsiderList>
+    public interface IInsiderFaRenListRepository : IBaseRepository<YG_InsiderFaRenList>
     {
-        IEnumerable<dynamic> GetInsiderList(string InsiderPs);
 
-        IEnumerable<dynamic> GetAllPost();
     }
 }

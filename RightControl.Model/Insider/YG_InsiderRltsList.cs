@@ -13,7 +13,7 @@ namespace RightControl.Model.Insider
         public int Id { get; set; }
 
         [Display(Name = "岗位")]
-        public string Department { get; set; }
+        public string InsiderPs { get; set; }
 
         [Display(Name = "内部人姓名")]
         public string InsiderNm { get; set; }

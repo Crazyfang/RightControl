@@ -19,9 +19,9 @@ namespace RightControl.Service.Insider
         public dynamic GetListByFilter(YG_InsiderRltsList filter, PageInfo pageInfo)
         {
             var _where = " where 1=1";
-            if (!string.IsNullOrEmpty(filter.Department))
+            if (!string.IsNullOrEmpty(filter.InsiderPs))
             {
-                _where += string.Format(" and Department like '%{0}%'", filter.Department);
+                _where += string.Format(" and InsiderPs like '%{0}%'", filter.InsiderPs);
             }
             if (!string.IsNullOrEmpty(filter.InsiderNm))
             {

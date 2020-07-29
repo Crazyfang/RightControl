@@ -24,9 +24,9 @@
             name: '近亲属'
         };
 
-        var Department ='@Model.Department.Trim()';
+        var Post ='@Model.Post.Trim()';
         var RepartyNm ='@Model.RepartyNm.Trim()';
-        var jsondata = eval('(' + '{"Department":"' + Department + '","RepartyNm":"' + RepartyNm+'"}' + ')');
+        var jsondata = eval('(' + '{"Post":"' + Post + '","RepartyNm":"' + RepartyNm+'"}' + ')');
         $.ajax({
             type: "post",
             url: "/Insider/InsiderList/GetRelationData",

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="IBaseRepository.cs" />
     <Compile Include="InforSearch\IInforSearchOperateRepository.cs" />
+    <Compile Include="Insider\IInsiderFaRenListRepository.cs" />
     <Compile Include="Insider\IInsiderListRepository.cs" />
     <Compile Include="Insider\IInsideRltsListRepository.cs" />
     <Compile Include="Insider\IInsiderWarnRepository.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="IBaseService.cs" />
     <Compile Include="InforSearch\IBlackListService.cs" />
     <Compile Include="InforSearch\IInforSearchOperateService.cs" />
+    <Compile Include="Insider\IInsiderFaRenListService.cs" />
     <Compile Include="Insider\IInsiderListService.cs" />
     <Compile Include="Insider\IInsiderRltsListService.cs" />
     <Compile Include="Insider\IInsiderWarnService.cs" />

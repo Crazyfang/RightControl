@@ -87,6 +87,7 @@
     <Compile Include="DBHeper\SqlHelper.cs" />
     <Compile Include="InforSearch\BlackListRepository.cs" />
     <Compile Include="InforSearch\InforSearchOperateRepository.cs" />
+    <Compile Include="Insider\InsiderFaRenListRepository.cs" />
     <Compile Include="Insider\InsiderListRepository.cs" />
     <Compile Include="Insider\InsiderRltsListRepository.cs" />
     <Compile Include="Insider\InsiderWarnRepository.cs" />

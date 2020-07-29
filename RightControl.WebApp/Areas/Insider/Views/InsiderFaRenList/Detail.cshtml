@@ -1,0 +1,37 @@
+﻿@model RightControl.Model.Insider.YG_InsiderFaRenList
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutDetail.cshtml";
+}
+
+<div class="layui-col-md12" id="PrintArea">
+    <table class="layui-table" lay-skin="line" style="table-layout: fixed">
+        <tbody>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.FaRenNm)：</td>
+                <td>@Model.FaRenNm</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.ReKind)：</td>
+                <td>@Model.ReKind</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.ReportUnit)：</td>
+                <td>@Model.ReportUnit</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Relationship)：</td>
+                <td>@Model.Relationship</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.Description)：</td>
+                <td>@Model.Description</td>
+            </tr>
+            <tr>
+                <td class="title">@Html.DisplayNameFor(x => x.CreateOn)：</td>
+                <td>@Model.CreateOn</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

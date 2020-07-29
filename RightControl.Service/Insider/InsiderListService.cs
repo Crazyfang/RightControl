@@ -31,9 +31,14 @@ namespace RightControl.Service.Insider
             return GetListByFilter(filter, pageInfo, _where);
         }
 
-        public IEnumerable<dynamic> GetInsiderList(string dep)
+        public IEnumerable<dynamic> GetInsiderList(string InsiderPs)
         {
-            return Repository.GetInsiderList(dep);
+            return Repository.GetInsiderList(InsiderPs);
+        }
+
+        public IEnumerable<dynamic> GetAllPost()
+        {
+            return Repository.GetAllPost();
         }
     }
 }

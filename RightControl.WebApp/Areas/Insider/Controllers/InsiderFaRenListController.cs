@@ -12,35 +12,19 @@ using System.IO;
 using Aspose.Cells;
 using System.Data;
 using RightControl.Common;
+using Newtonsoft.Json.Linq;
 
 namespace RightControl.WebApp.Areas.Insider.Controllers
 {
-    public class InsiderRltsListController : BaseController
+    public class InsiderFaRenListController : BaseController
     {
-        public IInsiderListService insiderListService { get; set; }
-        public IInsiderRltsListService insiderrltsListService { get; set; }
+        public IInsiderFaRenListService insiderFaRenListService { get; set; }
         public IUserService userService { get; set; }
 
-        [HttpPost]
-        public JsonResult GetInsiderList(string InsiderPs)
-        {
-            IEnumerable<dynamic> list = insiderListService.GetInsiderList(InsiderPs);
-            var result = new { code = 0, count = list.Count(), data = list };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult GetAllPost()
-        {
-            IEnumerable<dynamic> list = insiderListService.GetAllPost();
-            var result = new { code = 0, count = list.Count(), data = list };
-            return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpGet]
-        public JsonResult List(YG_InsiderRltsList filter, PageInfo pageInfo)
+        public JsonResult List(YG_InsiderFaRenList filter, PageInfo pageInfo)
         {
-            var result = insiderrltsListService.GetListByFilter(filter, pageInfo);
+            var result = insiderFaRenListService.GetListByFilter(filter, pageInfo);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -50,42 +34,42 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(YG_InsiderRltsList obj)
+        public ActionResult Add(YG_InsiderFaRenList obj)
         {
             obj.CreateOn = DateTime.Now;
-            var result = insiderrltsListService.CreateModel(obj) ? SuccessTip("新增成功!") : ErrorTip("新增失败!");
+            var result = insiderFaRenListService.CreateModel(obj) ? SuccessTip("新增成功!") : ErrorTip("新增失败!");
             return Json(result, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Detail(int Id)
-        {
-            var obj = insiderrltsListService.GetByWhere(" where Id=@Id", new { Id = Id }).ToList()[0];
-            return View(obj);
         }
 
         [HttpGet]
         public ActionResult Edit(int Id)
         {
-            var obj = insiderrltsListService.GetByWhere(" where Id=@Id", new { Id = Id }).ToList()[0];
+            var obj = insiderFaRenListService.GetByWhere(" where Id=@Id", new { Id = Id }).ToList()[0];
             return View(obj);
         }
 
         [HttpPost]
-        public ActionResult Edit(YG_InsiderRltsList obj)
+        public ActionResult Edit(YG_InsiderFaRenList obj)
         {
-            var result = insiderrltsListService.UpdateModel(obj) ? SuccessTip("编辑成功!") : ErrorTip("编辑失败!");
+            var result = insiderFaRenListService.UpdateModel(obj) ? SuccessTip("编辑成功!") : ErrorTip("编辑失败!");
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Detail(int Id)
+        {
+            var obj = insiderFaRenListService.GetByWhere(" where Id=@Id", new { Id = Id }).ToList()[0];
+            return View(obj);
         }
 
         public ActionResult Delete(int Id)
         {
-            var result = insiderrltsListService.DeleteModel(Id) ? SuccessTip("删除成功!") : ErrorTip("删除失败!");
+            var result = insiderFaRenListService.DeleteModel(Id) ? SuccessTip("删除成功!") : ErrorTip("删除失败!");
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Download()
         {
-            string filePath = "/Download/Template_in.xls";
+            string filePath = "/Download/Template_inFaRen.xls";
             return Content(filePath);
         }
 
@@ -110,7 +94,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
                     });
                 }
 
-                string path = Server.MapPath("/Upload/file/insiderrlts/");    //获取保存目录的物理路径
+                string path = Server.MapPath("/Upload/file/insiderFaRen/");    //获取保存目录的物理路径
                 //生成新文件的名称，guid保证某一时刻内文件名唯一（文件不会被覆盖）
                 string fileNewName = Guid.NewGuid().ToString();
                 FileUrl = path + fileNewName + extName;
@@ -118,9 +102,9 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
 
                 designer = new WorkbookDesigner();
                 designer.Workbook = new Workbook(FileUrl);
-                sheet = designer.Workbook.Worksheets[1];
+                sheet = designer.Workbook.Worksheets[0];
 
-                if (sheet.Name != "内部人近亲属")
+                if (sheet.Name != "法人")
                 {
                     return Json(new
                     {
@@ -139,7 +123,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
             }
 
             Cells cells = sheet.Cells;
-            DataTable dt = cells.ExportDataTableAsString(0, 0, cells.MaxDataRow + 1, cells.MaxDataColumn, true);
+            DataTable dt = cells.ExportDataTableAsString(0, 0, cells.MaxDataRow + 1, cells.MaxDataColumn + 1, true);
 
             if (dt == null || dt.Rows.Count == 0)
             {
@@ -152,34 +136,22 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
 
             dt.Rows.RemoveAt(0);     //去掉表格第一行
             dt.Rows.RemoveAt(0);     //去掉表格第二行
-            dt.Rows.RemoveAt(0);     //去掉表格第三行
 
             foreach (DataRow dr in dt.Rows)
             {
-                if (string.IsNullOrEmpty(dr["InsiderPs"].ToString()))
-                    continue;
-
-                YG_InsiderRltsList obj = new YG_InsiderRltsList();
-                if (!string.IsNullOrEmpty(dr["InsiderPs"].ToString()))
-                    obj.InsiderPs = dr["InsiderPs"].ToString();
-                if (!string.IsNullOrEmpty(dr["InsiderNm"].ToString()))
-                    obj.InsiderNm = dr["InsiderNm"].ToString();
-                if (!string.IsNullOrEmpty(dr["RltsNm"].ToString()))
-                    obj.RltsNm = dr["RltsNm"].ToString();
-                if (!string.IsNullOrEmpty(dr["IdentityCd"].ToString()))
-                    obj.IdentityCd = dr["IdentityCd"].ToString();
+                YG_InsiderFaRenList obj = new YG_InsiderFaRenList();
+                if (!string.IsNullOrEmpty(dr["FaRenNm"].ToString()))
+                    obj.FaRenNm = dr["FaRenNm"].ToString();
+                if (!string.IsNullOrEmpty(dr["ReKind"].ToString()))
+                    obj.ReKind = dr["ReKind"].ToString();
+                if (!string.IsNullOrEmpty(dr["ReportUnit"].ToString()))
+                    obj.ReportUnit = dr["ReportUnit"].ToString();
                 if (!string.IsNullOrEmpty(dr["Relationship"].ToString()))
                     obj.Relationship = dr["Relationship"].ToString();
-                if (!string.IsNullOrEmpty(dr["CompanyNm"].ToString()))
-                    obj.CompanyNm = dr["CompanyNm"].ToString();
-                if (!string.IsNullOrEmpty(dr["SocialCreditCode"].ToString()))
-                    obj.SocialCreditCode = dr["SocialCreditCode"].ToString();
-                if (!string.IsNullOrEmpty(dr["Controller"].ToString()))
-                    obj.Controller = dr["Controller"].ToString();
-                if (!string.IsNullOrEmpty(dr["ControllerRlts"].ToString()))
-                    obj.ControllerRlts = dr["ControllerRlts"].ToString();
+                if (!string.IsNullOrEmpty(dr["Description"].ToString()))
+                    obj.Description = dr["Description"].ToString();
                 obj.CreateOn = DateTime.Now;
-                var result = insiderrltsListService.CreateModel(obj);
+                var result = insiderFaRenListService.CreateModel(obj);
 
                 if (result == false)
                 {

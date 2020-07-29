@@ -90,15 +90,16 @@
             @Html.HiddenFor(item => item.CreateOn)
             <label class="layui-form-label">岗位</label>
             <div class="layui-input-inline">
-                <input type="hidden" name="DepartmentId" class="layui-input">
+                @*<input type="hidden" name="DepartmentId" class="layui-input">
                 <input type="text" name="Department" required lay-verify="required" readonly autocomplete="off" class="layui-input">
-                <div class="eleTree ele" lay-filter="departmentdata"></div>
+                <div class="eleTree ele" lay-filter="departmentdata"></div>*@
+                <input name="InsiderPs" value="@Model.InsiderPs" lay-vertype="tips" class="layui-input" type="text" readonly="readonly">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">内部人姓名</label>
             <div class="layui-input-inline">
-                <input name="InsiderNm" value="@Model.InsiderNm" lay-vertype="tips" class="layui-input" type="text">
+                <input name="InsiderNm" value="@Model.InsiderNm" lay-vertype="tips" class="layui-input" type="text" readonly="readonly">
             </div>
         </div>
         <div class="layui-form-item">
@@ -158,11 +159,11 @@
             var $ = layui.$;
             submitForm(form, "编辑成功"); //监听提交
 
-            var $ = layui.jquery;
-            var eleTree = layui.eleTree;
-            form.render('select');
+            //var $ = layui.jquery;
+            //var eleTree = layui.eleTree;
+            //form.render('select');
 
-            var el;
+            @*var el;
             $.ajax({
                 url: '/Permissions/Department/GetAllDepartment',
                 type: 'post',
@@ -195,7 +196,7 @@
             $(document).on("click",
                 function() {
                     $(".ele").hide();
-                });
+                });*@
         });
 </script>
 
