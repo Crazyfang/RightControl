@@ -73,6 +73,7 @@
     <Compile Include="Permissions\MenuRoleActionModel.cs" />
     <Compile Include="Permissions\RoleModel.cs" />
     <Compile Include="Permissions\UserModel.cs" />
+    <Compile Include="Permissions\UserRoleModel.cs" />
     <Compile Include="PfLender\LenderList.cs" />
     <Compile Include="PfLender\LenderList_Dep.cs" />
     <Compile Include="PfLender\LenderList_DepFlow.cs" />

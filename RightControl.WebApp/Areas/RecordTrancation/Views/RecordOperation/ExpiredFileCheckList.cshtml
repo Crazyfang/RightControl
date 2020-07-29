@@ -28,7 +28,13 @@
     </div>
 <script src="~/Areas/Admin/plugins/layui/layui.js"></script>
 <script>
-
+    function showType(type) {
+        if (type === 1) {
+            return '<span class="layui-badge">主动更新</span>';
+        } else {
+            return '<span class="layui-badge layui-bg-blue">过期更新</span>';
+        }
+    }
     layui.use(['table', 'layer'], function(){
         var table = layui.table,
             layer = layui.layer;
@@ -43,7 +49,8 @@
                 ,{field:'RecordId', title: '档案编号'}
                 ,{field:'RecordManager', title: '档案归属人'} //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
                 ,{field:'RecordManagerDepartment', title: '档案归属部门'}
-                ,{field:'ChangedDateTime', title: '提交时间'}
+                , { field: 'ChangedDateTime', title: '提交时间' }
+                , { field: 'Type', title: '更改类型', templet: '<div>{{showType(d.Type)}}</div>' }
             ]]
             ,page: true
             ,height: 'full-100'
@@ -56,7 +63,7 @@
                 type: 2
                 , content: '/RecordTrancation/RecordOperation/ExpiredFileAccept?recordId=' + data.RecordId
                 ,shadeClose: true
-                ,area: ['700px', '500px']
+                ,area: ['800px', '500px']
                 , maxmin: true
                 , end: function() {
                     table.reload('test', {

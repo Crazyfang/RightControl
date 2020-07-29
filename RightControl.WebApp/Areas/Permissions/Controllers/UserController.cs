@@ -20,8 +20,8 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
         public IRoleService roleService { get; set; }
         public IDepartmentService departmentService { get; set; }
         public IDepartmentUserService departmentUserService { get; set; }
-
         public SelectList RoleList { get { return new SelectList(roleService.GetRoleList(), "Id", "RoleName"); } }
+
         // GET: Permissions/User
         public override ActionResult Index(int? id)
         {
@@ -29,6 +29,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             base.Index(id);
             return View();
         }
+
         /// <summary>
         /// 加载数据列表
         /// </summary>
@@ -41,11 +42,13 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var result = userService.GetListByFilter(filter, pageInfo);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
         public ActionResult Detail(int Id)
         {
             var model = userService.GetDetail(Id);
             return View(model);
         }
+
         public ActionResult Edit(int Id)
         {
             var model = userService.ReadModel(Id);
@@ -59,6 +62,19 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             ViewBag.RoleId = RoleList;
             return View(model);
         }
+
+        public ActionResult GetRoleList()
+        {
+            var data = roleService.GetRoleList().Select(i => new { Id = i.Id, RoleName = i.RoleName }).ToList();
+
+            return Content(JsonConvert.SerializeObject(data), "application/json");
+        }
+
+        //public ActionResult GetOwnedRoleList()
+        //{
+
+        //}
+
         [HttpPost]
         public ActionResult Edit(UserModel model)
         {
@@ -88,6 +104,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             ViewBag.RoleId = RoleList;
             return View();
         }
+
         [HttpPost]
         public ActionResult Add(UserModel model)
         {
@@ -124,6 +141,7 @@ namespace RightControl.WebApp.Areas.Permissions.Controllers
             var result = userService.DeleteModel(Id) ? SuccessTip() : ErrorTip();
             return Json(result);
         }
+
         [HttpPost]
         public ActionResult InitPwd(int Id)
         {

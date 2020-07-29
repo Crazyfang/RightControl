@@ -225,26 +225,47 @@ namespace RightControl.Service.RecordTrancation
         {
             var time = DateTime.Now;
 
-            var total = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                .LeftJoin(a => a.RecordID == b.RecordId)
-                .LeftJoin(a => a.RecordID == c.RecordID)
-                .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
-                .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
-                .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
-                .Distinct()
-                .OrderBy((s, b, c, d) => s.RecordID)
-                .ToList((s, b, c, d) => s).Count;
+            //var total = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+            //    .LeftJoin(a => a.RecordID == b.RecordId)
+            //    .LeftJoin(a => a.RecordID == c.RecordID)
+            //    .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
+            //    .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
+            //    .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
+            //    .Distinct()
+            //    .OrderBy((s, b, c, d) => s.RecordID)
+            //    .ToList((s, b, c, d) => s).Count;
 
-            var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                .LeftJoin(a => a.RecordID == b.RecordId)
-                .LeftJoin(a => a.RecordID == c.RecordID)
-                .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
-                .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
-                .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
-                .Distinct()
-                .OrderBy((s, b, c, d) => s.RecordID)
-                .Page(pageInfo.page, pageInfo.limit)
-                .ToList((s, b, c, d) => s);
+            //var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+            //    .LeftJoin(a => a.RecordID == b.RecordId)
+            //    .LeftJoin(a => a.RecordID == c.RecordID)
+            //    .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
+            //    .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
+            //    .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
+            //    .Distinct()
+            //    .OrderBy((s, b, c, d) => s.RecordID)
+            //    .Page(pageInfo.page, pageInfo.limit)
+            //    .ToList((s, b, c, d) => s);
+
+            var total = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .ToList((s, b) => s).Count();
+
+            var recordList = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .Page(pageInfo.page, pageInfo.limit)
+                    .ToList((s, b) => s);
 
             return new { code = 0, count = total, data = recordList };
         }
@@ -253,67 +274,106 @@ namespace RightControl.Service.RecordTrancation
         {
             var time = DateTime.Now;
 
-            var sql = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                .LeftJoin(a => a.RecordID == b.RecordId)
-                .LeftJoin(a => a.RecordID == c.RecordID)
-                .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
-                .Where((s, b, c, d) => s.RecordManager == userCode)
-                .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
-                .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
-                .Distinct()
-                .OrderBy((s, b, c, d) => s.RecordID)
-                .ToSql();
+            var sql = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
+                    .Where((s, b) => s.RecordManager == userCode)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .ToSql();
 
-            var total = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                .LeftJoin(a => a.RecordID == b.RecordId)
-                .LeftJoin(a => a.RecordID == c.RecordID)
-                .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
-                .Where((s, b, c, d) => s.RecordManager == userCode)
-                .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
-                .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
-                .Distinct()
-                .OrderBy((s, b, c, d) => s.RecordID)
-                .ToList((s, b, c, d) => s).Count;
+            var total = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
+                    .Where((s, b) => s.RecordManager == userCode)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .ToList((s, b) => s).Count();
 
-            var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                .LeftJoin(a => a.RecordID == b.RecordId)
-                .LeftJoin(a => a.RecordID == c.RecordID)
-                .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
-                .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
-                .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
-                .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
-                .Where((s, b, c, d) => s.RecordManager == userCode)
-                .Distinct()
-                .OrderBy((s, b, c, d) => s.RecordID)
-                .Page(pageInfo.page, pageInfo.limit)
-                .ToList((s, b, c, d) => s);
+            var recordList = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => fsql.Select<RecordList>().Where(i => i.ExpirationTime < time && i.RecordId == s.RecordID).Any() || fsql.Select<OtherFileList>().Where(i => i.ExpirationTime < time && i.RecordID == s.RecordID).Any())
+                    .Where((s, b) => b.Status == 2 || b.Status == 1 || b.Status == null)
+                    .Where((s, b) => s.RecordManager == userCode)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b) => s.RecordUserName == filter.RecordUserName)
+                    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b) => s.RecordUserCode == filter.RecordUserCode)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .Page(pageInfo.page, pageInfo.limit)
+                    .ToList((s, b) => s);
+
+            //var sql = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+            //    .LeftJoin(a => a.RecordID == b.RecordId)
+            //    .LeftJoin(a => a.RecordID == c.RecordID)
+            //    .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
+            //    .Where((s, b, c, d) => s.RecordManager == userCode)
+            //    .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
+            //    .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
+            //    .Distinct()
+            //    .OrderBy((s, b, c, d) => s.RecordID)
+            //    .ToSql();
+
+            //var total = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+            //    .LeftJoin(a => a.RecordID == b.RecordId)
+            //    .LeftJoin(a => a.RecordID == c.RecordID)
+            //    .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
+            //    .Where((s, b, c, d) => s.RecordManager == userCode)
+            //    .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
+            //    .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
+            //    .Distinct()
+            //    .OrderBy((s, b, c, d) => s.RecordID)
+            //    .ToList((s, b, c, d) => s).Count;
+
+            //var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
+            //    .LeftJoin(a => a.RecordID == b.RecordId)
+            //    .LeftJoin(a => a.RecordID == c.RecordID)
+            //    .LeftJoin(a => b.ID == d.RecordFileId || c.ID == d.OtherFileId))
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserName), (s, b, c, d) => s.RecordUserName == filter.RecordUserName)
+            //    .WhereIf(!string.IsNullOrEmpty(filter.RecordUserCode), (s, b, c, d) => s.RecordUserCode == filter.RecordUserCode)
+            //    .Where((s, b, c, d) => b.ExpirationTime < time || c.ExpirationTime < time)
+            //    .Where((s, b, c, d) => d.Status == null || d.Status == 1 || d.Status == 2)
+            //    .Where((s, b, c, d) => s.RecordManager == userCode)
+            //    .Distinct()
+            //    .OrderBy((s, b, c, d) => s.RecordID)
+            //    .Page(pageInfo.page, pageInfo.limit)
+            //    .ToList((s, b, c, d) => s);
 
             return new { code = 0, count = total, data = recordList };
         }
 
         public dynamic NeedVerifyExpiredFileList(PageInfo pageInfo)
         {
-            var recordList = fsql.Select<Record>().From<RecordList, OtherFileList, ExpiredFileVerifyEntity>((s, b, c, d) => s
-                    .LeftJoin(a => a.RecordID == b.RecordId)
-                    .LeftJoin(a => a.RecordID == c.RecordID)
-                    .LeftJoin(a => b.ID == d.RecordFileId)
-                    .LeftJoin(a => c.ID == d.OtherFileId))
-                    .Where((s, b, c, d) => d.Status == 0)
+            var total = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => b.Status == 0)
                     .Distinct()
-                    .Count(out var total)
-                    .OrderBy((s, b, c, d) => s.RecordID)
-                    .Page(pageInfo.page, pageInfo.limit)
-                    .ToList((s, b, c, d) => new { RecordId = s.RecordID,
+                    .OrderBy((s, b) => s.RecordID)
+                    .ToList((s, b) => s).Count();
+
+            var result = fsql.Select<Record>().From<ExpiredFileVerifyEntity>((s, b) => s
+                    .LeftJoin(a => a.RecordID == b.RecordItemId))
+                    .Where((s, b) => b.Status == 0)
+                    .Distinct()
+                    .OrderBy((s, b) => s.RecordID)
+                    .ToList((s, b) => new {
+                        RecordId = s.RecordID,
                         RecordManager = s.RecordManager,
                         RecordManagerDepartment = s.RecordManagerDepartment,
-                        ChangedDateTime = d.OperateTime });
+                        ChangedDateTime = b.OperateTime,
+                        Type = b.Type
+                    });
 
-            return new { code = 0, count = total, data = recordList };
+            return new { code = 0, count = total, data = result };
         }
 
         public ExpiredClass GetExpiredFileCompare(string recordId)

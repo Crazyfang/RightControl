@@ -1,9 +1,4 @@
 ﻿using FreeSql.DataAnnotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RightControl.Model.CreditSearch
 {
@@ -52,5 +47,10 @@ namespace RightControl.Model.CreditSearch
         /// 纳税企业状态 1-待认领 2-已认领 3-持续跟进中 4-完成走访
         /// </summary>
         public int Status { get; set; }
+
+        /// <summary>
+        /// 是否存量客户
+        /// </summary>
+        public int? IsLoan { get; set; }
     }
 }
