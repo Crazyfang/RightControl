@@ -31,7 +31,7 @@ namespace RightControl.WebApp
             builder.RegisterControllers(Assembly.GetExecutingAssembly()).PropertiesAutowired();
 
             var fsql = new FreeSqlBuilder()
-                .UseConnectionString(FreeSql.DataType.SqlServer, @"Data Source=.;Initial Catalog=rightcontrol;Persist Security Info=True;Connect Timeout=300;User ID=sa;Password=waj")
+                .UseConnectionString(FreeSql.DataType.SqlServer, @"Data Source=.;Initial Catalog=rightcontrol;Persist Security Info=True;Connect Timeout=300;User ID=sa;Password=Fighting1314")
                 .UseAutoSyncStructure(true) //自动迁移实体的结构到数据库
                 .Build(); //请务必定义成 Singleton 单例模式
             
