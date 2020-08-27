@@ -47,6 +47,10 @@ namespace RightControl.Service.Insider
                     _where += string.Format(" and DataDate<='{0}'", end);
                 }
             }
+            else
+            {
+                _where += " and DataDate = convert(char(10),getdate()-1,120)";
+            }
 
             return GetListByFilter(filter, pageInfo, _where);
         }
