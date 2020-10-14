@@ -11,12 +11,12 @@ using RightControl.Model.Insider;
 
 namespace RightControl.Service.Insider
 {
-    public class ParameterService : BaseService<Parameter>, IParameterService
+    public class ParameterService : BaseService<XD_Parameter>, IParameterService
     {
         public IParameterRepository Repository { get; set; }
         public IUserRepository userRepository { get; set; }
 
-        public dynamic GetListByFilter(Parameter filter, PageInfo pageInfo)
+        public dynamic GetListByFilter(XD_Parameter filter, PageInfo pageInfo)
         {
             var _where = " where 1=1";
            _where += string.Format(" and R_No = '{0}'", filter.R_No);

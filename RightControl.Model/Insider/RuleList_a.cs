@@ -13,7 +13,7 @@ namespace RightControl.Model.Insider
         public int R_No { get; set; }
         public string R_Name { get; set; }
 
-        public RuleList friend { get; set; }
+        public XD_RuleList friend { get; set; }
 
     }
 }

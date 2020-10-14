@@ -22,7 +22,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         public IInsiderWarnService insiderWarnService { get; set; }
 
         [HttpGet]
-        public JsonResult List(RuleList filter, PageInfo pageInfo)
+        public JsonResult List(XD_RuleList filter, PageInfo pageInfo)
         {
             //将规则和参数数据整理返回
             JsonResult js = Json(ruleListService.GetListByFilter(filter, pageInfo));
@@ -34,7 +34,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
 
             string list = "[";
             int i = 0, j = 0;
-            Parameter pa = new Parameter();
+            XD_Parameter pa = new XD_Parameter();
             PageInfo page = new PageInfo();
             page.limit = 10;
             page.page = 1;
@@ -99,7 +99,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(RuleList obj)
+        public ActionResult Add(XD_RuleList obj)
         {
             PageInfo page = new PageInfo();
             page.limit = 10;
@@ -127,7 +127,7 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(RuleList obj)
+        public ActionResult Edit(XD_RuleList obj)
         {
             PageInfo page = new PageInfo();
             page.limit = 10;
@@ -165,9 +165,9 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public ActionResult ParaAdd(Parameter obj)
+        public ActionResult ParaAdd(XD_Parameter obj)
         {
-            RuleList rule = ruleListService.GetByWhere(" where R_No=@R_No", new { R_No = obj.R_No }).ToList()[0];
+            XD_RuleList rule = ruleListService.GetByWhere(" where R_No=@R_No", new { R_No = obj.R_No }).ToList()[0];
             obj.R_Name = rule.R_Name;
             obj.M_No = rule.M_No;
             obj.M_Name = rule.M_Name;
@@ -177,10 +177,10 @@ namespace RightControl.WebApp.Areas.Insider.Controllers
         }
 
         [HttpPost]
-        public ActionResult ParaEdit(Parameter para)
+        public ActionResult ParaEdit(XD_Parameter para)
         {
             //para传送过来会缺少父表格的规则模块信息
-            Parameter parameter = parameterService.GetByWhere(" where P_No=@P_No", new { P_No = para.P_No }).ToList()[0];
+            XD_Parameter parameter = parameterService.GetByWhere(" where P_No=@P_No", new { P_No = para.P_No }).ToList()[0];
             para.R_No = parameter.R_No;
             para.R_Name = parameter.R_Name;
             para.M_No = parameter.M_No;

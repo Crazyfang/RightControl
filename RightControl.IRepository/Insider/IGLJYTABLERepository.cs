@@ -7,10 +7,8 @@ using RightControl.Model.Insider;
 
 namespace RightControl.IRepository.Insider
 {
-    public interface IRuleListRepository : IBaseRepository<XD_RuleList>
-    {
-        IEnumerable<XD_RuleList> GetRule();
+    public interface IGLJYTABLERepository : IBaseRepository<YG_GLJYTABLE>
+    { 
 
-        IEnumerable<XD_RuleList> GetRuleName(int no);
     }
 }

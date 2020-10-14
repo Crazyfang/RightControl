@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutList.cshtml";
+}
+
+<div class="admin-main">
+    <blockquote class="layui-elem-quote p10">
+        <form id="formSearch" class="layui-form" action="">
+            <div class="layui-form-item" style="margin-bottom:0px;">
+                <label class="layui-form-label">数据时间：</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" name="DATA_DATE" id="DATA_DATE">
+                </div>
+                @Html.SearchBtnHtml()
+                <div style="float:right;">
+                    @Html.TopToolBarHtml(ViewData["ActionFormRightTop"])
+                </div>
+            </div>
+        </form>
+    </blockquote>
+    <div class="layui-field-box">
+        <table id="defaultTable" lay-filter="defaultruv"></table>
+        <script type="text/html" id="bar">
+            @Html.ToolBarHtml(ViewData["ActionList"])
+        </script>
+    </div>
+</div>
+
+<script>
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+
+      //执行一个laydate实例
+      laydate.render({
+          elem: '#DATA_DATE', //指定元素
+        });
+    });
+
+    layui.use(['table', 'common', 'form', 'layer'], function () {
+        var table = layui.table,
+            form = layui.form,
+            common = layui.common,
+            layer = layui.layer;
+        //表格
+        table.render({
+            id: 'defaultReload'
+            , elem: '#defaultTable'
+            , height: 'full-112' //高度最大化减去差值
+            , url: '/Insider/GLJYTABLE/List' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'DATA_DATE', title: '数据时间', templet: '<div>{{layui.util.toDateString(d.DATA_DATE, "yyyy-MM-dd") }}</div>', width: 110, fixed: 'left' }
+                , { field: 'INSIDERNM', title: '关联方名称', fixed: 'left', width: 250 }
+                , { field: 'CERTTYPE', title: '证件类型', fixed: 'left', width: 120 }
+                , { field: 'CERT_NO', title: '证件代码', fixed: 'left', width: 200 }
+                , { field: 'SHOUXIN', title: '授信总额', width: 150 }
+                , { field: 'LOAN', title: '贷款余额', width: 150 }
+                , { field: 'XINYONG_LOAN', title: '信用贷款', width: 150 }
+                , { field: 'CRET_CARD', title: '贷记卡', width: 150 }
+                , { field: 'INTER_FINANCE', title: '互联网金融贷款余额', width: 200 }
+                , { field: 'BILL_ACCEPT', title: '票据承兑', width: 150 }
+                , { field: 'BILL_DISCOUNTED', title: '票据贴现', width: 150 }
+                , { field: 'DANBAO', title: '担保', width: 150 }
+                , { field: 'ZHIYA', title: '保证金、质押的银行存单和国债余额', width: 300 }
+                , { field: 'GRANT_BALANCE', title: '授信余额', width: 150 }
+            ]]
+        });
+        var $ = layui.$, active = {
+            reload: function () {
+                //执行重载
+                table.reload('defaultReload', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    , where: urlToJson($("#formSearch").serialize())
+                });
+            }
+        };
+        //服务器排序
+        table.on('sort(defaultruv)', function (obj) {
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，如：
+            table.reload('defaultReload', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。 layui 2.1.1 新增参数
+                , where: { //请求参数
+                    field: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+        //Export
+        $("#btnExport").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Insider/GLJYTABLE/Export",
+                data: { "data_date": $("#DATA_DATE").val() },
+                success: function (result) {
+                    window.location.target = "_blank";
+                    window.location.href = result;
+                }
+            })
+        });
+
+        $('#btnSearch').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+

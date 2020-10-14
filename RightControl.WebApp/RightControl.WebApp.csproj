@@ -62,11 +62,17 @@
     <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.7.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.6\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="FreeSql, Version=1.5.0.0, Culture=neutral, PublicKeyToken=a33928e5d4a4b39c, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSql.1.5.0\lib\net45\FreeSql.dll</HintPath>
     </Reference>
     <Reference Include="FreeSql.Provider.SqlServer, Version=1.5.0.0, Culture=neutral, PublicKeyToken=d313b98af285bd88, processorArchitecture=MSIL">
       <HintPath>..\packages\FreeSql.Provider.SqlServer.1.5.0\lib\net451\FreeSql.Provider.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
@@ -77,6 +83,18 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.5.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.5.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.SqlClient, Version=4.6.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Data.SqlClient.4.8.1\lib\net461\System.Data.SqlClient.dll</HintPath>
@@ -736,6 +754,7 @@
     <Content Include="Areas\Admin\Scripts\Print.js\test\unit\print.spec.js" />
     <Content Include="Areas\Admin\Scripts\Print.js\webpack.config.js" />
     <Content Include="Areas\SysSet\Views\Log\Index.cshtml" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Areas\Admin\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -793,6 +812,7 @@
     <Compile Include="Areas\CreditSearch\CreditSearchAreaRegistration.cs" />
     <Compile Include="Areas\InforSearch\Controllers\BlackListController.cs" />
     <Compile Include="Areas\InforSearch\InforSearchAreaRegistration.cs" />
+    <Compile Include="Areas\Insider\Controllers\GLJYTABLEController.cs" />
     <Compile Include="Areas\Insider\Controllers\InsiderFaRenListController.cs" />
     <Compile Include="Areas\Insider\Controllers\InsiderListController.cs" />
     <Compile Include="Areas\Insider\Controllers\InsiderRltsListController.cs" />
@@ -958,6 +978,10 @@
     <Content Include="Areas\Insider\Views\InsiderFaRenList\Index.cshtml" />
     <Content Include="Areas\RecordTrancation\Views\RecordOperation\RecordFileAdjust.cshtml" />
     <Content Include="Download\Template_inFaRen.xls" />
+    <Content Include="Areas\Insider\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Insider\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Insider\Views\GLJYTABLE\Index.cshtml" />
+    <Content Include="Areas\Insider\关联交易情况表.xls" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -1040,7 +1064,6 @@
     <Folder Include="Areas\InforSearch\Models\" />
     <Folder Include="Areas\InforSearch\Views\Shared\" />
     <Folder Include="Areas\Insider\Models\" />
-    <Folder Include="Areas\Insider\Views\Shared\" />
     <Folder Include="Areas\Permissions\Models\" />
     <Folder Include="Areas\Permissions\Views\MenuAction\" />
     <Folder Include="Areas\Permissions\Views\MenuRoleAction\" />
@@ -1053,6 +1076,7 @@
     <Folder Include="Areas\RecordTrancation\Views\Shared\" />
     <Folder Include="Areas\SysSet\Models\" />
     <Folder Include="Areas\SysSet\Views\Shared\" />
+    <Folder Include="Download\GLJYTABLE\" />
     <Folder Include="Logs\" />
     <Folder Include="Models\" />
   </ItemGroup>
@@ -1087,6 +1111,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

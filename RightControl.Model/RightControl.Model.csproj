@@ -54,9 +54,10 @@
     <Compile Include="InforSearch\BlackList.cs" />
     <Compile Include="InforSearch\InforSearchOperate.cs" />
     <Compile Include="Insider\Module.cs" />
-    <Compile Include="Insider\Parameter.cs" />
-    <Compile Include="Insider\RuleList.cs" />
+    <Compile Include="Insider\XD_Parameter.cs" />
+    <Compile Include="Insider\XD_RuleList.cs" />
     <Compile Include="Insider\RuleList_a.cs" />
+    <Compile Include="Insider\YG_GLJYTABLE.cs" />
     <Compile Include="Insider\YG_InsiderFaRenList.cs" />
     <Compile Include="Insider\YG_InsiderList.cs" />
     <Compile Include="Insider\YG_InsiderRltsList.cs" />

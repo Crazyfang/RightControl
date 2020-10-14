@@ -7,11 +7,11 @@ using RightControl.Model.Insider;
 
 namespace RightControl.IService.Insider
 {
-    public interface IRuleListService : IBaseService<RuleList>
+    public interface IRuleListService : IBaseService<XD_RuleList>
     {
-        IEnumerable<RuleList> GetRule();
+        IEnumerable<XD_RuleList> GetRule();
 
         //根据规则编号得到规则名称
-        IEnumerable<RuleList> GetRuleName(int no);
+        IEnumerable<XD_RuleList> GetRuleName(int no);
     }
 }

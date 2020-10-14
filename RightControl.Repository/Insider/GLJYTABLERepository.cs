@@ -8,7 +8,7 @@ using RightControl.Model.Insider;
 
 namespace RightControl.Repository.Insider
 {
-    public class ParameterRepository : BaseRepository<XD_Parameter>, IParameterRepository
+    public class GLJYTABLERepository : BaseRepository<YG_GLJYTABLE>, IGLJYTABLERepository
     {
 
     }

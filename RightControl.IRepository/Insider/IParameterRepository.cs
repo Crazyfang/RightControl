@@ -8,7 +8,7 @@ using RightControl.Model.Insider;
 
 namespace RightControl.IRepository.Insider
 {
-    public interface IParameterRepository : IBaseRepository<Parameter>
+    public interface IParameterRepository : IBaseRepository<XD_Parameter>
     {
     }
 }
