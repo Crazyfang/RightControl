@@ -981,7 +981,6 @@
     <Content Include="Areas\Insider\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Insider\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Insider\Views\GLJYTABLE\Index.cshtml" />
-    <Content Include="Areas\Insider\关联交易情况表.xls" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
